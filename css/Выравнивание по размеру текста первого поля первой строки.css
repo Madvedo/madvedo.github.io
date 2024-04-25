@@ -1,0 +1,13 @@
+.grid {
+    display: grid;
+ grid-template-columns: minmax(300px, 600px) 1fr 1fr;  /* заданы минимальные и максимальные размеры первого столбца. */
+grid-gap: 20px; /* Отступы между грид сегментами */
+grid-auto-rows: minmax(100px auto);  /* Означает, что в соответствии с текстом в секции 1.1 будут увеличены на такой же размер все элементы секции 1, то есть вся строка  */
+}
+
+.grid div {
+    background-color: aqua;
+    border: 2px solid blue;
+    border-radius: 5px;
+    text-align: center;
+}

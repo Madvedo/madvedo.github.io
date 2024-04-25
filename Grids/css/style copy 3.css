@@ -1,0 +1,12 @@
+.grid {
+    display: grid;
+ grid-template-columns: 100px repeat(2, 1fr 2fr); /* после заданных размеров первой колнки идет чередование 2х колонок по 1 и 2 фракции*/
+grid-gap: 20px; /* Отступы между грид сегментами */
+}
+
+.grid div {
+    background-color: aqua;
+    border: 2px solid blue;
+    border-radius: 5px;
+    text-align: center;
+}

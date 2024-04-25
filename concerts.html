@@ -51,6 +51,10 @@
    z-index: 1;
   }
 
+  .accordion {
+    margin-top: 100px;
+  }
+
   </style>
 
 <style>
@@ -83,7 +87,9 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="/">Главная</a>
+              <a class="nav-link" aria-current="page" href="/news.html"
+                >Новости</a
+              >
             </li>
             <li class="nav-item">
               <a class="nav-link active" href="concerts.html">Фотоархив</a>
@@ -101,27 +107,24 @@
         </div>
       </div>
     </nav>
+
+
+    
     <div class="container my-5">
-      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-5">
-        
-        <!--0  -->
 
+  <!--0000000000000000  -->
 
-        <div class="col">
-          <div class="card">
-            <a href="https://vk.com/album-20613122_118842709" target="_blank">
-            <img
-            src="p/Разное.jpg" 
-             
-              alt="..."
-              />
-              <a></a>
-              <div class="card-body">
-                <h5 class="title">Разное</h5>
-                <p class="text-muted"> Общий сборник фото с различных мероприятий </p>
-            </div>
-          </div>
-        </div>
+  <div class="accordion" id="accordionExample">
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingOne">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          2006-2008
+        </button>
+      </h2>
+      <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-5">
+       
 
 
  <!--1  -->
@@ -156,8 +159,7 @@
             </div>
           </div>
         </div>
-          
-        <!-- 3 -->
+            <!-- 3 -->
         <div class="col">
           <div class="card">
             <a href="https://vk.com/album-20613122_157390972" target="_blank">
@@ -222,7 +224,24 @@
           </div>
         </div>
 
-        <!-- 7 -->
+
+
+
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingTwo">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+          2009-2012
+        </button>
+      </h2>
+      <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+
+          <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-5">
+
+           <!-- 7 -->
         <div class="col">
           <div class="card">
             <a href="https://vk.com/album-20613122_157391141" target="_blank">
@@ -377,6 +396,19 @@
   </div>
 </div>
 
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingThree">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+         2013-2014
+        </button>
+      </h2>
+      <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+          <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-5">
+         
 <!-- 16 -->
 <div class="col">
   <div class="card">
@@ -554,6 +586,23 @@
     </div>
   </div>
 </div>
+
+
+        
+      </div>
+    </div>
+  </div>
+
+
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingFour">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+        2015-2017
+      </button>
+    </h2>
+    <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-5">
 
 <!-- 26 -->
 <div class="col">
@@ -744,6 +793,26 @@
   </div>
 </div>
 
+
+
+       
+     
+    </div>
+  </div>
+</div>
+
+<div class="accordion-item">
+  <h2 class="accordion-header" id="headingFive">
+    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+     2021-2022
+    </button>
+  </h2>
+  <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+    <div class="accordion-body">
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-5">
+
+
+
 <!-- 36 -->
 
 <div class="col">
@@ -776,7 +845,7 @@
       <a></a>
       <div class="card-body">
         <h5 class="title">08.01.2022</h5>
-        <p class="text-muted"> "Возможно II" (Лобановский ДК) </p>
+        <p class="text-muted"> "Возможно" II (Лобановский ДК) </p>
     </div>
   </div>
 </div>
@@ -818,10 +887,100 @@
   </div>
 </div>
 
+<!-- 40 -->
+
+<div class="col">
+  <div class="card">
+    <a href="https://vk.com/album-206827270_284381168" target="_blank">
+    <img
+    src="/p/2022/K6opzM6Sv6koItnAFu2rN0iTLJ7jfN5yinz5Lc1LeJtVJbS_74ZpsFeUKhXBmV_hDvguAtXw5KZLBHj_w5dHuuI9.jpg" 
+     
+      alt="..."
+      />
+      <a></a>
+      <div class="card-body">
+        <h5 class="title">28.05.2022</h5>
+        <p class="text-muted"> Библионочь </p>
+    </div>
+  </div>
+</div>
+
+<!-- 41 -->
+
+<div class="col">
+  <div class="card">
+    <a href="https://vk.com/album-20613122_284720038" target="_blank">
+    <img
+    src="/p/2022/photo_2022-06-20_11-26-59.jpg" 
+     
+      alt="..."
+      />
+      <a></a>
+      <div class="card-body">
+        <h5 class="title">11-12.06.2022</h5>
+        <p class="text-muted"> Anti-Party-2022 </p>
+    </div>
+  </div>
+</div>
+
+<!-- 42 -->
+<div class="col">
+  <div class="card">
+    <a href="https://vk.com/album-206827270_285035806" target="_blank">
+    <img
+    src="/p/2022/v3.jpg" 
+     
+      alt="..."
+      />
+      <a></a>
+      <div class="card-body">
+        <h5 class="title">02.07.2022</h5>
+        <p class="text-muted"> "Возможно" III (Лобановский ДК) </p>
+    </div>
+  </div>
+</div>
+
+<!-- 43 -->
+<div class="col">
+  <div class="card">
+    <a href="https://vk.com/album-214245171_285623672" target="_blank">
+    <img
+    src="/p/2022/chP.jpg" 
+     
+      alt="..."
+      />
+      <a></a>
+      <div class="card-body">
+        <h5 class="title">16.07.2022</h5>
+        <p class="text-muted"> "Чугун PARTY" (Ржев) </p>
+    </div>
+  </div>
+</div>
+
+<!-- __ -->
+   
+  </div>
+</div>
+</div>
+
+
+  <!--0000000000000000  -->
+      
+
+
+     
 
 
 
-      </div>
+
+        
+      
+      
+
+       
+
+
+      
     </div>
   </body>
 </html>

@@ -1,0 +1,13 @@
+.grid {
+    display: grid;
+ grid-template-columns: repeat(auto-fill, 200px);
+grid-gap: 20px; /* Отступы между грид сегментами */
+
+}
+
+.grid div {
+    background-color: aqua;
+    border: 2px solid blue;
+    border-radius: 5px;
+    text-align: center;
+}

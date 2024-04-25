@@ -11,14 +11,11 @@ const player2 = document.querySelector(".player2"),
 
 // Названия песен
 const songs2 = [
-  "Почему",
-  "Двое",
-  "666-поколение",
-  "Километры",
-  "Кома",
-  "Путь в вечность",
-  "Бездна",
-  "Сон Роны",
+  "Если хватит сил",
+  "Переступая",
+  "Падал снег",
+  "Дивергент",
+ 
 ];
 
 // Песня по умолчанию
@@ -28,7 +25,7 @@ let songIndex2 = 0;
 function loadSong2(song2) {
   title2.innerHTML = song2;
   audio2.src = `audio/${song2}.wav`;
-  cover2.src = `/img/cover.jpg`;
+  cover2.src = `/img/exc.jpg`;
 }
 
 loadSong2(songs2[songIndex2]);

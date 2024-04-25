@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Новости</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+      crossorigin="anonymous"
+    ></script>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+   
+
+<style>
+
+
+#test {
+
+transform: 
+
+rotate(0deg) /* Вертит элемент, 0 грудусов - верх, 90, права и тд */
+scale(1) /* Изменение размера элемента, по умолчанию 1 */
+;
+
+
+
+
+
+    color: rgb(0, 0, 0);
+    padding: 15px;
+    margin: 15px;
+  
+opacity: 0.8;
+ /* display: none; Элемент скрывается */
+text-align:center; /* Выравнивание текста*/
+font-size: 50px;
+
+
+
+    
+}
+
+#test:hover {
+    transform:   scale(1.2); /* Поворачивае на 45 грудов */
+    transition: 0.5s all; /* задаем время поворота в 1 секунду и анимируем весь элемент */
+ 
+    opacity: 1; /* ховер - наведение на элемент. При наведение на элемент прозрачность равняется 1, что означает - элемент непрозрачен */
+ 
+}
+
+
+   .grid {
+     margin-top: 20px;
+  
+    display: grid;
+ grid-template-columns: 1fr 2fr;  /* заданы минимальные и максимальные размеры первого столбца. */
+grid-gap: 20px; /* Отступы между грид сегментами */
+grid-auto-rows: minmax(100px 500px);  /* Означает, что в соответствии с текстом в секции 1.1 будут увеличены на такой же размер все элементы секции 1, то есть вся строка  */
+grid-template-columns: repeat(1fr 1fr);
+
+}
+
+.grid div {
+  
+    border-radius: 5px;
+    
+  
+    font-size: larger;
+}
+
+.rounded-img {
+        width: 60%;
+        border-radius: 3%;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+        padding: 0.1em;
+        margin-bottom: 1em;
+      }
+
+   
+.tx {
+  font-weight: 900;
+
+ 
+
+}
+  </style>
+
+</head>
+<body>
+    
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+          <a class="'navbar-brand p-0" href="/">
+            <img src="Logo.png" alt="ShUn1" width="40" />
+          </a>
+  
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/news.html"
+                  >Новости</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="concerts.html">Фотоархив</a>
+              </li>
+        
+              <li class="nav-item">
+                <a class="nav-link" href="bands.html">Группы</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="hs.html">История</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="About.html">О проекте</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+
+
+      <div class="container my-5">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-5">
+
+ 
+          <div>
+            <a id="test"  href="https://vk.com/vozmozhnopoidu" target="_blank" >
+              <img class=" rounded-img" width="40%" 
+              src="/img/vozm4.jpg" 
+               
+                alt="..."
+                />
+                <a></a>
+                
+          </div>
+          <div class="fw-light">
+            
+        
+            <b>- 15.10.2022, г. Москва.</b> Осенний фестиваль "Возможно" </br> 15 октября (суббота) встречаемся как обычно в библиотеке на втором этаже в 18:00. 
+   
+          </div>
+        
+        <!-- пробел (пропуск блока) -->
+          <div class="fw-light">
+            
+        
+          </div>
+        <!-- конец пробела -->
+
+
+
+          
+          <div>
+            <a id="test"  href="https://vk.com/poetotpro_fest" target="_blank" >
+              <img class=" rounded-img" width="40%" 
+              src="/img/kkf.jpg" 
+               
+                alt="..."
+                />
+                <a></a>
+                
+          </div>
+          <div class="fw-light">
+            
+        
+            <b>- 28.09.2022, г. Москва.</b>   Какой-то рок-фест П.О.П. </br> А что это за фест?
+            Это КАКОЙ-ТО РОК-ФЕСТ !!! возвращается после недолгого молчания.
+   
+          </div>
+        
+        <!-- пробел (пропуск блока) -->
+          <div class="fw-light">
+            
+        
+          </div>
+        <!-- конец пробела -->
+
+
+          <div>
+            <a id="test"  href="https://vk.com/mburmmc" target="_blank" >
+              <img class=" rounded-img" width="40%" 
+              src="/img/bridges.jpg" 
+               
+                alt="..."
+                />
+                <a></a>
+                
+          </div>
+          <div class="fw-light">
+            
+        
+            <b>- 27.08.2022, г. Ступино.</b>   Фестиваль альтернативной музыки "Мосты".
+   
+          </div>
+        
+        <!-- пробел (пропуск блока) -->
+          <div class="fw-light">
+            
+        
+          </div>
+        <!-- конец пробела -->
+
+
+
+          <div>
+            <a id="test"  href="https://vk.com/event214245171" target="_blank" >
+              <img class=" rounded-img" width="40%" 
+              src="/img/bwoa.jpg" 
+               
+                alt="..."
+                />
+                <a></a>
+                
+          </div>
+          <div class="fw-light">
+            
+        
+            <b>- 27.08.2022, г. Ржев.</b>  "black&white | open air |"  <br> ВРЕМЯ ПРИШЛО🤘
+            Готовы поделиться с вами информацией о нашем новом проекте)
+            Лето движется к своему логическому завершению, но мы планируем насладиться им по полной 🔥🔥🔥
+   
+          </div>
+        
+        <!-- пробел (пропуск блока) -->
+          <div class="fw-light">
+            
+        
+          </div>
+        <!-- конец пробела -->
+          
+
+
+          <div>
+            <a id="test"  href="https://vk.com/club215247266" target="_blank" >
+              <img class=" rounded-img" width="40%" 
+              src="/img/RpN.jpg" 
+               
+                alt="..."
+                />
+                <a></a>
+                
+          </div>
+          <div class="fw-light">
+            
+        
+            <b>- 21.08.2022, г. Руза.</b>  Рузский фестиваль "РОК против наркотиков" возвращается!
+            
+   
+          </div>
+        
+        <!-- пробел (пропуск блока) -->
+          <div class="fw-light">
+            
+        
+          </div>
+        <!-- конец пробела -->
+
+
+          <div>
+            <a id="test"  href="https://vk.com/event214245171" target="_blank" >
+              <img class=" rounded-img" width="40%" 
+              src="/img/ChP.jpg" 
+               
+                alt="..."
+                />
+                <a></a>
+                
+          </div>
+          <div class="fw-light">
+            
+        
+            <b>- 16.07.2022, г. Ржев.</b>  "Чугун PARTY" - ждёт вас🤘🤘🤘
+            Середина лета - лучшее время для встречи с близкими и друзьями, послушать резвую и жёсткую музыку, насладиться Волжскими пейзажами и послушать рёв моторов 🏍🎸!
+   
+          </div>
+        
+        <!-- пробел (пропуск блока) -->
+          <div class="fw-light">
+            
+        
+          </div>
+        <!-- конец пробела -->
+
+
+
+  <div>
+    <a id="test"  href="https://vk.com/club213989993" target="_blank" >
+      <img class=" rounded-img" width="40%" 
+      src="/img/Vozm3.jpg" 
+       
+        alt="..."
+        />
+        <a></a>
+        
+  </div>
+  <div class="fw-light">
+    
+
+    <b>- 02-03.07.2022</b> состоится третий фестиваль "Возможно" в Лобановском СДК. Всем неравнодушным однозначно быть! 
+  </div>
+
+<!-- пробел (пропуск блока) -->
+  <div class="fw-light">
+    
+
+  </div>
+<!-- конец пробела -->
+  
+  <div>
+    <a id="test"  href="https://graydawn.netlify.app" target="_blank" >
+      <img class=" rounded-img" width="40%" 
+      src="/img/exc.jpg" 
+       
+        alt="..."
+        />
+        <a></a>
+        
+  </div>
+  <div class="fw-light">
+    
+
+    <b>- 21.05.2022</b> мужи из славной группы <b>Gray Dawn</b> запилили свой первый EP. 
+    Парни работали над реализацией данной идеи почти год,  
+    так что для заценки материала жмакаем по обложке слева.
+  </div>
+
+
+
+</div>
+
+
+
+
+
+</div>
+
+</body>
+</html>

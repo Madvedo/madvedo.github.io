@@ -1,0 +1,14 @@
+.grid {
+    display: grid;
+ grid-template-columns: 1fr 1fr 1fr; /* 3 одинаковых 1fr означает - 3 колонки. fr - адаптивная единица выравнивания в css */
+ grid-template-rows: 150px 150px; /* задаем размеры строк */
+ grid-auto-rows: 100px; /* Размеры строк по усмолчанию */
+ grid-gap: 20px; /* Отступы между грид сегментами */
+}
+
+.grid div {
+    background-color: aqua;
+    border: 2px solid blue;
+    border-radius: 5px;
+    text-align: center;
+}
