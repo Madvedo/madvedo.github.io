@@ -32,18 +32,25 @@
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
    <script>
        const keycloak = Keycloak({
-           url: 'https://artemtest.goodt.me/keycloak/',
-           realm: 'artemtest',
-           clientId: 'artemtest-web'
-       });
+    url: 'https://artemtest.goodt.me/keycloak/',
+    realm: 'artemtest',
+    clientId: 'artemtest-web'
+});
 
-       keycloak.init({ onLoad: 'login-required' }).then((authenticated) => {
-           if (authenticated) {
-               // Показываем модальное окно
-               const welcomeModal = new bootstrap.Modal(document.getElementById('welcomeModal'));
-               welcomeModal.show();
-           }
-       });
+keycloak.init({ onLoad: 'login-required' }).then((authenticated) => {
+    if (authenticated) {
+        // Получаем дату последнего показа (или null, если ещё не было)
+        const lastShownDate = localStorage.getItem('welcomeLastShown');
+        const today = new Date().toDateString(); // Только дата, без времени
+
+        // Если ещё не показывали сегодня — показываем и сохраняем дату
+        if (!lastShownDate || lastShownDate !== today) {
+            const welcomeModal = new bootstrap.Modal('#welcomeModal');
+            welcomeModal.show();
+            localStorage.setItem('welcomeLastShown', today);
+        }
+    }
+});
    </script>
     
     <link
