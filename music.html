@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Музыкальный плеер</title>
+  </head>
+  <body>
+    <h1>🎶 Случайная песня</h1>
+    <p id="info"></p>
+    <audio id="player" controls autoplay></audio>
+    <button onclick="loadRandomSong()">🔄 Обновить</button>
+
+    <script>
+      async function loadRandomSong() {
+        const res = await fetch("/random-song");
+        const song = await res.json();
+        document.getElementById(
+          "info"
+        ).textContent = `${song.title} — ${song.artist}`;
+        const player = document.getElementById("player");
+        player.src = song.url;
+        player.play();
+      }
+
+      window.onload = loadRandomSong;
+    </script>
+  </body>
+</html>
