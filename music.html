@@ -2,27 +2,38 @@
 <html lang="ru">
   <head>
     <meta charset="UTF-8" />
-    <title>Музыкальный плеер</title>
+    <title>🎶 Музыкальное радио</title>
+    <style>
+      body { font-family: Arial, text-align: center; margin-top: 50px; }
+      #info { font-size: 18px; margin: 10px 0; }
+      button { background: #4CAF50; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; }
+    </style>
   </head>
   <body>
-    <h1>🎶 Случайная песня</h1>
-    <p id="info"></p>
-    <audio id="player" controls autoplay></audio>
-    <button onclick="loadRandomSong()">🔄 Обновить</button>
+    <h1>🎶 Случайное радио</h1>
+    <p id="info">Нажмите "Обновить"</p>
+    <audio id="player" controls></audio>
+    <button onclick="playRandomSong()">🔀 Новый трек</button>
 
     <script>
-      async function loadRandomSong() {
-        const res = await fetch("/random-song");
-        const song = await res.json();
-        document.getElementById(
-          "info"
-        ).textContent = `${song.title} — ${song.artist}`;
-        const player = document.getElementById("player");
-        player.src = song.url;
-        player.play();
+      const player = document.getElementById("player");
+
+      async function playRandomSong() {
+        try {
+          const response = await fetch("/api/random-song");
+          const song = await response.json();
+
+          document.getElementById("info").textContent = song.title;
+          player.src = song.url; // /api/music/track.mp3
+          player.play().catch((e) => console.log("Autoplay blocked:", e));
+        } catch (error) {
+          console.error("Ошибка:", error);
+          document.getElementById("info").textContent = "Ошибка загрузки";
+        }
       }
 
-      window.onload = loadRandomSong;
+      // Автопереключение на следующий трек
+      player.addEventListener("ended", playRandomSong);
     </script>
   </body>
 </html>
