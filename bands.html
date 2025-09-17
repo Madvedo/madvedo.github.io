@@ -1,420 +1,303 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
   <head>
-<!-- Put this script tag to the <head> of your page -->
-  <script
-  type="text/javascript"
-  src="https://vk.com/js/api/openapi.js?168"
-  charset="windows-1251"
-></script>
-
-
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Группы</title>
+
+    <!-- Bootstrap -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
-      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
-      crossorigin="anonymous"
     />
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-      crossorigin="anonymous"
-    ></script>
 
-    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <!-- Fonts -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@500;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="/css/main.css" />
-    <link rel="stylesheet" href="/css/main1.css" />
-
-   
-
-
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-    <link rel="manifest" href="/site.webmanifest" />
-
 
     <style>
-
-
-.song {
-  font-style: normal;
-  font-weight: bold;
-  font-size: 18px;
-  line-height: 28px;
-  color: #2B3C5B;
-  text-align: center;
-}
-
-    .progress__container {
-      background: #e4e9ed;
-      border-radius: 5px;
-      width: 100%;
-      height: 10px;
-      margin-top: 63px;
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: flex;
-      -webkit-box-align: center;
-          -ms-flex-align: center;
-              align-items: center;
-      cursor: pointer;
-    }
-    
-    .progress__container .progress {
-      background: #2b3c5b;
-      border-radius: 5px;
-      height: 6px;
-    }
-
-  </style>
-
-
-<style>
-
-
-.song1 {
-  font-style: normal;
-  font-weight: bold;
-  font-size: 18px;
-  line-height: 28px;
-  color: #2B3C5B;
-  text-align: center;
-}
-
-.progress__container1 {
-  background: #e4e9ed;
-  border-radius: 5px;
-  width: 100%;
-  height: 10px;
-  margin-top: 63px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  cursor: pointer;
-}
-
-.progress__container1 .progress1 {
-  background: #2b3c5b;
-  border-radius: 5px;
-  height: 6px;
-}
-
-</style>
-
-<style>
-
-
-  .song2 {
-    font-style: normal;
-    font-weight: bold;
-    font-size: 18px;
-    line-height: 28px;
-    color: #2B3C5B;
-    text-align: center;
-  }
-  
-  .progress__container2 {
-    background: #e4e9ed;
-    border-radius: 5px;
-    width: 100%;
-    height: 10px;
-    margin-top: 63px;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
-    cursor: pointer;
-  }
-  
-  .progress__container2 .progress2 {
-    background: #2b3c5b;
-    border-radius: 5px;
-    height: 6px;
-  }
-  
-  </style>
-  
-  <style>
-
-
-    .song3 {
-      font-style: normal;
-      font-weight: bold;
-      font-size: 18px;
-      line-height: 28px;
-      color: #2B3C5B;
-      text-align: center;
-    }
-    
-    .progress__container3 {
-      background: #e4e9ed;
-      border-radius: 5px;
-      width: 100%;
-      height: 10px;
-      margin-top: 63px;
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: flex;
-      -webkit-box-align: center;
-          -ms-flex-align: center;
-              align-items: center;
-      cursor: pointer;
-    }
-    
-    .progress__container3 .progress3 {
-      background: #2b3c5b;
-      border-radius: 5px;
-      height: 6px;
-    }
-    
-    </style>
-
-<style>
-
-
-  .song4 {
-    font-style: normal;
-    font-weight: bold;
-    font-size: 18px;
-    line-height: 28px;
-    color: #2B3C5B;
-    text-align: center;
-  }
-  
-  .progress__container4 {
-    background: #e4e9ed;
-    border-radius: 5px;
-    width: 100%;
-    height: 10px;
-    margin-top: 63px;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
-    cursor: pointer;
-  }
-  
-  .progress__container4 .progress4 {
-    background: #2b3c5b;
-    border-radius: 5px;
-    height: 6px;
-  }
-  
-  </style>
-
-
-
-
-    <style>
-      .rounded-img {
-        width: 40%;
-        border-radius: 20%;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
-        padding: 0.6em;
-        margin-bottom: 1em;
-      }
-    </style>
-    <style>
-      .shadowbox {
-        width: 5em;
-        border: 1px solid #333;
-        box-shadow: 8px 8px 5px #444;
-        padding: 8px 12px;
-        background-image: linear-gradient(180deg, #fff, #ddd 40%, #ccc);
-      }
-    </style>
-
-    <style>
-      .layer1 {
-        margin-right: 20%; /* Отступ справа */
-        width: 50%;
-        margin-left: 500px;
-      }
-    </style>
-
-    <style>
-      .layer2 {
-        margin-right: 20%; /* Отступ справа */
-        width: 50%;
-        margin-left: 40px;
-      }
-    </style>
-
-    <style>
-      li {
-        list-style-type: none; /* Убираем маркеры */
-      }
-      ul {
-        margin-left: 0; /* Отступ слева в браузере IE и Opera */
-        padding-left: 0; /* Отступ слева в браузере Firefox, Safari, Chrome */
-      }
-    </style>
-
-
-
-
-    <style>
-      .gdcover {
-        background-image: url(/audio/GD/2015\ -\ Иглы\ [LP]/cover.jpg);
-        height: 300px; /* You must set a specified height */
-        background-position: center; /* Center the image */
-        background-repeat: no-repeat; /* Do not repeat the image */
-        background-size: cover;
-        width: 120%;
-        margin-left: 0%;
-
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
-      }
-    </style>
-
-    <style>
-      .card {
-    
-        border-radius: 1em;
-        text-align: center;
-        padding: 1em;
+      :root {
+        --blue-dark: #2b3c5b; /* главный тёмно-синий */
+        --blue-dark-2: #3c4f73; /* hover */
+        --blue-soft: #445577; /* вспомогательный */
+        --accent: #0d6efd; /* акцент прогресса/иконок */
+        --paper: #f6f7fb; /* светлый фон */
       }
 
-      .card:hover {
-        background-color: rgb(255, 255, 255);
-      }
-
-      .card img {
-        border-radius: 5%;
-        width: 44%;
-        margin: auto;
-     
-      }
-    </style>
-
-    <style>
-      .div1 {
-        margin-top: 10%; /* Отступ сверху */
-      }
-    </style>
-
-  
-
-
-    <style>
+      html,
       body {
-        margin: 0; /* Убираем отступы */
+        height: 100%;
       }
-      .parent {
-        position: absolute;
-        bottom: 8px;
-        right: 15px;
-        line-height: 1px;
+      body {
+        font-family: "Roboto", system-ui, -apple-system, Segoe UI, Roboto,
+          Helvetica, Arial, sans-serif;
+        background: var(--paper);
+        color: #1d1e22;
+        margin: 0;
+        padding: 0;
       }
-      .child {
-        border: 3px solid #666; /* Параметры рамки */
-        padding: 10px; /* Поля вокруг текста */
-        margin: 10px; /* Отступы вокруг */
+
+      /* Navbar — классическая чёрная */
+      .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+      }
+      .page-wrap {
+        padding-top: 90px; /* отступ от шапки */
+        padding-bottom: 140px; /* место для плеера */
+      }
+
+      /* Сайдбар групп */
+      .sidebar {
+        border-right: 1px solid #e5e7eb;
+        min-height: calc(100vh - 230px);
+      }
+      .group-btn {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 14px;
+        margin-bottom: 10px;
+        background: var(--blue-dark);
+        color: #fff;
+        border: none;
+        width: 100%;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: background 0.2s ease, transform 0.05s ease;
+        text-align: left;
+      }
+      .group-btn:hover {
+        background: var(--blue-dark-2);
+      }
+      .group-btn:active {
+        transform: translateY(1px);
+      }
+      .group-btn img {
+        width: 42px;
+        height: 42px;
+        border-radius: 8px;
+        object-fit: cover;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+      }
+      .group-btn.active {
+        outline: 2px solid rgba(255, 255, 255, 0.35);
+        box-shadow: 0 6px 22px rgba(43, 60, 91, 0.28);
+      }
+
+      /* Правая колонка */
+      .content h2 {
+        font-weight: 700;
+        color: var(--blue-dark);
+        margin-bottom: 16px;
+      }
+      .link-bar .btn {
+        margin-right: 8px;
+        margin-bottom: 10px;
+      }
+
+      /* Аккордеон альбомов */
+      .accordion .accordion-item {
+        border-radius: 14px;
+        overflow: hidden;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 6px 18px rgba(43, 60, 91, 0.1);
+        background: #fff;
+        margin-bottom: 14px;
+      }
+      .accordion-button {
+        background: var(--blue-dark);
+        color: #fff;
+        font-weight: 600;
+        padding-top: 14px;
+        padding-bottom: 14px;
+      }
+      .accordion-button:not(.collapsed) {
+        background: var(--blue-dark-2);
+        color: #fff;
+      }
+      .accordion-button:focus {
+        box-shadow: none;
+      }
+      .album-body {
+        background: #fff;
+        padding: 14px 16px 18px 16px;
+      }
+
+      /* Обложка + треклист внутри альбома */
+      .album-cover {
+        width: 120px;
+        height: 120px;
+        border-radius: 12px;
+        object-fit: cover;
+        box-shadow: 0 8px 24px rgba(43, 60, 91, 0.25);
+      }
+      .track {
+        padding: 9px 12px;
+        border-radius: 10px;
+        transition: background 0.15s ease;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .track:hover {
+        background: #f1f3f7;
+      }
+      .track small {
+        color: #6b7280;
+      }
+
+      /* Единый плеер (фикс снизу) */
+      .player {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background: var(--blue-dark);
+        color: #fff;
+        z-index: 1100;
+        box-shadow: 0 -10px 28px rgba(0, 0, 0, 0.35);
+      }
+      .player-inner {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 14px 18px 12px 18px;
+      }
+      .p-cover {
+        width: 64px;
+        height: 64px;
+        border-radius: 12px;
+        object-fit: cover;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+        background: #1b2538;
+      }
+      .p-meta {
+        flex: 1;
+        min-width: 0;
+      }
+      .p-title {
+        font-weight: 700;
+        line-height: 1.2;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .p-artist {
+        font-size: 14px;
+        opacity: 0.9;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .p-controls {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .p-btn {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        background: #1f2d45;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        transition: transform 0.05s ease, background 0.15s ease;
+        font-size: 18px;
+      }
+      .p-btn:hover {
+        background: #263553;
+      }
+      .p-btn:active {
+        transform: translateY(1px);
+      }
+      .p-btn.play {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+        background: #223150;
+      }
+      .p-btn.play:hover {
+        background: #2a3b5f;
+      }
+
+      .p-times {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        opacity: 0.9;
+        margin: -6px 2px 4px;
+      }
+      .p-progress-wrap {
+        width: 100%;
+        height: 8px;
+        background: #1f2b42;
+        border-radius: 999px;
+        overflow: hidden;
+        cursor: pointer;
+      }
+      .p-progress {
+        height: 100%;
+        width: 0%;
+        background: var(--accent);
+        box-shadow: 0 0 12px rgba(13, 110, 253, 0.65) inset;
+      }
+
+      /* Маленькие экраны */
+      @media (max-width: 991px) {
+        .sidebar {
+          margin-bottom: 14px;
+          border-right: none;
+        }
+        .player-inner {
+          gap: 12px;
+        }
+        .p-meta {
+          min-width: 180px;
+        }
+        .p-btn {
+          width: 38px;
+          height: 38px;
+        }
+        .p-btn.play {
+          width: 46px;
+          height: 46px;
+        }
       }
     </style>
-
-<style>
-  
- .moved-div {
-   width: 80% ;
-  position:absolute;
-  top: 125px;
-  left: -90px;
-  right: 10px;
-  z-index: 50;
-}
-</style>
-
-<style>
-
-.container1 {
-  margin-top: 20px;
-  margin-right: 50px;
-}
-
-
-
-
-</style>
-
-
-<style>
-  .layer3 {
-   position: relative; /* Относительное позиционирование */
-   background: #f0f0f0; /* Цвет фона */
-   height: 200px; /* Высота блока */
-  }
-  .layer4 {
-    width: 80%;
-   position: absolute; /* Абсолютное позиционирование */
-   bottom: 100px; /* Положение от нижнего края */
-   right: 15px; /* Положение от правого края */
-   line-height: 1px;
-  }
-  .navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-   z-index: 1;
-  }
-
-.my1 {
-  margin-top: 100px;
-}
-  
- </style>
-
-
-
   </head>
   <body>
+    <!-- NAVBAR (классическая чёрная) -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container">
-        <a class="'navbar-brand p-0" href="/">
+        <a class="navbar-brand p-0" href="/">
           <img src="Logo.png" alt="ShUn1" width="40" />
         </a>
-       
-
         <button
           class="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
+          data-bs-target="#navMain"
         >
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
+        <div class="collapse navbar-collapse" id="navMain">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link " aria-current="page" href="/news.html"
-                >Новости</a
-              >
+              <a class="nav-link" href="/news.html">Новости</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="concerts.html" 
-                >Фотоархив</a
-              >
+              <a class="nav-link" href="concerts.html">Фотоархив</a>
             </li>
-
             <li class="nav-item">
               <a class="nav-link active" href="bands.html">Группы</a>
             </li>
@@ -429,610 +312,374 @@
       </div>
     </nav>
 
-
-    <div class="container my1">
-      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-5">
-
-
-    
-
-
-<!--1  -->
-    <div class="col">
-      <div class="card">
-        <div class="card-body">
-
-
-         
-              <a href="https://vk.com/gray_dawn" target="_blank">
-              <img
-              src="/b/a/1.jpg" 
-               
-                alt="..."
-                />
-                <a></a>
-                <div class="card-body">
-                  <h3 class="title">Gray Dawn</h3>
-                  <p class="text-muted"> </p>
-              </div>
-         
-
-
-
-
-
-
-      
-
-
-
-
-
-<!--Флаш  начало_________________------------------------------------------------------------>
-
-
-
-          <div class="accordion accordion-flush" id="accordionFlushExample">
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="flush-headingOne">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                  2022 - Если хватит сил [EP]
-                </button>
-              </h2>
-              <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                <div class="accordion-body">
-
-                <!--пллист начало  _________________------------------------------------------------------------>   
-
-                <div class="wrapper2">
-                  <div class="player2">
-                    <div class="title2">Сейчас играет</div>
-                    <div class="Cover2">
-                      <img class="cover__img2" src="/img/exc.jpg" alt="cover" />
-                    </div>
-                    <div class="song2">OUZ</div>
-                    <audio
-                      class="audio2"
-                      src="/audio/Если хватит сил.wav"
-                    ></audio>
-                  
-                    <div class="progress__container2">
-                      <div class="progress2"></div>
-                    </div>
-            
-                    <div class="buttons2">
-                      <div class="btn prev2"><img src="/player/img/Prev.png" alt="btn" /></div>
-                      <div class="btn play2">
-                        <img class="img__src2" src="/player/img/Play.png" alt="btn" />
-                      </div>
-                      <div class="btn next2"><img src="/player/img/Next.png" alt="btn" /></div>
-                    </div>
-                  </div>
-                </div>
-            
-                <script src="/player/js/main2.js"></script>
-              
-
-               <!--пллист конец  _________________------------------------------------------------------------>   
-
-
-
-                </div>
-              </div>
-            </div>
-          </div>
-
-
-
-
-
-
- <!--Флаш  конец_________________------------------------------------------------------------>
-
-
-
-</div>
- <!--кнопка вк------------------------------------------------------------>
-<div class="container my-0">
-<a
-href="https://graydawn.netlify.app"
-target="blank"
-class="btn btn-secondary"
->
-Промо
-</a>
-</div>
- <!--кнопка вк------------------------------------------------------------>
-          <a></a>
-          
-      </div>
-    </div>
-
-
-      <!--2  -->
-
-<div class="col">
-  <div class="card">
-    <div class="card-body">
-
-
-     
-          <a href="https://vk.com/club60370527" target="_blank">
-          <img
-          src="/img/ouz.jpg" 
-           
-            alt="..."
-            />
-            <a></a>
-            <div class="card-body">
-              <h3 class="title">Они Уже Здесь</h3>
-              <p class="text-muted"> </p>
-          </div>
-     
-
-
-
-
-
-
-
-
-
-
-<!--Флаш  начало_________________------------------------------------------------------------>
-
-
-
-      <div class="accordion accordion-flush" id="accordionFlushExample">
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="flush-headingFour">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
-              2014 - Быть или не быть [EP]                       
-            </button>
-          </h2>
-          <div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingFour" data-bs-parent="#accordionFlushExample">
-            <div class="accordion-body">
-
-            <!--пллист начало  _________________------------------------------------------------------------>   
-
-            <div class="wrapper">
-              <div class="player">
-                <div class="title">Сейчас играет</div>
-                <div class="cover">
-                  <img class="cover__img" src="/player/img/Cover1.png" alt="cover" />
-                </div>
-                <div class="song">OUZ</div>
-                <audio
-                  class="audio"
-                  src="/audio/Они Уже Зdесь-Быть Или Не Быть.mp3"
-                ></audio>
-              
-                <div class="progress__container">
-                  <div class="progress"></div>
-                </div>
-        
-                <div class="buttons">
-                  <div class="btn prev"><img src="/player/img/Prev.png" alt="btn" /></div>
-                  <div class="btn play">
-                    <img class="img__src" src="/player/img/Play.png" alt="btn" />
-                  </div>
-                  <div class="btn next"><img src="/player/img/Next.png" alt="btn" /></div>
-                </div>
-              </div>
-            </div>
-        
-            <script src="/player/js/main.js"></script>
-           <!--пллист конец  _________________------------------------------------------------------------>   
-
-
-            </div>
-          </div>
-        </div>
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="flush-headingSix">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseSix" aria-expanded="false" aria-controls="flush-collapseSix">
-              2021 - Singlesyear
-            </button>
-          </h2>
-          <div id="flush-collapseSix" class="accordion-collapse collapse" aria-labelledby="flush-headingSix" data-bs-parent="#accordionFlushExample">
-            <div class="accordion-body">
-           <!--пллист начало  _________________------------------------------------------------------------>   
-
-
-           <div class="wrapper1">
-            <div class="player1">
-              <div class="title1">Сейчас играет</div>
-              <div class="Cover1">
-                <img class="cover__img1" src="/player/img/Cover1.png" alt="cover" />
-              </div>
-              <div class="song1">OUZ</div>
-              <audio
-                class="audio1"
-                src="/audio/Они Уже Здесь -Белый Шум.wav"
-              ></audio>
-            
-              <div class="progress__container1">
-                <div class="progress1"></div>
-              </div>
-      
-              <div class="buttons1">
-                <div class="btn prev1"><img src="/player/img/Prev.png" alt="btn" /></div>
-                <div class="btn play1">
-                  <img class="img__src1" src="/player/img/Play.png" alt="btn" />
-                </div>
-                <div class="btn next1"><img src="/player/img/Next.png" alt="btn" /></div>
-              </div>
-            </div>
-          </div>
-      
-          <script src="/player/js/main1.js"></script>
-           
-
-
-           <!--пллист конец  _________________------------------------------------------------------------>   
-        
-
-
-            </div>
-          </div>
-        </div>
-      </div>
-
-
-
-
-
-
-<!--Флаш  конец_________________------------------------------------------------------------>
-
-
-
-</div>
-<!--кнопка вк------------------------------------------------------------>
-<div class="container my-2">
-<a
-href="https://vk.com/audios-60370527"
-target="blank"
-class="btn btn-primary"
->
-Слушать в VK
-</a>
-</div>
-<!--кнопка вк------------------------------------------------------------>
-      <a></a>
-      
-  </div>
-</div>
-   
-
-
-
-
-      <!--2  -->
-
-      <div class="col">
-        <div class="card">
-          <div class="card-body">
-      
-      
-           
-                <a href="https://vk.com/goreot21" target="_blank">
-                <img
-                src="/img/Gore Ot (Logo black).png" 
-                 
-                  alt="..."
-                  />
-                  <a></a>
-                  <div class="card-body">
-                    <h3 class="title">Горе От</h3>
-                    <p class="text-muted"> </p>
-                </div>
-           
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      <!--Флаш  начало_________________------------------------------------------------------------>
-      
-      
-      
-            <div class="accordion accordion-flush" id="accordionFlushExample">
-              <div class="accordion-item">
-                <h2 class="accordion-header" id="flush-headingNine">
-                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseNine" aria-expanded="false" aria-controls="flush-collapseNine">
-                    2022 - Зима была холодной [Single]              
-                  </button>
-                </h2>
-                <div id="flush-collapseNine" class="accordion-collapse collapse" aria-labelledby="flush-headingNine" data-bs-parent="#accordionFlushExample">
-                  <div class="accordion-body">
-      
-                  <!--пллист начало  _________________------------------------------------------------------------>   
-      
-                 
-
-           <div class="wrapper5">
-            <div class="player5">
-              <div class="title5">Сейчас играет</div>
-              <div class="Cover5">
-                <img class="cover__img5" src="/img/zbh.jpg" alt="cover" />
-              </div>
-              <div class="song5">OUZ</div>
-              <audio
-                class="audio5"
-                src="/audio/Зима была холодной.wav"
-              ></audio>
-            
-              <div class="progress__container5">
-                <div class="progress5"></div>
-              </div>
-      
-              <div class="buttons5">
-                <div class="btn prev5"><img src="/player/img/Prev.png" alt="btn" /></div>
-                <div class="btn play5">
-                  <img class="img__src5" src="/player/img/Play.png" alt="btn" />
-                </div>
-                <div class="btn next5"><img src="/player/img/Next.png" alt="btn" /></div>
-              </div>
-            </div>
-          </div>
-      
-          <script src="/player/js/main5.js"></script>
-                 <!--пллист конец  _________________------------------------------------------------------------>   
-      
-      
-                  </div>
-                </div>
-              </div>
-             
-            </div>
-      
-      
-      
-      
-      
-      
-      <!--Флаш  конец_________________------------------------------------------------------------>
-      
-      
-      
-      </div>
-      <!--кнопка вк------------------------------------------------------------>
-         
+    <!-- CONTENT -->
+    <main class="page-wrap">
       <div class="container">
-      <a
-      href="https://goreot.netlify.app"
-      target="blank"
-      class="btn btn-secondary"
-      >
-   Промо
-      </a>
-      </div>
-      <!--кнопка вк------------------------------------------------------------>
-            <a></a>
-            
+        <div class="row gx-4">
+          <!-- Сайдбар групп -->
+          <aside class="col-lg-3 sidebar">
+            <button class="group-btn active" data-band="graydawn">
+              <img src="/b/a/1.jpg" alt="Gray Dawn" />
+              <span>Gray Dawn</span>
+            </button>
+            <button class="group-btn" data-band="ouz">
+              <img src="/img/ouz.jpg" alt="Они Уже Зdесь" />
+              <span>Они Уже Зdесь</span>
+            </button>
+            <button class="group-btn" data-band="goreot">
+              <img src="/img/Gore Ot (Logo black).png" alt="Горе От" />
+              <span>Горе От</span>
+            </button>
+          </aside>
+
+          <!-- Правая колонка: альбомы (аккордеон) и ссылки -->
+          <section class="col-lg-9 content">
+            <h2 id="bandTitle">Gray Dawn</h2>
+            <div class="link-bar mb-3" id="linksBar"></div>
+            <div class="accordion" id="albumsWrap"></div>
+          </section>
         </div>
       </div>
+    </main>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!--3  -->
-
-<div class="col">
-  <div class="card">
-    <div class="card-body">
-
-
-     
-          <a href="https://vk.com/club34340732" target="_blank">
-          <img
-          src="/b/a/2.jpg" 
-           
-            alt="..."
-            />
-            <a></a>
-            <div class="card-body">
-              <h3 class="title">Звездные Войны</h3>
-              <p class="text-muted"> Cover-Band </p>
+    <!-- ЕДИНЫЙ ПЛЕЕР -->
+    <div class="player">
+      <div class="player-inner container">
+        <img class="p-cover" id="pCover" src="/b/a/1.jpg" alt="cover" />
+        <div class="p-meta">
+          <div class="p-title" id="pTitle">Ничего не играет</div>
+          <div class="p-artist" id="pArtist"></div>
+          <div class="p-times">
+            <span id="pCur">0:00</span>
+            <span id="pDur">0:00</span>
           </div>
-     
-
-
-
-
-
-
-
-
-</div>
-<!--кнопка вк------------------------------------------------------------>
-<div class="container">
-<a
-href="https://vk.com/audios-34340732?section=all"
-target="blank"
-class="btn btn-primary"
->
-Слушать в VK
-</a>
-</div>
-<!--кнопка вк------------------------------------------------------------>
-<a></a>
-      
-</div>
-</div>
-
-
-
-<!--4  -->
-
-<div class="col">
-  <div class="card">
-    <div class="card-body">
-
-
-     
-          <a href="https://vk.com/public185761044" target="_blank">
-          <img
-          src="/b/a/3.jpg" 
-           
-            alt="..."
-            />
-            <a></a>
-            <div class="card-body">
-              <h3 class="title">Kings of Fire</h3>
-              <p class="text-muted"> Cover-Band </p>
+          <div class="p-progress-wrap" id="progressWrap">
+            <div class="p-progress" id="progressBar"></div>
           </div>
-     
-        
-    
-    
-    
-    
-    
-    <!--Флаш  начало_________________------------------------------------------------------------>
-    
-    
-    
-          <div class="accordion accordion-flush" id="accordionFlushExample">
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="flush-headingEight">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseEight" aria-expanded="false" aria-controls="flush-collapseEight">
-                  2020 - Covers                       
-                </button>
-              </h2>
-              <div id="flush-collapseEight" class="accordion-collapse collapse" aria-labelledby="flush-headingEight" data-bs-parent="#accordionFlushExample">
-                <div class="accordion-body">
-    
-                <!--пллист начало  _________________------------------------------------------------------------>   
-    
-<!-- Put this script tag to the place, where the Playlist block will be -->
-<div id='vk_playlist_324213684_84966670'></div>
-<script type="text/javascript">
-   VK.Widgets.Playlist('vk_playlist_324213684_84966670', 324213684, 84966670, '3852152fff96ab23c3');
-</script>
-               <!--пллист конец  _________________------------------------------------------------------------>   
-    
-    
-
-          </div>
-    
-    
-    
-
-
-
-
-
-
-          
-    
-    
-    
-    <!--Флаш  конец_________________------------------------------------------------------------>
-    
-  </div>
-              
-</div>
-</div>
-    
-    </div>
-    <!--кнопка вк------------------------------------------------------------>
-    <div class="container my-0">
-    <a
-    href="https://vk.com/audios-185761044"
-    target="blank"
-    class="btn btn-primary"
-    >
-    Слушать в VK
-    </a>
-    </div>
-    <!--кнопка вк------------------------------------------------------------>
-
-
-
-
-
-
-
-</div>
-
-
-
-
-
-<a></a>
-      
-</div>
-<!--4  -->
-
-<div class="col">
-  <div class="card">
-    <div class="card-body">
-
-
-     
-          <a href="https://vk.com/public122563560" target="_blank">
-          <img
-          src="/b/a/5.jpg" 
-           
-            alt="..."
-            />
-            <a></a>
-            <div class="card-body">
-              <h3 class="title">Черновник</h3>
-              <p class="text-muted">  </p>
-          </div>
-     
-        
-    
-    
-    
-    
-    
-    <!--Флаш  начало_________________------------------------------------------------------------>
-    
-    
-      <!--кнопка вк------------------------------------------------------------>
-      <div class="container my-0">
-        <a
-        href="https://vk.com/audios-122563560"
-        target="blank"
-        class="btn btn-primary"
-        >
-        Слушать в VK
-        </a>
         </div>
-        <!--кнопка вк------------------------------------------------------------>
-    
-    
+        <div class="p-controls">
+          <button class="p-btn" id="prevBtn" title="Предыдущий">⏮</button>
+          <button class="p-btn play" id="playBtn" title="Воспроизвести">
+            ▶
+          </button>
+          <button class="p-btn" id="nextBtn" title="Следующий">⏭</button>
+        </div>
+        <audio id="audio"></audio>
+      </div>
+    </div>
 
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- App JS -->
+    <script>
+      /* ДАННЫЕ */
+      const LIB = {
+        graydawn: {
+          title: "Gray Dawn",
+          cover: "/b/a/1.jpg",
+          links: [
+            {
+              text: "Страница VK",
+              url: "https://vk.com/gray_dawn",
+              cls: "btn-primary",
+            },
+            {
+              text: "Promo",
+              url: "https://graydawn.netlify.app",
+              cls: "btn-secondary",
+            },
+          ],
+          albums: [
+            {
+              title: "2022 – Если хватит сил [EP]",
+              cover: "/img/exc.jpg",
+              tracks: [
+                { title: "Если хватит сил", src: "/audio/Если хватит сил.wav" },
+                { title: "Дивергент", src: "/audio/Дивергент.wav" },
+                { title: "Переступая", src: "/audio/Переступая.wav" },
+                { title: "Падал снег", src: "/audio/Падал снег.wav" },
+              ],
+            },
+          ],
+        },
+        ouz: {
+          title: "Они Уже Зdесь",
+          cover: "/img/ouz.jpg",
+          links: [
+            {
+              text: "Страница VK",
+              url: "https://vk.com/club60370527",
+              cls: "btn-primary",
+            },
+            {
+              text: "VK Аудио",
+              url: "https://vk.com/audios-60370527",
+              cls: "btn-outline-primary",
+            },
+          ],
+          albums: [
+            {
+              title: "2014 – Быть или не быть [EP]",
+              cover: "/player/img/Cover1.png",
+              tracks: [
+                {
+                  title: "Быть Или Не Быть",
+                  src: "/audio/Быть Или Не Быть.mp3",
+                },
+                { title: "Иуdа", src: "/audio/Иуdа.mp3" },
+                { title: "Новые Силы", src: "/audio/Новые Силы.mp3" },
+                { title: "Попса", src: "/audio/Попса.mp3" },
+                { title: "Скука", src: "/audio/Скука.mp3" },
+                { title: "Я Бы Всё Отdал", src: "/audio/Я Бы Всё Отdал.mp3" },
+              ],
+            },
+            {
+              title: "2021 – Singlesyear",
+              cover: "/player/img/Cover1.png",
+              tracks: [
+                {
+                  title: "Пир Во Время Чумы",
+                  src: "/audio/Пир Во Время Чумы.wav",
+                },
+                { title: "Кризис Идей", src: "/audio/Кризис Идей.wav" },
+                { title: "Белый Шум", src: "/audio/Белый Шум.wav" },
+              ],
+            },
+          ],
+        },
+        goreot: {
+          title: "Горе От",
+          cover: "/img/Gore Ot (Logo black).png",
+          links: [
+            {
+              text: "Страница VK",
+              url: "https://vk.com/goreot21",
+              cls: "btn-primary",
+            },
+            {
+              text: "Promo",
+              url: "https://goreot.netlify.app",
+              cls: "btn-secondary",
+            },
+          ],
+          albums: [
+            {
+              title: "2022 – Зима была холодной [Single]",
+              cover: "/img/zbh.jpg",
+              tracks: [
+                {
+                  title: "Зима была холодной",
+                  src: "/audio/Зима была холодной.wav",
+                },
+              ],
+            },
+          ],
+        },
+      };
+
+      /* UI ELEMENTS */
+      const bandTitle = document.getElementById("bandTitle");
+      const albumsWrap = document.getElementById("albumsWrap");
+      const linksBar = document.getElementById("linksBar");
+
+      const audio = document.getElementById("audio");
+      const pCover = document.getElementById("pCover");
+      const pTitle = document.getElementById("pTitle");
+      const pArtist = document.getElementById("pArtist");
+      const pCur = document.getElementById("pCur");
+      const pDur = document.getElementById("pDur");
+      const progressWrap = document.getElementById("progressWrap");
+      const progressBar = document.getElementById("progressBar");
+      const prevBtn = document.getElementById("prevBtn");
+      const playBtn = document.getElementById("playBtn");
+      const nextBtn = document.getElementById("nextBtn");
+
+      /* STATE */
+      let currentBandKey = "graydawn";
+      let currentAlbumIndex = 0;
+      let currentTrackIndex = 0;
+
+      function mmss(sec) {
+        if (!isFinite(sec)) return "0:00";
+        const m = Math.floor(sec / 60);
+        const s = Math.floor(sec % 60);
+        return `${m}:${s < 10 ? "0" + s : s}`;
+      }
+
+      function renderBand(bandKey) {
+        currentBandKey = bandKey;
+        const band = LIB[bandKey];
+        bandTitle.textContent = band.title;
+
+        // активная кнопка слева
+        document.querySelectorAll(".group-btn").forEach((b) => {
+          b.classList.toggle("active", b.dataset.band === bandKey);
+        });
+
+        // ссылки
+        linksBar.innerHTML = "";
+        if (Array.isArray(band.links)) {
+          band.links.forEach((l) => {
+            const a = document.createElement("a");
+            a.href = l.url;
+            a.target = "_blank";
+            a.className = `btn ${l.cls} btn-sm`;
+            a.textContent = l.text;
+            linksBar.appendChild(a);
+          });
+        }
+
+        // аккордеон альбомов
+        albumsWrap.innerHTML = "";
+        band.albums.forEach((album, idx) => {
+          const accId = `acc-${bandKey}-${idx}`;
+          const headId = `head-${bandKey}-${idx}`;
+          const collapseId = `collapse-${bandKey}-${idx}`;
+          const item = document.createElement("div");
+          item.className = "accordion-item";
+          item.innerHTML = `
+          <h2 class="accordion-header" id="${headId}">
+            <button class="accordion-button ${
+              idx === 0 ? "" : "collapsed"
+            }" type="button"
+              data-bs-toggle="collapse" data-bs-target="#${collapseId}" aria-expanded="${
+            idx === 0 ? "true" : "false"
+          }"
+              aria-controls="${collapseId}">
+              ${album.title}
+            </button>
+          </h2>
+          <div id="${collapseId}" class="accordion-collapse collapse ${
+            idx === 0 ? "show" : ""
+          }" aria-labelledby="${headId}" data-bs-parent="#albumsWrap">
+            <div class="accordion-body album-body">
+              <div class="row g-3 align-items-start">
+                <div class="col-auto">
+                  <img class="album-cover" src="${album.cover}" alt="cover ${
+            album.title
+          }">
+                </div>
+                <div class="col">
+                  <div class="list-group list-group-flush">
+                    ${album.tracks
+                      .map(
+                        (t, ti) => `
+                      <div class="list-group-item track d-flex justify-content-between align-items-center"
+                           data-band="${bandKey}" data-album-index="${idx}" data-track-index="${ti}">
+                        <span>${t.title}</span>
+                        <small>▶</small>
+                      </div>
+                    `
+                      )
+                      .join("")}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-    
-          
+        `;
+          albumsWrap.appendChild(item);
+        });
 
-</div>
+        // навесить клики на треки
+        albumsWrap.querySelectorAll(".track").forEach((el) => {
+          el.addEventListener("click", () => {
+            const bKey = el.getAttribute("data-band");
+            const aIdx = +el.getAttribute("data-album-index");
+            const tIdx = +el.getAttribute("data-track-index");
+            playFrom(bKey, aIdx, tIdx);
+          });
+        });
 
+        // сбросить/обновить плейер под выбранную группу
+        if (band.albums?.length) {
+          currentAlbumIndex = 0;
+          currentTrackIndex = 0;
+          const firstTrack = band.albums[0].tracks[0];
+          pCover.src = band.albums[0].cover || band.cover;
+          pArtist.textContent = band.title;
+          pTitle.textContent = firstTrack
+            ? firstTrack.title
+            : "Ничего не играет";
+          audio.src = firstTrack ? firstTrack.src : "";
+          playBtn.textContent = "▶";
+        }
+      }
 
+      function playFrom(bandKey, albumIndex, trackIndex) {
+        currentBandKey = bandKey;
+        currentAlbumIndex = albumIndex;
+        currentTrackIndex = trackIndex;
+        const band = LIB[bandKey];
+        const album = band.albums[albumIndex];
+        const track = album.tracks[trackIndex];
 
+        audio.src = track.src;
+        audio.play().catch(() => {
+          /* autoplay guard */
+        });
 
+        pCover.src = album.cover || band.cover;
+        pArtist.textContent = band.title;
+        pTitle.textContent = track.title;
+        playBtn.textContent = "⏸";
+      }
 
+      function nextTrack() {
+        const band = LIB[currentBandKey];
+        const album = band.albums[currentAlbumIndex];
+        currentTrackIndex = (currentTrackIndex + 1) % album.tracks.length;
+        playFrom(currentBandKey, currentAlbumIndex, currentTrackIndex);
+      }
+      function prevTrack() {
+        const band = LIB[currentBandKey];
+        const album = band.albums[currentAlbumIndex];
+        currentTrackIndex =
+          (currentTrackIndex - 1 + album.tracks.length) % album.tracks.length;
+        playFrom(currentBandKey, currentAlbumIndex, currentTrackIndex);
+      }
+      function togglePlay() {
+        if (audio.paused) {
+          audio.play();
+          playBtn.textContent = "⏸";
+        } else {
+          audio.pause();
+          playBtn.textContent = "▶";
+        }
+      }
 
+      // Прогресс-бар и время
+      audio.addEventListener("timeupdate", () => {
+        const { currentTime, duration } = audio;
+        pCur.textContent = mmss(currentTime);
+        pDur.textContent = mmss(duration);
+        const pct = duration ? (currentTime / duration) * 100 : 0;
+        progressBar.style.width = pct + "%";
+      });
+      audio.addEventListener("ended", nextTrack);
+
+      progressWrap.addEventListener("click", (e) => {
+        const rect = progressWrap.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const ratio = x / rect.width;
+        audio.currentTime = ratio * (audio.duration || 0);
+      });
+
+      prevBtn.addEventListener("click", prevTrack);
+      nextBtn.addEventListener("click", nextTrack);
+      playBtn.addEventListener("click", togglePlay);
+
+      // Смена группы (сайдбар)
+      document.querySelectorAll(".group-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const key = btn.getAttribute("data-band");
+          renderBand(key);
+        });
+      });
+
+      // Старт: показываем Gray Dawn
+      renderBand("graydawn");
+    </script>
   </body>
 </html>
