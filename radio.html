@@ -12,26 +12,82 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
       rel="stylesheet"
     />
+    <!-- Подключим красивый шрифт -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&display=swap"
+      rel="stylesheet"
+    />
     <style>
-      body {
-        background: #111;
-        color: #eee;
+      body,
+      html {
         margin: 0;
+        padding: 0;
+        height: 100%;
+        width: 100%;
         font-family: Arial, sans-serif;
-      }
-      h1 {
-        margin: 30px 0 10px;
-        text-align: center;
+        color: #eee;
+        overflow: hidden;
       }
 
-      .player {
-        margin: 40px auto;
-        max-width: 600px;
-        padding: 20px;
-        background: #1c1c1c;
-        border-radius: 16px;
+      /* Фоновое видео */
+      .video-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        overflow: hidden;
+      }
+      .video-background video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      /* Центровка содержимого */
+      .main-wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
         text-align: center;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+        padding: 20px;
+      }
+
+      /* Заголовок */
+      h1 {
+        margin-bottom: 30px;
+        font-family: "Montserrat", sans-serif;
+        font-size: 3rem;
+        font-weight: 800;
+        color: #fff;
+        text-shadow: 0 0 12px rgba(255, 87, 34, 0.8);
+
+        display: inline-block;
+        padding: 14px 32px;
+        border-radius: 20px;
+        background: rgba(0, 0, 0, 0.55);
+        border: 2px solid rgba(255, 152, 0, 0.6);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6),
+          0 0 18px rgba(255, 87, 34, 0.4);
+      }
+
+      /* Плеер */
+      .player {
+        width: 100%;
+        max-width: 600px;
+        padding: 25px;
+        background: rgba(0, 0, 0, 0.55); /* более прозрачный */
+        border-radius: 20px;
+        text-align: center;
+        box-shadow: 0 6px 25px rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(12px); /* РАЗМЫТИЕ ФОНА */
+        -webkit-backdrop-filter: blur(12px); /* для Safari */
       }
 
       /* Кастомная панель прогресса */
@@ -41,7 +97,7 @@
       }
       .progress-track {
         position: relative;
-        height: 8px;
+        height: 10px;
         border-radius: 999px;
         background: #2b2b2b;
         cursor: pointer;
@@ -55,41 +111,40 @@
         width: 0%;
         background: linear-gradient(90deg, #ff9800, #ff5722);
         border-radius: 999px;
-        pointer-events: none; /* чтобы клики шли по контейнеру */
       }
       .thumb {
         position: absolute;
         top: 50%;
         transform: translate(-50%, -50%);
-        width: 14px;
-        height: 14px;
+        width: 16px;
+        height: 16px;
         border-radius: 50%;
         background: #fff;
-        opacity: 0.9;
-        box-shadow: 0 0 10px rgba(255, 87, 34, 0.6);
-        pointer-events: none; /* не перехватывать события */
+        opacity: 0.95;
+        box-shadow: 0 0 12px rgba(255, 87, 34, 0.7);
       }
       .time {
         display: flex;
         justify-content: space-between;
         font-size: 14px;
-        margin-top: 6px;
-        color: #aaa;
+        margin-top: 8px;
+        color: #ccc;
       }
 
+      /* Кнопки */
       .controls {
         display: flex;
         justify-content: center;
-        gap: 20px;
-        margin-top: 16px;
+        gap: 25px;
+        margin-top: 20px;
       }
       .control-btn {
         background: #333;
         border: none;
         color: #fff;
-        font-size: 26px;
-        width: 55px;
-        height: 55px;
+        font-size: 28px;
+        width: 60px;
+        height: 60px;
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -98,15 +153,19 @@
       }
       .control-btn:hover {
         background: #555;
-        transform: scale(1.05);
-      }
-
-      /* Навбар как у тебя */
-      .navbar {
+        transform: scale(1.08);
       }
     </style>
   </head>
   <body>
+    <!-- Фон-видео -->
+    <div class="video-background">
+      <video autoplay muted loop playsinline>
+        <source src="video/bckg.webm" type="video/webm" />
+        <source src="video/bckg.mp4" type="video/mp4" />
+      </video>
+    </div>
+
     <!-- Навигация -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container">
@@ -146,63 +205,55 @@
       </div>
     </nav>
 
-    <h1>🎵 Онлайн Радио</h1>
+    <!-- Центровка -->
+    <div class="main-wrap">
+      <h1>🎶 Радио "Подполье" 🎶</h1>
+      <div class="player">
+        <div id="track-title">Загрузка списка треков...</div>
+        <audio id="audio"></audio>
 
-    <div class="player">
-      <div id="track-title">Загрузка списка треков...</div>
-
-      <!-- Скрытый нативный плеер -->
-      <audio id="audio"></audio>
-
-      <!-- Кастомная панель прогресса -->
-      <div class="progress-wrap">
-        <div
-          class="progress-track"
-          id="progressTrack"
-          aria-label="Шкала воспроизведения"
-        >
-          <div class="progress-fill" id="progressFill"></div>
-          <div class="thumb" id="thumb" style="left: 0%"></div>
+        <!-- Прогресс -->
+        <div class="progress-wrap">
+          <div class="progress-track" id="progressTrack">
+            <div class="progress-fill" id="progressFill"></div>
+            <div class="thumb" id="thumb" style="left: 0%"></div>
+          </div>
+          <div class="time">
+            <span id="current-time">0:00</span>
+            <span id="duration">0:00</span>
+          </div>
         </div>
-        <div class="time">
-          <span id="current-time">0:00</span>
-          <span id="duration">0:00</span>
-        </div>
-      </div>
 
-      <!-- Кнопки -->
-      <div class="controls">
-        <button class="control-btn" id="btnPlay" title="Пуск/Пауза">
-          <i id="playIcon" class="bi bi-play-fill"></i>
-        </button>
-        <button class="control-btn" id="btnNext" title="Следующий трек">
-          <i class="bi bi-skip-forward-fill"></i>
-        </button>
+        <!-- Кнопки -->
+        <div class="controls">
+          <button class="control-btn" id="btnPlay" title="Пуск/Пауза">
+            <i id="playIcon" class="bi bi-play-fill"></i>
+          </button>
+          <button class="control-btn" id="btnNext" title="Следующий трек">
+            <i class="bi bi-skip-forward-fill"></i>
+          </button>
+        </div>
       </div>
     </div>
 
+    <!-- Скрипт -->
     <script>
-      // === ДАННЫЕ ===
-      let tracks = [];
-      let queue = [];
-      let currentTrack = null;
-      let rafId = null;
-      let scrubbing = false;
-
-      // === ЭЛЕМЕНТЫ ===
+      let tracks = [],
+        queue = [],
+        currentTrack = null,
+        rafId = null,
+        scrubbing = false;
       const audio = document.getElementById("audio");
       const titleEl = document.getElementById("track-title");
       const btnPlay = document.getElementById("btnPlay");
       const btnNext = document.getElementById("btnNext");
       const playIcon = document.getElementById("playIcon");
-
       const progressTrack = document.getElementById("progressTrack");
       const progressFill = document.getElementById("progressFill");
       const thumb = document.getElementById("thumb");
       const curEl = document.getElementById("current-time");
       const durEl = document.getElementById("duration");
 
-      // === ЗАГРУЗКА СПИСКА ===
       async function loadTracks() {
         try {
           const res = await fetch("tracks.json", { cache: "no-cache" });
@@ -218,50 +269,37 @@
           titleEl.textContent = "Ошибка: " + err.message;
         }
       }
-
-      // === ПЛЕЙЛИСТ БЕЗ ПОВТОРОВ (SHUFFLE) ===
       function resetQueue() {
         queue = [...tracks];
-        // Фишер-Йетс
         for (let i = queue.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
           [queue[i], queue[j]] = [queue[j], queue[i]];
         }
       }
-
       function playNext() {
         if (queue.length === 0) resetQueue();
         currentTrack = queue.shift();
-        const src = encodeURI(currentTrack);
-        audio.src = src;
-        audio.play().catch(() => {
-          titleEl.textContent = "Нажмите «Пуск», чтобы начать";
-        });
+        audio.src = encodeURI(currentTrack);
+        audio
+          .play()
+          .catch(() => (titleEl.textContent = "Нажмите «Пуск», чтобы начать"));
         titleEl.textContent = "Сейчас играет: " + currentTrack.split("/").pop();
       }
-
-      // === КНОПКИ ===
       btnPlay.addEventListener("click", () =>
         audio.paused ? audio.play() : audio.pause()
       );
       btnNext.addEventListener("click", playNext);
-
-      // === ОТОБРАЖЕНИЕ ИКОНКИ PLAY/PAUSE ===
       function updatePlayIcon() {
         playIcon.className = audio.paused
           ? "bi bi-play-fill"
           : "bi bi-pause-fill";
       }
-
-      // === ФОРМАТ ВРЕМЕНИ ===
       function t(sec) {
         if (isNaN(sec)) return "0:00";
-        const m = Math.floor(sec / 60);
-        const s = Math.floor(sec % 60);
+        const m = Math.floor(sec / 60),
+          s = Math.floor(sec % 60);
         return m + ":" + (s < 10 ? "0" + s : s);
       }
-
-      // === ПРОГРЕСС (без лагов через rAF) ===
       function loop() {
         if (!audio.paused && !scrubbing && audio.duration) {
           const percent = (audio.currentTime / audio.duration) * 100;
@@ -272,28 +310,22 @@
         }
         rafId = requestAnimationFrame(loop);
       }
-
-      // Запускаем/останавливаем rAF
       audio.addEventListener("play", () => {
         updatePlayIcon();
         cancelAnimationFrame(rafId);
         loop();
       });
-      audio.addEventListener("pause", () => {
-        updatePlayIcon();
-      });
+      audio.addEventListener("pause", updatePlayIcon);
       audio.addEventListener("ended", () => {
         updatePlayIcon();
         playNext();
       });
-
-      audio.addEventListener("loadedmetadata", () => {
-        durEl.textContent = t(audio.duration);
-      });
-
-      // === СКРАББИНГ (клик/перетаскивание) ===
+      audio.addEventListener(
+        "loadedmetadata",
+        () => (durEl.textContent = t(audio.duration))
+      );
       function seekFromEvent(ev) {
-        const rect = progressTrack.getBoundingClientRect(); // именно контейнер!
+        const rect = progressTrack.getBoundingClientRect();
         const x = Math.min(Math.max(ev.clientX - rect.left, 0), rect.width);
         const percent = x / rect.width;
         if (audio.duration) {
@@ -304,26 +336,20 @@
           curEl.textContent = t(audio.currentTime);
         }
       }
-
       progressTrack.addEventListener("pointerdown", (ev) => {
         scrubbing = true;
         progressTrack.setPointerCapture(ev.pointerId);
         seekFromEvent(ev);
       });
-
       progressTrack.addEventListener("pointermove", (ev) => {
         if (scrubbing) seekFromEvent(ev);
       });
-
       progressTrack.addEventListener("pointerup", (ev) => {
         scrubbing = false;
         seekFromEvent(ev);
       });
-
-      // Старт
       window.addEventListener("load", loadTracks);
     </script>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
