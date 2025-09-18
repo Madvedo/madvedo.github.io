@@ -100,6 +100,15 @@
         width: 100%;
         height: 180px;
       }
+      .group-info h4 {
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: var(--blue-dark);
+      }
+      .group-info ul {
+        margin-bottom: 1rem;
+      }
     </style>
   </head>
   <body>
@@ -200,7 +209,6 @@
               <img src="/img/h/13.jpg" alt="RIMES" />
               <span>RIMES</span>
             </button>
-            <!-- Новые группы -->
             <button class="group-btn" data-band="chernovnik">
               <img src="/img/h/chernovnik.jpg" alt="Черновник" />
               <span>Черновник</span>
@@ -227,10 +235,7 @@
           <section class="col-lg-9 content">
             <h2 id="bandTitle">РОСТ!</h2>
             <div class="band-years" id="bandYears">2006–2018</div>
-            <p class="band-description" id="bandDescription">
-              Молодая энергичная команда из Шаховской, оставившая яркий след на
-              сцене района.
-            </p>
+            <div class="band-description group-info" id="bandDescription"></div>
             <div class="mb-3" id="linksBar"></div>
             <div class="row g-3 gallery" id="gallery"></div>
           </section>
@@ -245,133 +250,196 @@
         rost: {
           title: "РОСТ!",
           years: "2006–2018",
-          description: "Молодая энергичная команда из Шаховской.",
+          html: `
+            <p><strong>Группа образована</strong> осенью 2006 года.<br>
+            <strong>Осенью 2018</strong> прекратила деятельность.</p>
+
+            <h4>Состав</h4>
+            <ul>
+              <li>Кирилл — вокал, гитара</li>
+              <li>Иван — бас, бэк-вокал</li>
+            </ul>
+
+            <h4>Дискография</h4>
+            <ul>
+              <li>2015 — <em>Иглы</em> © (album, CD)</li>
+              <li>2017 — <em>Нить</em> © (single, WEB)</li>
+              <li>2018 — <em>По зову Солнца</em> © (single, WEB)</li>
+            </ul>
+
+            <h4>Музыканты, участвовавшие в разное время</h4>
+            <ul>
+              <li>Антон Соловьёв — бас (2003–2005)*</li>
+              <li>Никита Осипов — ударные (2003, 2005–2010)*</li>
+              <li>Роман Ольховский — ударные (2004*, 2012)</li>
+              <li>Максим Цымоха — бас (2006)</li>
+              <li>Виктор Чугунов — ударные (начало 2011-го)</li>
+              <li>Артём Рябов — перкуссия (2011)</li>
+              <li>Андрей Елисеев — акустическая гитара, вокал (2011)</li>
+              <li>Полина Смольникова — скрипка, вокал (2011)</li>
+              <li>Сергей Котов — ударные (2013)</li>
+              <li>Сергей Попов — ударные (2014–2016)</li>
+              <li>Сергей Холодков — ударные (2017–начало 2018)</li>
+              <li>Евгений Васильев — гитара (2017–начало 2018)</li>
+            </ul>
+
+            <h4>Другие проекты</h4>
+            <ul>
+              <li>2006 — Штаны (Кирилл — бас, вокал)</li>
+              <li>2010 — klon_13 (Иван — бас)</li>
+              <li>2012 — Шах и МАТ (Кирилл — гитара; Иван — бас, бэк-вокал)</li>
+              <li>2015 — Они Уже Зdесь (Кирилл — гитара)</li>
+            </ul>
+
+            <h4>Мы рекомендуем и используем</h4>
+            <p>
+              <a href="http://amtelectronics.com" target="_blank">http://amtelectronics.com</a>
+            </p>
+
+            <p><small>*до 2006 года существовал коллектив-предшественник</small></p>
+          `,
           links: [{ text: "Страница VK", url: "https://vk.com/club2315280" }],
           gallery: ["/img/h/rost.jpg"],
         },
+
         gvozdi: {
           title: "Гвозdи",
           years: "2007–2012",
-          description: "Одна из ключевых групп района.",
+          html: `<p><strong>Описание в разработке…</strong></p>`,
           links: [{ text: "Страница VK", url: "https://vk.com/club10758993" }],
           gallery: ["/img/h/2.jpg"],
         },
+
         izlom: {
           title: "ИЗЛОМ",
           years: "2008–2013",
-          description: "Команда, собравшая вокруг себя верных слушателей.",
+          html: `<p><strong>Описание в разработке…</strong></p>`,
           links: [{ text: "Страница VK", url: "https://vk.com/club13535431" }],
           gallery: ["/img/h/3.jpg"],
         },
+
         pikap: {
           title: "Пикап",
           years: "2007–2011",
-          description: "Рок-группа из Шаховской.",
+          html: `<p><strong>Описание в разработке…</strong></p>`,
           links: [{ text: "Страница VK", url: "https://vk.com/club5413290" }],
           gallery: ["/img/h/4.jpg"],
         },
+
         schematic: {
           title: "Schematic Thing",
           years: "2006–2012",
-          description: "Альтернативная группа с уникальным стилем.",
+          html: `<p><strong>Описание в разработке…</strong></p>`,
           links: [{ text: "Страница VK", url: "https://vk.com/club17764925" }],
           gallery: ["/img/h/5.jpg"],
         },
+
         shahmat: {
           title: "Шах и МАТ",
           years: "2012–2013",
-          description: "Короткая, но яркая история.",
+          html: `<p><strong>Описание в разработке…</strong></p>`,
           links: [
             { text: "Страница VK", url: "https://vk.com/public39648696" },
           ],
           gallery: ["/img/h/6.jpg"],
         },
+
         kaktus: {
           title: "Кактус",
           years: "2009–2012",
-          description: "Лёгкий рок и весёлые тексты.",
+          html: `<p><strong>Описание в разработке…</strong></p>`,
           links: [
             { text: "Страница VK", url: "https://vk.com/kaktyc_rockband" },
           ],
           gallery: ["/img/h/7.jpg"],
         },
+
         rips: {
           title: "R.I.P.S.",
           years: "2008–2009",
-          description: "Короткая жизнь, но сильная энергия.",
+          html: `<p><strong>Описание в разработке…</strong></p>`,
           links: [{ text: "Страница VK", url: "https://vk.com/club6068540" }],
           gallery: ["/img/h/8.jpg"],
         },
+
         klon13: {
           title: "klon_13",
           years: "2009–2012",
-          description: "Эксперименты со звучанием.",
+          html: `<p><strong>Описание в разработке…</strong></p>`,
           links: [{ text: "Страница VK", url: "https://vk.com/club20308414" }],
           gallery: ["/img/h/9.jpg"],
         },
+
         umeno: {
           title: "уменяоно",
           years: "2011–2014",
-          description: "Творческая группа с необычным названием.",
+          html: `<p><strong>Описание в разработке…</strong></p>`,
           links: [
             { text: "Страница VK", url: "https://vk.com/y_m_o_chernovik" },
           ],
           gallery: ["/img/h/10.jpg"],
         },
+
         f7: {
           title: "F7",
           years: "2011–2014",
-          description: "Рок-группа из Шаховской.",
+          html: `<p><strong>Описание в разработке…</strong></p>`,
           links: [{ text: "Страница VK", url: "https://vk.com/f7_group" }],
           gallery: ["/img/h/11.jpg"],
         },
+
         fabula: {
           title: "Fabula",
           years: "2009–2010",
-          description: "Молодая группа, быстро собравшая аудиторию.",
+          html: `<p><strong>Описание в разработке…</strong></p>`,
           links: [{ text: "Страница VK", url: "https://vk.com/club14829392" }],
           gallery: ["/img/h/12.jpg"],
         },
+
         rimes: {
           title: "RIMES",
           years: "2010",
-          description: "Короткий проект, оставшийся в памяти.",
+          html: `<p><strong>Описание в разработке…</strong></p>`,
           links: [{ text: "Страница VK", url: "https://vk.com/club15093613" }],
           gallery: ["/img/h/13.jpg"],
         },
-        // новые
+
         chernovnik: {
           title: "Черновник",
           years: "2012–2015",
-          description: "Андеграундная команда, известная сырым звучанием.",
+          html: `<p><strong>Описание в разработке…</strong></p>`,
           links: [{ text: "Страница VK", url: "https://vk.com/chernovnik" }],
           gallery: ["/img/h/chernovnik.jpg"],
         },
+
         swars: {
           title: "Звездные войны",
           years: "2010–2013",
-          description: "Экспериментальная рок-группа.",
+          html: `<p><strong>Описание в разработке…</strong></p>`,
           links: [{ text: "Страница VK", url: "https://vk.com/starwarsband" }],
           gallery: ["/img/h/swars.jpg"],
         },
+
         kof: {
           title: "King of Fire",
           years: "2009–2012",
-          description: "Метал-группа с огненным драйвом.",
+          html: `<p><strong>Описание в разработке…</strong></p>`,
           links: [{ text: "Страница VK", url: "https://vk.com/kingoffire" }],
           gallery: ["/img/h/kof.jpg"],
         },
+
         bagazhnik: {
           title: "Багажник",
           years: "2011–2014",
-          description: "Юмор, панк и драйв в одном лице.",
+          html: `<p><strong>Описание в разработке…</strong></p>`,
           links: [{ text: "Страница VK", url: "https://vk.com/bagazhnik" }],
           gallery: ["/img/h/bagazhnik.jpg"],
         },
+
         tvorch: {
           title: "Творческие личности",
           years: "2013–2016",
-          description: "Объединение музыкантов и поэтов.",
+          html: `<p><strong>Описание в разработке…</strong></p>`,
           links: [{ text: "Страница VK", url: "https://vk.com/tvorchlich" }],
           gallery: ["/img/h/tvorch.jpg"],
         },
@@ -387,7 +455,7 @@
         const band = LIB[key];
         bandTitle.textContent = band.title;
         bandYears.textContent = band.years;
-        bandDescription.textContent = band.description;
+        bandDescription.innerHTML = band.html;
 
         linksBar.innerHTML = band.links
           .map(
