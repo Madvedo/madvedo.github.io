@@ -1,200 +1,129 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>История</title>
+
+    <!-- Bootstrap -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
-      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
-      crossorigin="anonymous"
     />
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-      crossorigin="anonymous"
-    ></script>
 
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-    <link rel="manifest" href="/site.webmanifest" />
-
-
-   
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
 
     <style>
-      .rounded-img {
-        width: 60%;
-        border-radius: 50%;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
-        padding: 0.6em;
-        margin-bottom: 1em;
+      :root {
+        --blue-dark: #272a30;
+        --blue-dark-2: #212429;
+        --paper: #f6f7fb;
       }
 
+      body {
+        font-family: "Roboto", system-ui, -apple-system, Segoe UI, Roboto,
+          Helvetica, Arial, sans-serif;
+        background: var(--paper);
+        margin: 0;
+        padding-top: 90px;
+      }
 
-    
+      .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+      }
 
+      .page-wrap {
+        padding-bottom: 60px;
+      }
+
+      /* Сайдбар */
+      .sidebar {
+        border-right: 1px solid #e5e7eb;
+        min-height: calc(100vh - 140px);
+        max-height: 100vh;
+        overflow-y: auto;
+        padding-right: 5px;
+      }
+      .group-btn {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 14px;
+        margin-bottom: 10px;
+        background: var(--blue-dark);
+        color: #fff;
+        border: none;
+        width: 100%;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: background 0.2s ease, transform 0.05s ease;
+        text-align: left;
+      }
+      .group-btn:hover {
+        background: var(--blue-dark-2);
+      }
+      .group-btn.active {
+        outline: 2px solid rgba(255, 255, 255, 0.35);
+      }
+      .group-btn img {
+        width: 42px;
+        height: 42px;
+        border-radius: 8px;
+        object-fit: cover;
+      }
+
+      /* Контент */
+      .content h2 {
+        font-weight: 700;
+        color: var(--blue-dark);
+        margin-bottom: 8px;
+      }
+      .band-years {
+        font-size: 14px;
+        color: #6b7280;
+        margin-bottom: 12px;
+      }
+      .band-description {
+        margin-bottom: 16px;
+      }
+      .gallery img {
+        border-radius: 12px;
+        object-fit: cover;
+        width: 100%;
+        height: 180px;
+      }
     </style>
-
-
-
-    <style>
-
-      .card {
-        border-radius: 1em;
-        text-align: center;
-        padding: 1em;
-      }
-
-      .card:hover {
-        background-color: rgba(0, 0, 0, 0.1);
-        
-      }
-
-      .card img {
-        border-radius:10%;
-        width:100%;
-        margin: auto;
-
-        
-      }
- 
-
-
-.titleH { 
-  text-align: center;
-  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; /* Гарнитура шрифта */ 
-font-size: 50px;
-font-style: italic;
-color: rgb(0, 0, 0);
-margin-top: 70px;
-margin-left: -10px;
- }
-
- .titleL { 
- 
- font-family: Arial, Helvetica, sans-serif; /* Гарнитура шрифта */ 
-font-size:20px;
-font-style: italic;
-color: rgb(0, 0, 0);
-float: right;
-margin-top: -15px;
-margin-right: -10px;
-
-}
-
-.titleH1 { 
-  float: left;
-  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; /* Гарнитура шрифта */ 
-font-size: 21px;
-font-style: italic;
-color: rgb(0, 0, 0);
-margin-top: -30px;
-margin-left: -10px;
- }
-
-
-
-</style>
-
-
-<style>
-  #test {
-
-    transform: 
-   
-    rotate(0deg) /* Вертит элемент, 0 грудусов - верх, 90, права и тд */
-    scale(1) /* Изменение размера элемента, по умолчанию 1 */
-    ;
-    
-    
-    
-    
- 
-        color: rgb(0, 0, 0);
-        padding: 15px;
-        margin: 15px;
-      
-    opacity: 0.5;
-     /* display: none; Элемент скрывается */
-    text-align:center; /* Выравнивание текста*/
-    font-size: 50px;
-  
- 
-    
-        
-    }
-    
-    #test:hover {
-        transform:   scale(1.2); /* Поворачивае на 45 грудов */
-        transition: 1.5s all; /* задаем время поворота в 1 секунду и анимируем весь элемент */
-     
-        opacity: 1; /* ховер - наведение на элемент. При наведение на элемент прозрачность равняется 1, что означает - элемент непрозрачен */
-     
-    }
-    
-
-    #left { position: absolute; left: 130px; top: 5px; width: 15%; }
-	#right { position: absolute; right:0px; top: 0px; width: 15%; } 
-	#down {
-		position: absolute; right: 100px; top: 500px; width: 50%; 
-	}
-	#down1 {
-		position: absolute; right: 65px; top: 550px; width: 70%; 
-	}
-#soundpic {
-	width: 150%;
-}
-  .navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-   z-index: 1;
-  }
-
-  .navbar1 {
-    position: fixed;
-    top: 10px;
-    left: 0;
-    width: 100%;
-   z-index: 1;
-  }
-
-  </style>
-
-
-
   </head>
   <body>
+    <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container">
-        <a class="'navbar-brand p-0" href="/">
+        <a class="navbar-brand p-0" href="/">
           <img src="Logo.png" alt="ShUn1" width="40" />
         </a>
-
         <button
           class="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
+          data-bs-target="#navMain"
         >
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
+        <div class="collapse navbar-collapse" id="navMain">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="/news.html"
-                >Новости</a
-              >
+              <a class="nav-link" href="/news.html">Новости</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link " href="concerts.html">Фотоархив</a>
+              <a class="nav-link" href="concerts.html">Фотоархив</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="bands.html">Группы</a>
@@ -209,272 +138,280 @@ margin-left: -10px;
         </div>
       </div>
     </nav>
-    
 
- 
+    <!-- CONTENT -->
+    <main class="page-wrap">
+      <div class="container">
+        <div class="row gx-4">
+          <!-- Сайдбар -->
+          <aside class="col-lg-3 sidebar">
+            <button class="group-btn active" data-band="rost">
+              <img src="/img/h/rost.jpg" alt="РОСТ!" />
+              <span>РОСТ!</span>
+            </button>
+            <button class="group-btn" data-band="gvozdi">
+              <img src="/img/h/2.jpg" alt="Гвозdи" />
+              <span>Гвозdи</span>
+            </button>
+            <button class="group-btn" data-band="izlom">
+              <img src="/img/h/3.jpg" alt="ИЗЛОМ" />
+              <span>ИЗЛОМ</span>
+            </button>
+            <button class="group-btn" data-band="pikap">
+              <img src="/img/h/4.jpg" alt="Пикап" />
+              <span>Пикап</span>
+            </button>
+            <button class="group-btn" data-band="schematic">
+              <img src="/img/h/5.jpg" alt="Schematic Thing" />
+              <span>Schematic Thing</span>
+            </button>
+            <button class="group-btn" data-band="shahmat">
+              <img src="/img/h/6.jpg" alt="Шах и МАТ" />
+              <span>Шах и МАТ</span>
+            </button>
+            <button class="group-btn" data-band="kaktus">
+              <img src="/img/h/7.jpg" alt="Кактус" />
+              <span>Кактус</span>
+            </button>
+            <button class="group-btn" data-band="rips">
+              <img src="/img/h/8.jpg" alt="R.I.P.S." />
+              <span>R.I.P.S.</span>
+            </button>
+            <button class="group-btn" data-band="klon13">
+              <img src="/img/h/9.jpg" alt="klon_13" />
+              <span>klon_13</span>
+            </button>
+            <button class="group-btn" data-band="umeno">
+              <img src="/img/h/10.jpg" alt="уменяоно" />
+              <span>уменяоно</span>
+            </button>
+            <button class="group-btn" data-band="f7">
+              <img src="/img/h/11.jpg" alt="F7" />
+              <span>F7</span>
+            </button>
+            <button class="group-btn" data-band="fabula">
+              <img src="/img/h/12.jpg" alt="Fabula" />
+              <span>Fabula</span>
+            </button>
+            <button class="group-btn" data-band="rimes">
+              <img src="/img/h/13.jpg" alt="RIMES" />
+              <span>RIMES</span>
+            </button>
+            <!-- Новые группы -->
+            <button class="group-btn" data-band="chernovnik">
+              <img src="/img/h/chernovnik.jpg" alt="Черновник" />
+              <span>Черновник</span>
+            </button>
+            <button class="group-btn" data-band="swars">
+              <img src="/img/h/swars.jpg" alt="Звездные войны" />
+              <span>Звездные войны</span>
+            </button>
+            <button class="group-btn" data-band="kof">
+              <img src="/img/h/kof.jpg" alt="King of Fire" />
+              <span>King of Fire</span>
+            </button>
+            <button class="group-btn" data-band="bagazhnik">
+              <img src="/img/h/bagazhnik.jpg" alt="Багажник" />
+              <span>Багажник</span>
+            </button>
+            <button class="group-btn" data-band="tvorch">
+              <img src="/img/h/tvorch.jpg" alt="Творческие личности" />
+              <span>Творческие личности</span>
+            </button>
+          </aside>
 
-    
-    <div class="container ">
-      <div class="titleH">Коллективы, оставшиеся в прошлом:</div>
-      <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-5 my-1">
-        
-        <!--0  -->
-
-
-        <div class="col">
-          <div class="card">
-            <div class="card-body">
-              <div class=" titleH1">РОСТ!</div>
-          </div>
-        
-          <div class="text-muted titleL"> 2006-2018</div>
-            <a id="test"    href="https://vk.com/club2315280" target="_blank" >
-            <img
-            src="/img/h/rost.jpg" 
-             
-              alt="..."
-              />
-              <a></a>
-             
-          </div>
+          <!-- Контент -->
+          <section class="col-lg-9 content">
+            <h2 id="bandTitle">РОСТ!</h2>
+            <div class="band-years" id="bandYears">2006–2018</div>
+            <p class="band-description" id="bandDescription">
+              Молодая энергичная команда из Шаховской, оставившая яркий след на
+              сцене района.
+            </p>
+            <div class="mb-3" id="linksBar"></div>
+            <div class="row g-3 gallery" id="gallery"></div>
+          </section>
         </div>
-
-        <!--1  -->
-
-
-        <div class="col">
-          <div class="card">
-            <div class="card-body">
-              <div class="titleH1">Гвозdи</div>  
-          </div>
-          <div class="text-muted titleL"> 2007-2012</div>
-            <a id="test"    href="https://vk.com/club10758993" target="_blank" >
-            <img
-            src="/img/h/2.jpg" 
-             
-              alt="..."
-              />
-              <a></a>
-             
-          </div>
-        </div>
- 
-
-        <!--2  -->
-
-
-        <div class="col">
-          <div class="card">
-            <div class="card-body">
-              <div class="titleH1">ИЗЛОМ</div>  
-          </div>
-          <div class="text-muted titleL"> 2008-2013</div>
-            <a id="test"    href="https://vk.com/club13535431" target="_blank" >
-            <img
-            src="/img/h/3.jpg" 
-             
-              alt="..."
-              />
-              <a></a>
-             
-          </div>
-        </div>
-
-    <!--3  -->
-
-    <!--4  -->
- 
-
-
-
-    <div class="col">
-      <div class="card">
-        <div class="card-body">
-          <div class="titleH1">Пикап</div>  
       </div>
-      <div class="text-muted titleL"> 2007-2011</div>
-        <a id="test"    href="https://vk.com/club5413290" target="_blank" >
-        <img
-        src="/img/h/4.jpg" 
-         
-          alt="..."
-          />
-          <a></a>
-         
-      </div>
-    </div>
+    </main>
 
- <!--5  -->
-    <div class="col">
-      <div class="card">
-        <div class="card-body">
-          <div class="titleH1">Schematic Thing</div>  
-      </div>
-      <div class="text-muted titleL"> 2006-2012</div>
-        <a id="test"    href="https://vk.com/club17764925" target="_blank" >
-        <img
-        src="/img/h/5.jpg" 
-         
-          alt="..."
-          />
-          <a></a>
-         
-      </div>
-    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
+    <script>
+      const LIB = {
+        rost: {
+          title: "РОСТ!",
+          years: "2006–2018",
+          description: "Молодая энергичная команда из Шаховской.",
+          links: [{ text: "Страница VK", url: "https://vk.com/club2315280" }],
+          gallery: ["/img/h/rost.jpg"],
+        },
+        gvozdi: {
+          title: "Гвозdи",
+          years: "2007–2012",
+          description: "Одна из ключевых групп района.",
+          links: [{ text: "Страница VK", url: "https://vk.com/club10758993" }],
+          gallery: ["/img/h/2.jpg"],
+        },
+        izlom: {
+          title: "ИЗЛОМ",
+          years: "2008–2013",
+          description: "Команда, собравшая вокруг себя верных слушателей.",
+          links: [{ text: "Страница VK", url: "https://vk.com/club13535431" }],
+          gallery: ["/img/h/3.jpg"],
+        },
+        pikap: {
+          title: "Пикап",
+          years: "2007–2011",
+          description: "Рок-группа из Шаховской.",
+          links: [{ text: "Страница VK", url: "https://vk.com/club5413290" }],
+          gallery: ["/img/h/4.jpg"],
+        },
+        schematic: {
+          title: "Schematic Thing",
+          years: "2006–2012",
+          description: "Альтернативная группа с уникальным стилем.",
+          links: [{ text: "Страница VK", url: "https://vk.com/club17764925" }],
+          gallery: ["/img/h/5.jpg"],
+        },
+        shahmat: {
+          title: "Шах и МАТ",
+          years: "2012–2013",
+          description: "Короткая, но яркая история.",
+          links: [
+            { text: "Страница VK", url: "https://vk.com/public39648696" },
+          ],
+          gallery: ["/img/h/6.jpg"],
+        },
+        kaktus: {
+          title: "Кактус",
+          years: "2009–2012",
+          description: "Лёгкий рок и весёлые тексты.",
+          links: [
+            { text: "Страница VK", url: "https://vk.com/kaktyc_rockband" },
+          ],
+          gallery: ["/img/h/7.jpg"],
+        },
+        rips: {
+          title: "R.I.P.S.",
+          years: "2008–2009",
+          description: "Короткая жизнь, но сильная энергия.",
+          links: [{ text: "Страница VK", url: "https://vk.com/club6068540" }],
+          gallery: ["/img/h/8.jpg"],
+        },
+        klon13: {
+          title: "klon_13",
+          years: "2009–2012",
+          description: "Эксперименты со звучанием.",
+          links: [{ text: "Страница VK", url: "https://vk.com/club20308414" }],
+          gallery: ["/img/h/9.jpg"],
+        },
+        umeno: {
+          title: "уменяоно",
+          years: "2011–2014",
+          description: "Творческая группа с необычным названием.",
+          links: [
+            { text: "Страница VK", url: "https://vk.com/y_m_o_chernovik" },
+          ],
+          gallery: ["/img/h/10.jpg"],
+        },
+        f7: {
+          title: "F7",
+          years: "2011–2014",
+          description: "Рок-группа из Шаховской.",
+          links: [{ text: "Страница VK", url: "https://vk.com/f7_group" }],
+          gallery: ["/img/h/11.jpg"],
+        },
+        fabula: {
+          title: "Fabula",
+          years: "2009–2010",
+          description: "Молодая группа, быстро собравшая аудиторию.",
+          links: [{ text: "Страница VK", url: "https://vk.com/club14829392" }],
+          gallery: ["/img/h/12.jpg"],
+        },
+        rimes: {
+          title: "RIMES",
+          years: "2010",
+          description: "Короткий проект, оставшийся в памяти.",
+          links: [{ text: "Страница VK", url: "https://vk.com/club15093613" }],
+          gallery: ["/img/h/13.jpg"],
+        },
+        // новые
+        chernovnik: {
+          title: "Черновник",
+          years: "2012–2015",
+          description: "Андеграундная команда, известная сырым звучанием.",
+          links: [{ text: "Страница VK", url: "https://vk.com/chernovnik" }],
+          gallery: ["/img/h/chernovnik.jpg"],
+        },
+        swars: {
+          title: "Звездные войны",
+          years: "2010–2013",
+          description: "Экспериментальная рок-группа.",
+          links: [{ text: "Страница VK", url: "https://vk.com/starwarsband" }],
+          gallery: ["/img/h/swars.jpg"],
+        },
+        kof: {
+          title: "King of Fire",
+          years: "2009–2012",
+          description: "Метал-группа с огненным драйвом.",
+          links: [{ text: "Страница VK", url: "https://vk.com/kingoffire" }],
+          gallery: ["/img/h/kof.jpg"],
+        },
+        bagazhnik: {
+          title: "Багажник",
+          years: "2011–2014",
+          description: "Юмор, панк и драйв в одном лице.",
+          links: [{ text: "Страница VK", url: "https://vk.com/bagazhnik" }],
+          gallery: ["/img/h/bagazhnik.jpg"],
+        },
+        tvorch: {
+          title: "Творческие личности",
+          years: "2013–2016",
+          description: "Объединение музыкантов и поэтов.",
+          links: [{ text: "Страница VK", url: "https://vk.com/tvorchlich" }],
+          gallery: ["/img/h/tvorch.jpg"],
+        },
+      };
 
- <!--6  -->
- <div class="col">
-  <div class="card">
-    <div class="card-body">
-      <div class="titleH1">Шах и МАТ</div>  
-  </div>
-  <div class="text-muted titleL"> 2012-2013</div>
-    <a id="test"    href="https://vk.com/public39648696" target="_blank" >
-    <img
-    src="/img/h/6.jpg" 
-     
-      alt="..."
-      />
-      <a></a>
-     
-  </div>
-</div>
+      const bandTitle = document.getElementById("bandTitle");
+      const bandYears = document.getElementById("bandYears");
+      const bandDescription = document.getElementById("bandDescription");
+      const linksBar = document.getElementById("linksBar");
+      const gallery = document.getElementById("gallery");
 
- <!--7  -->
- <div class="col">
-  <div class="card">
-    <div class="card-body">
-      <div class="titleH1">Кактус</div>  
-  </div>
-  <div class="text-muted titleL">2009-2012</div>
-    <a id="test"    href="https://vk.com/kaktyc_rockband" target="_blank" >
-    <img
-    src="/img/h/7.jpg" 
-     
-      alt="..."
-      />
-      <a></a>
-     
-  </div>
-</div>
+      function renderBand(key) {
+        const band = LIB[key];
+        bandTitle.textContent = band.title;
+        bandYears.textContent = band.years;
+        bandDescription.textContent = band.description;
 
+        linksBar.innerHTML = band.links
+          .map(
+            (l) =>
+              `<a href="${l.url}" target="_blank" class="btn btn-sm btn-primary">${l.text}</a>`
+          )
+          .join(" ");
 
- <!--8  -->
- <div class="col">
-  <div class="card">
-    <div class="card-body">
-      <div class="titleH1">R.I.P.S.</div>  
-  </div>
-  <div class="text-muted titleL">2008-2009</div>
-    <a id="test"    href="https://vk.com/club6068540" target="_blank" >
-    <img
-    src="/img/h/8.jpg" 
-     
-      alt="..."
-      />
-      <a></a>
-     
-  </div>
-</div>
+        gallery.innerHTML = band.gallery
+          .map(
+            (src) => `
+          <div class="col-md-4">
+            <img src="${src}" alt="${band.title}" />
+          </div>`
+          )
+          .join("");
 
- <!--9  -->
- <div class="col">
-  <div class="card">
-    <div class="card-body">
-      <div class="titleH1">klon_13</div>  
-  </div>
-  <div class="text-muted titleL">2009-2012</div>
-    <a id="test"    href="https://vk.com/club20308414" target="_blank" >
-    <img
-    src="/img/h/9.jpg" 
-     
-      alt="..."
-      />
-      <a></a>
-     
-  </div>
-</div>
+        document
+          .querySelectorAll(".group-btn")
+          .forEach((b) => b.classList.toggle("active", b.dataset.band === key));
+      }
 
- <!--10  -->
- <div class="col">
-  <div class="card">
-    <div class="card-body">
-      <div class="titleH1">уменяоно</div>  
-  </div>
-  <div class="text-muted titleL">2011-2014</div>
-    <a id="test"    href="https://vk.com/y_m_o_chernovik" target="_blank" >
-    <img
-    src="/img/h/10.jpg" 
-     
-      alt="..."
-      />
-      <a></a>
-     
-  </div>
-</div>
+      document.querySelectorAll(".group-btn").forEach((btn) => {
+        btn.addEventListener("click", () => renderBand(btn.dataset.band));
+      });
 
-
- <!--11  -->
- <div class="col">
-  <div class="card">
-    <div class="card-body">
-      <div class="titleH1">F7</div>  
-  </div>
-  <div class="text-muted titleL">2011-2014</div>
-    <a id="test"    href="https://vk.com/f7_group" target="_blank" >
-    <img
-    src="/img/h/11.jpg" 
-     
-      alt="..."
-      />
-      <a></a>
-     
-  </div>
-</div>
-
- <!--12  -->
- <div class="col">
-  <div class="card">
-    <div class="card-body">
-      <div class="titleH1">Fabula</div>  
-  </div>
-  <div class="text-muted titleL">2009-2010</div>
-    <a id="test"    href="https://vk.com/club14829392" target="_blank" >
-    <img
-    src="/img/h/12.jpg" 
-     
-      alt="..."
-      />
-      <a></a>
-     
-  </div>
-</div>
-
-
- <!--13  -->
- <div class="col">
-  <div class="card">
-    <div class="card-body">
-      <div class="titleH1">RIMES</div>  
-  </div>
-  <div class="text-muted titleL">2010</div>
-    <a id="test"    href="https://vk.com/club15093613" target="_blank" >
-    <img
-    src="/img/h/13.jpg" 
-     
-      alt="..."
-      />
-      <a></a>
-     
-  </div>
-</div>
-
-
-      </div>
-    </div>
+      renderBand("rost");
+    </script>
   </body>
 </html>
-
-
-
