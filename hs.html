@@ -214,17 +214,25 @@
               <span>Черновник</span>
             </button>
 
-            <button class="group-btn" data-band="kof">
-              <img src="/img/h/kof.jpg" alt="King of Fire" />
-              <span>King of Fire</span>
-            </button>
             <button class="group-btn" data-band="bagazhnik">
-              <img src="/img/h/bagazhnik.jpg" alt="Багажник" />
+              <img src="/img/bg.jpg" alt="Багажник" />
               <span>Багажник</span>
             </button>
             <button class="group-btn" data-band="tvorch">
-              <img src="/img/h/tvorch.jpg" alt="Творческие личности" />
+              <img src="/img/tl.PNG" alt="Творческие личности" />
               <span>Творческие личности</span>
+            </button>
+
+            <button class="group-btn" data-band="swars">
+              <img src="/img/234.jpg" alt="Звездные войны" />
+              <span>Звездные войны</span>
+            </button>
+            <button class="group-btn" data-band="kof">
+              <img src="/img/345.jpg" alt="King of Fire" />
+              <span>King of Fire</span>
+            </button>
+            <button class="group-btn" data-band="taipen">
+              <span>Тай-Пэн</span>
             </button>
           </aside>
 
@@ -647,28 +655,71 @@
           gallery: ["/img/4k.jpg"],
         },
 
+        swars: {
+          title: "Звездные войны",
+          years: "2010–2013",
+          html: `<p><strong>Кавер-бэнд. Информационного следа на данный момент нет.</strong></p>`,
+          links: [],
+          gallery: ["/img/zv.jpg"],
+        },
+
         kof: {
           title: "King of Fire",
           years: "2009–2012",
-          html: `<p><strong>Описание в разработке…</strong></p>`,
+          html: `<p><strong>Информационный след отсутствует</strong></p>`,
           links: [{ text: "Страница VK", url: "https://vk.com/kingoffire" }],
-          gallery: ["/img/h/kof.jpg"],
+          gallery: ["/img/345.jpg"],
+        },
+
+        taipen: {
+          title: "Тай-Пэн",
+          years: "—",
+          html: `
+    <p>
+      <strong>Тай-Пэн</strong> — группа из Ивашково, ирающая в жанре эстрадного блюз-рока. На данный момент информационнй след не обнаружен.
+    </p>
+   
+  `,
+          links: [
+            // Если есть страница ВК или сайт — добавляем так:
+            // { text: "Страница VK", url: "https://vk.com/taipen" }
+          ],
+          gallery: [],
         },
 
         bagazhnik: {
           title: "Багажник",
-          years: "2011–2014",
-          html: `<p><strong>Описание в разработке…</strong></p>`,
-          links: [{ text: "Страница VK", url: "https://vk.com/bagazhnik" }],
-          gallery: ["/img/h/bagazhnik.jpg"],
+          years: "2022–2023",
+          html: `
+    <p><strong>Хоббибэнд.</strong></p>
+    <p>
+      Однажды Медведь, Дед и Турецкий нашли старый багажник от пикапа — и понеслась…
+    </p>
+  `,
+          links: [{ text: "Страница VK", url: "https://vk.com/bagazg" }],
+          gallery: [
+            "/img/live/bgz.jpg",
+            "/img/live/bgz1.jpg",
+            "/img/live/bgz2.jpg",
+            "/img/live/bgz3.jpg",
+          ],
         },
 
         tvorch: {
           title: "Творческие личности",
-          years: "2013–2016",
-          html: `<p><strong>Описание в разработке…</strong></p>`,
-          links: [{ text: "Страница VK", url: "https://vk.com/tvorchlich" }],
-          gallery: ["/img/h/tvorch.jpg"],
+          years: "2023",
+          html: `
+    <p><strong>Кавер-группа «Творческие личности»</strong></p>
+    <p>
+      Эстрадная кавер-группа «Творческие личности».  
+      Личности, которые в обычной жизни и не подадут виду яркого огня внутри.  
+      Но восходя на сцену, зажгут его в ваших сердцах!
+    </p>
+  `,
+          links: [
+            { text: "Страница VK", url: "https://vk.com/public218423103" },
+          ],
+          gallery: ["/img/tl.png"],
         },
       };
 
