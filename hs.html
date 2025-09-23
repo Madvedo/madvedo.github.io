@@ -99,6 +99,12 @@
         object-fit: cover;
         width: 100%;
         height: 180px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+      }
+      .gallery img:hover {
+        transform: scale(1.08);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
       }
       .group-info h4 {
         margin-top: 1rem;
@@ -152,6 +158,7 @@
     </nav>
 
     <!-- CONTENT -->
+
     <main class="page-wrap">
       <div class="container">
         <div class="row gx-4">
@@ -237,10 +244,18 @@
           </aside>
 
           <!-- Контент -->
+          <!-- Контент -->
           <section class="col-lg-9 content">
-            <h2 id="bandTitle">РОСТ!</h2>
-            <div class="band-years" id="bandYears">2006–2018</div>
-            <div class="band-description group-info" id="bandDescription"></div>
+            <h2 id="bandTitle">Выберите группу</h2>
+            <div class="band-years" id="bandYears"></div>
+            <div class="band-description group-info" id="bandDescription">
+              <p>
+                <em
+                  >Здесь будет отображаться информация о выбранном
+                  коллективе.</em
+                >
+              </p>
+            </div>
             <div class="mb-3" id="linksBar"></div>
             <div class="row g-3 gallery" id="gallery"></div>
           </section>
@@ -722,7 +737,6 @@
           gallery: ["/img/tl.png"],
         },
       };
-
       const bandTitle = document.getElementById("bandTitle");
       const bandYears = document.getElementById("bandYears");
       const bandDescription = document.getElementById("bandDescription");
@@ -756,11 +770,10 @@
           .forEach((b) => b.classList.toggle("active", b.dataset.band === key));
       }
 
+      // только обработчики, без автозагрузки!
       document.querySelectorAll(".group-btn").forEach((btn) => {
         btn.addEventListener("click", () => renderBand(btn.dataset.band));
       });
-
-      renderBand("rost");
     </script>
   </body>
 </html>

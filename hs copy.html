@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>История</title>
+
+    <!-- Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --blue-dark: #272a30;
+        --blue-dark-2: #212429;
+        --paper: #f6f7fb;
+      }
+
+      body {
+        font-family: "Roboto", system-ui, -apple-system, Segoe UI, Roboto,
+          Helvetica, Arial, sans-serif;
+        background: var(--paper);
+        margin: 0;
+        padding-top: 90px;
+      }
+
+      .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+      }
+
+      .page-wrap {
+        padding-bottom: 60px;
+      }
+
+      /* Сайдбар */
+      .sidebar {
+        border-right: 1px solid #e5e7eb;
+        min-height: calc(100vh - 140px);
+        max-height: 100vh;
+        overflow-y: auto;
+        padding-right: 5px;
+      }
+      .group-btn {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 14px;
+        margin-bottom: 10px;
+        background: var(--blue-dark);
+        color: #fff;
+        border: none;
+        width: 100%;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: background 0.2s ease, transform 0.05s ease;
+        text-align: left;
+      }
+      .group-btn:hover {
+        background: var(--blue-dark-2);
+      }
+      .group-btn.active {
+        outline: 2px solid rgba(255, 255, 255, 0.35);
+      }
+      .group-btn img {
+        width: 42px;
+        height: 42px;
+        border-radius: 8px;
+        object-fit: cover;
+      }
+
+      /* Контент */
+      .content h2 {
+        font-weight: 700;
+        color: var(--blue-dark);
+        margin-bottom: 8px;
+      }
+      .band-years {
+        font-size: 14px;
+        color: #6b7280;
+        margin-bottom: 12px;
+      }
+      .band-description {
+        margin-bottom: 16px;
+      }
+      .gallery img {
+        border-radius: 12px;
+        object-fit: cover;
+        width: 100%;
+        height: 180px;
+        transition: transform 0.3s ease;
+      }
+      .gallery img:hover {
+        transform: scale(1.05);
+      }
+      .group-info h4 {
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: var(--blue-dark);
+      }
+      .group-info ul {
+        margin-bottom: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand p-0" href="/">
+          <img src="Logo.png" alt="ShUn1" width="40" />
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navMain"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navMain">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="/news.html">Новости</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="concerts.html">Фотоархив</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="bands.html">Группы</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="hs.html">История</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="About.html">О проекте</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="radio.html">Радио</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- CONTENT -->
+    <main class="page-wrap">
+      <div class="container">
+        <div class="row gx-4">
+          <!-- Сайдбар -->
+          <aside class="col-lg-3 sidebar">
+            <button class="group-btn" data-band="rost">
+              <img src="/img/h/rost.jpg" alt="РОСТ!" />
+              <span>РОСТ!</span>
+            </button>
+            <button class="group-btn" data-band="gvozdi">
+              <img src="/img/h/2.jpg" alt="Гвозdи" />
+              <span>Гвозdи</span>
+            </button>
+            <button class="group-btn" data-band="izlom">
+              <img src="/img/h/3.jpg" alt="ИЗЛОМ" />
+              <span>ИЗЛОМ</span>
+            </button>
+            <button class="group-btn" data-band="pikap">
+              <img src="/img/h/4.jpg" alt="Пикап" />
+              <span>Пикап</span>
+            </button>
+            <button class="group-btn" data-band="schematic">
+              <img src="/img/h/5.jpg" alt="Schematic Thing" />
+              <span>Schematic Thing</span>
+            </button>
+            <button class="group-btn" data-band="shahmat">
+              <img src="/img/h/6.jpg" alt="Шах и МАТ" />
+              <span>Шах и МАТ</span>
+            </button>
+            <button class="group-btn" data-band="kaktus">
+              <img src="/img/h/7.jpg" alt="Кактус" />
+              <span>Кактус</span>
+            </button>
+            <button class="group-btn" data-band="rips">
+              <img src="/img/h/8.jpg" alt="R.I.P.S." />
+              <span>R.I.P.S.</span>
+            </button>
+            <button class="group-btn" data-band="klon13">
+              <img src="/img/h/9.jpg" alt="klon_13" />
+              <span>klon_13</span>
+            </button>
+            <button class="group-btn" data-band="umeno">
+              <img src="/img/h/10.jpg" alt="уменяоно" />
+              <span>уменяоно</span>
+            </button>
+            <button class="group-btn" data-band="f7">
+              <img src="/img/h/11.jpg" alt="F7" />
+              <span>F7</span>
+            </button>
+            <button class="group-btn" data-band="fabula">
+              <img src="/img/h/12.jpg" alt="Fabula" />
+              <span>Fabula</span>
+            </button>
+            <button class="group-btn" data-band="rimes">
+              <img src="/img/h/13.jpg" alt="RIMES" />
+              <span>RIMES</span>
+            </button>
+            <button class="group-btn" data-band="chernovnik">
+              <img src="/img/4k.jpg" alt="Черновник" />
+              <span>Черновник</span>
+            </button>
+            <button class="group-btn" data-band="bagazhnik">
+              <img src="/img/bg.jpg" alt="Багажник" />
+              <span>Багажник</span>
+            </button>
+            <button class="group-btn" data-band="tvorch">
+              <img src="/img/tl.PNG" alt="Творческие личности" />
+              <span>Творческие личности</span>
+            </button>
+            <button class="group-btn" data-band="swars">
+              <img src="/img/234.jpg" alt="Звездные войны" />
+              <span>Звездные войны</span>
+            </button>
+            <button class="group-btn" data-band="kof">
+              <img src="/img/345.jpg" alt="King of Fire" />
+              <span>King of Fire</span>
+            </button>
+            <button class="group-btn" data-band="taipen">
+              <span>Тай-Пэн</span>
+            </button>
+          </aside>
+
+          <!-- Контент -->
+          <section class="col-lg-9 content">
+            <h2 id="bandTitle">Выберите группу</h2>
+            <div class="band-years" id="bandYears"></div>
+            <div class="band-description group-info" id="bandDescription">
+              <p>
+                <em
+                  >Здесь будет отображаться информация о выбранном
+                  коллективе.</em
+                >
+              </p>
+            </div>
+            <div class="mb-3" id="linksBar"></div>
+            <div class="row g-3 gallery" id="gallery"></div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      const LIB = {
+        // ... здесь остаётся весь объект LIB, который ты уже вставил (рост, гвозди, излом и т.д.)
+      };
+
+      const bandTitle = document.getElementById("bandTitle");
+      const bandYears = document.getElementById("bandYears");
+      const bandDescription = document.getElementById("bandDescription");
+      const linksBar = document.getElementById("linksBar");
+      const gallery = document.getElementById("gallery");
+
+      function renderBand(key) {
+        const band = LIB[key];
+        bandTitle.textContent = band.title;
+        bandYears.textContent = band.years;
+        bandDescription.innerHTML = band.html;
+
+        linksBar.innerHTML = band.links
+          .map(
+            (l) =>
+              `<a href="${l.url}" target="_blank" class="btn btn-sm btn-primary">${l.text}</a>`
+          )
+          .join(" ");
+
+        gallery.innerHTML = band.gallery
+          .map(
+            (src) => `
+          <div class="col-md-4">
+            <img src="${src}" alt="${band.title}" />
+          </div>`
+          )
+          .join("");
+
+        document
+          .querySelectorAll(".group-btn")
+          .forEach((b) => b.classList.toggle("active", b.dataset.band === key));
+      }
+
+      document.querySelectorAll(".group-btn").forEach((btn) => {
+        btn.addEventListener("click", () => renderBand(btn.dataset.band));
+      });
+
+      // ❌ убрали renderBand("rost")
+    </script>
+  </body>
+</html>
