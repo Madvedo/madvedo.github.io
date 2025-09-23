@@ -293,11 +293,16 @@
       const linksBar = document.getElementById("linksBar");
       const gallery = document.getElementById("gallery");
 
+      // Функция проверки мобильного экрана (по Bootstrap lg breakpoint)
+      function isMobile() {
+        return window.matchMedia("(max-width: 991.98px)").matches;
+      }
+
       function renderBand(key) {
         const band = LIB[key];
-        const isMobile = window.innerWidth < 992;
 
-        if (isMobile) {
+        if (isMobile()) {
+          // === Мобильник → открываем модалку
           document.getElementById("modalBandTitle").textContent = band.title;
           document.getElementById("modalBandYears").textContent = band.years;
           document.getElementById("modalBandDescription").innerHTML = band.html;
@@ -316,11 +321,11 @@
             )
             .join("");
 
-          const modal = new bootstrap.Modal(
-            document.getElementById("bandModal")
-          );
-          modal.show();
+          const modalEl = document.getElementById("bandModal");
+          const modal = new bootstrap.Modal(modalEl);
+          setTimeout(() => modal.show(), 30); // таймаут для надёжного вызова
         } else {
+          // === Десктоп → обновляем секцию справа
           bandTitle.textContent = band.title;
           bandYears.textContent = band.years;
           bandDescription.innerHTML = band.html;
@@ -340,15 +345,16 @@
             .join("");
         }
 
+        // Подсветка выбранной кнопки
         document
           .querySelectorAll(".group-btn")
           .forEach((b) => b.classList.toggle("active", b.dataset.band === key));
       }
 
+      // Вешаем обработчики на кнопки
       document.querySelectorAll(".group-btn").forEach((btn) => {
         btn.addEventListener("click", () => renderBand(btn.dataset.band));
       });
-
       // === LIB с группами ===
       const LIB = {
         rost: {
