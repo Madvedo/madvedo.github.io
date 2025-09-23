@@ -244,7 +244,6 @@
           </aside>
 
           <!-- Контент -->
-          <!-- Контент -->
           <section class="col-lg-9 content">
             <h2 id="bandTitle">Выберите группу</h2>
             <div class="band-years" id="bandYears"></div>
@@ -263,9 +262,90 @@
       </div>
     </main>
 
+    <!-- MODAL -->
+    <div class="modal fade" id="bandModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 id="modalBandTitle" class="modal-title"></h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div id="modalBandYears" class="band-years"></div>
+            <div
+              id="modalBandDescription"
+              class="band-description group-info"
+            ></div>
+            <div id="modalLinksBar" class="mb-3"></div>
+            <div id="modalGallery" class="row g-3 gallery"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
+      function renderBand(key) {
+        const band = LIB[key];
+
+        const isMobile = window.innerWidth < 992;
+
+        if (isMobile) {
+          // В мобилке открываем модалку
+          document.getElementById("modalBandTitle").textContent = band.title;
+          document.getElementById("modalBandYears").textContent = band.years;
+          document.getElementById("modalBandDescription").innerHTML = band.html;
+
+          document.getElementById("modalLinksBar").innerHTML = band.links
+            .map(
+              (l) =>
+                `<a href="${l.url}" target="_blank" class="btn btn-sm btn-primary">${l.text}</a>`
+            )
+            .join(" ");
+
+          document.getElementById("modalGallery").innerHTML = band.gallery
+            .map(
+              (src) =>
+                `<div class="col-6"><img src="${src}" alt="${band.title}" /></div>`
+            )
+            .join("");
+
+          const modal = new bootstrap.Modal(
+            document.getElementById("bandModal")
+          );
+          modal.show();
+        } else {
+          // В десктопе обновляем секцию справа
+          bandTitle.textContent = band.title;
+          bandYears.textContent = band.years;
+          bandDescription.innerHTML = band.html;
+
+          linksBar.innerHTML = band.links
+            .map(
+              (l) =>
+                `<a href="${l.url}" target="_blank" class="btn btn-sm btn-primary">${l.text}</a>`
+            )
+            .join(" ");
+
+          gallery.innerHTML = band.gallery
+            .map(
+              (src) =>
+                `<div class="col-md-4"><img src="${src}" alt="${band.title}" /></div>`
+            )
+            .join("");
+        }
+
+        // Подсветка выбранной кнопки
+        document
+          .querySelectorAll(".group-btn")
+          .forEach((b) => b.classList.toggle("active", b.dataset.band === key));
+      }
+
       const LIB = {
         rost: {
           title: "РОСТ!",
