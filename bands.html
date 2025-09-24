@@ -2,7 +2,7 @@
 <html lang="ru">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Группы</title>
 
     <!-- Bootstrap -->
@@ -19,13 +19,12 @@
 
     <style>
       :root {
-        --blue-dark: #272a30; /* главный тёмно-синий */
-        --blue-dark-2: #4b525e; /* hover */
-        --blue-soft: #445577; /* вспомогательный */
-        --accent: #0d6efd; /* акцент прогресса/иконок */
-        --paper: #f6f7fb; /* светлый фон */
+        --blue-dark: #272a30;
+        --blue-dark-2: #4b525e;
+        --blue-soft: #445577;
+        --accent: #0d6efd;
+        --paper: #f6f7fb;
       }
-
       html,
       body {
         height: 100%;
@@ -39,7 +38,7 @@
         padding: 0;
       }
 
-      /* Navbar — классическая чёрная */
+      /* NAVBAR */
       .navbar {
         position: fixed;
         top: 0;
@@ -48,11 +47,11 @@
         z-index: 1000;
       }
       .page-wrap {
-        padding-top: 90px; /* отступ от шапки */
-        padding-bottom: 140px; /* место для плеера */
+        padding-top: 90px;
+        padding-bottom: 140px;
       }
 
-      /* Сайдбар групп */
+      /* SIDEBAR */
       .sidebar {
         border-right: 1px solid #e5e7eb;
         min-height: calc(100vh - 230px);
@@ -90,7 +89,7 @@
         box-shadow: 0 6px 22px rgba(43, 60, 91, 0.28);
       }
 
-      /* Правая колонка */
+      /* CONTENT RIGHT */
       .content h2 {
         font-weight: 700;
         color: var(--blue-dark);
@@ -101,7 +100,7 @@
         margin-bottom: 10px;
       }
 
-      /* Аккордеон альбомов */
+      /* ALBUMS */
       .accordion .accordion-item {
         border-radius: 14px;
         overflow: hidden;
@@ -126,10 +125,9 @@
       }
       .album-body {
         background: #fff;
-        padding: 14px 16px 18px 16px;
+        padding: 14px 16px 18px;
       }
 
-      /* Обложка + треклист внутри альбома */
       .album-cover {
         width: 120px;
         height: 120px;
@@ -153,7 +151,7 @@
         color: #6b7280;
       }
 
-      /* Единый плеер (фикс снизу) */
+      /* PLAYER */
       .player {
         position: fixed;
         left: 0;
@@ -168,7 +166,7 @@
         display: flex;
         align-items: center;
         gap: 16px;
-        padding: 14px 18px 12px 18px;
+        padding: 14px 18px 12px;
       }
       .p-cover {
         width: 64px;
@@ -196,6 +194,7 @@
         overflow: hidden;
         text-overflow: ellipsis;
       }
+
       .p-controls {
         display: flex;
         align-items: center;
@@ -252,7 +251,7 @@
         box-shadow: 0 0 12px rgba(13, 110, 253, 0.65) inset;
       }
 
-      /* Маленькие экраны */
+      /* Mobile */
       @media (max-width: 991px) {
         .sidebar {
           margin-bottom: 14px;
@@ -272,11 +271,18 @@
           width: 46px;
           height: 46px;
         }
+        /* на мобилке правая колонка скрыта, используем модалку */
+        .content {
+          display: none;
+        }
+      }
+      @media (min-width: 992px) {
+        /* на десктопе модалка обычно не нужна */
       }
     </style>
   </head>
   <body>
-    <!-- NAVBAR (классическая чёрная) -->
+    <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container">
         <a class="navbar-brand p-0" href="/">
@@ -319,33 +325,38 @@
     <main class="page-wrap">
       <div class="container">
         <div class="row gx-4">
-          <!-- Сайдбар групп -->
+          <!-- Заглушка для мобильных -->
+          <div class="col-12 d-lg-none mt-3" id="mobilePlaceholder"></div>
+
+          <!-- Sidebar -->
           <aside class="col-lg-3 sidebar">
-            <button class="group-btn active" data-band="graydawn">
-              <img src="/b/a/1.jpg" alt="Gray Dawn" />
-              <span>Gray Dawn</span>
+            <button class="group-btn" data-band="graydawn">
+              <img src="/b/a/1.jpg" alt="Gray Dawn" /><span>Gray Dawn</span>
             </button>
             <button class="group-btn" data-band="ouz">
-              <img src="/img/ouz.jpg" alt="Они Уже Зdесь" />
-              <span>Они Уже Зdесь</span>
+              <img src="/img/ouz.jpg" alt="Они Уже Зdесь" /><span
+                >Они Уже Зdесь</span
+              >
             </button>
             <button class="group-btn" data-band="goreot">
-              <img src="/img/Gore Ot (Logo black).png" alt="Горе От" />
-              <span>Горе От</span>
+              <img src="/img/Gore Ot (Logo black).png" alt="Горе От" /><span
+                >Горе От</span
+              >
             </button>
           </aside>
 
-          <!-- Правая колонка: альбомы (аккордеон) и ссылки -->
+          <!-- Right column (desktop only) -->
           <section class="col-lg-9 content">
-            <h2 id="bandTitle">Gray Dawn</h2>
+            <h2 id="bandTitle"></h2>
             <div class="link-bar mb-3" id="linksBar"></div>
             <div class="accordion" id="albumsWrap"></div>
           </section>
         </div>
+        <!-- конец .row -->
       </div>
+      <!-- конец .container -->
     </main>
-
-    <!-- ЕДИНЫЙ ПЛЕЕР -->
+    <!-- PLAYER -->
     <div class="player">
       <div class="player-inner container">
         <img class="p-cover" id="pCover" src="/b/a/1.jpg" alt="cover" />
@@ -353,8 +364,7 @@
           <div class="p-title" id="pTitle">Ничего не играет</div>
           <div class="p-artist" id="pArtist"></div>
           <div class="p-times">
-            <span id="pCur">0:00</span>
-            <span id="pDur">0:00</span>
+            <span id="pCur">0:00</span><span id="pDur">0:00</span>
           </div>
           <div class="p-progress-wrap" id="progressWrap">
             <div class="p-progress" id="progressBar"></div>
@@ -368,6 +378,27 @@
           <button class="p-btn" id="nextBtn" title="Следующий">⏭</button>
         </div>
         <audio id="audio"></audio>
+      </div>
+    </div>
+
+    <!-- MODAL (mobile) -->
+    <div class="modal fade" id="albumsModal" tabindex="-1">
+      <div class="modal-dialog modal-fullscreen-sm-down modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="albumsModalLabel">Альбомы</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <h2 id="bandTitleModal"></h2>
+            <div class="link-bar mb-3" id="linksBarModal"></div>
+            <div class="accordion" id="albumsWrapModal"></div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -538,34 +569,30 @@
                   title: "Зима была холодной",
                   src: "/audio/Горе От - Зима была холодной.wav",
                 },
-                {
-                  title: "Ветер",
-                  src: "/audio/Горе От - Ветер.wav",
-                },
-                {
-                  title: "Жизнь",
-                  src: "/audio/Горе От - Жизнь.wav",
-                },
+                { title: "Ветер", src: "/audio/Горе От - Ветер.wav" },
+                { title: "Жизнь", src: "/audio/Горе От - Жизнь.wav" },
               ],
             },
             {
               title: "2025 – Лишь шанс [EP]",
               cover: "/img/ls.png",
               tracks: [
-                {
-                  title: "Лишь шанс",
-                  src: "/audio/Горе От - Лишь шанс.wav",
-                },
+                { title: "Лишь шанс", src: "/audio/Горе От - Лишь шанс.wav" },
               ],
             },
           ],
         },
       };
 
-      /* UI ELEMENTS */
+      /* ELs (desktop + modal) */
       const bandTitle = document.getElementById("bandTitle");
-      const albumsWrap = document.getElementById("albumsWrap");
       const linksBar = document.getElementById("linksBar");
+      const albumsWrap = document.getElementById("albumsWrap");
+
+      const bandTitleModal = document.getElementById("bandTitleModal");
+      const linksBarModal = document.getElementById("linksBarModal");
+      const albumsWrapModal = document.getElementById("albumsWrapModal");
+      const albumsModalEl = document.getElementById("albumsModal");
 
       const audio = document.getElementById("audio");
       const pCover = document.getElementById("pCover");
@@ -580,7 +607,7 @@
       const nextBtn = document.getElementById("nextBtn");
 
       /* STATE */
-      let currentBandKey = "graydawn";
+      let currentBandKey = null;
       let currentAlbumIndex = 0;
       let currentTrackIndex = 0;
 
@@ -591,87 +618,109 @@
         return `${m}:${s < 10 ? "0" + s : s}`;
       }
 
-      function renderBand(bandKey) {
+      function getContainers(target) {
+        if (target === "modal") {
+          return {
+            titleEl: bandTitleModal,
+            linksEl: linksBarModal,
+            albumsEl: albumsWrapModal,
+            parentId: "albumsWrapModal",
+            suffix: "m",
+          };
+        }
+        return {
+          titleEl: bandTitle,
+          linksEl: linksBar,
+          albumsEl: albumsWrap,
+          parentId: "albumsWrap",
+          suffix: "d",
+        };
+      }
+
+      function renderBand(bandKey, target = "desktop") {
         currentBandKey = bandKey;
         const band = LIB[bandKey];
-        bandTitle.textContent = band.title;
+        const { titleEl, linksEl, albumsEl, parentId, suffix } =
+          getContainers(target);
 
         // активная кнопка слева
         document.querySelectorAll(".group-btn").forEach((b) => {
           b.classList.toggle("active", b.dataset.band === bandKey);
         });
 
-        // ссылки
-        linksBar.innerHTML = "";
-        if (Array.isArray(band.links)) {
-          band.links.forEach((l) => {
-            const a = document.createElement("a");
-            a.href = l.url;
-            a.target = "_blank";
-            a.className = `btn ${l.cls} btn-sm`;
-            a.textContent = l.text;
-            linksBar.appendChild(a);
-          });
-        }
+        // Заголовок + ссылки
+        titleEl.textContent = band.title;
+        linksEl.innerHTML = "";
+        (band.links || []).forEach((l) => {
+          const a = document.createElement("a");
+          a.href = l.url;
+          a.target = "_blank";
+          a.className = `btn ${l.cls} btn-sm`;
+          a.textContent = l.text;
+          linksEl.appendChild(a);
+        });
 
-        // аккордеон альбомов
-        albumsWrap.innerHTML = "";
-        band.albums.forEach((album, idx) => {
-          const accId = `acc-${bandKey}-${idx}`;
-          const headId = `head-${bandKey}-${idx}`;
-          const collapseId = `collapse-${bandKey}-${idx}`;
+        // Альбомы
+        albumsEl.innerHTML = "";
+        (band.albums || []).forEach((album, idx) => {
+          const headId = `head-${bandKey}-${idx}-${suffix}`;
+          const collapseId = `collapse-${bandKey}-${idx}-${suffix}`;
           const item = document.createElement("div");
           item.className = "accordion-item";
           item.innerHTML = `
-    <h2 class="accordion-header" id="${headId}">
-      <button class="accordion-button collapsed" type="button"
-        data-bs-toggle="collapse" data-bs-target="#${collapseId}" 
-        aria-expanded="false" aria-controls="${collapseId}">
-        ${album.title}
-      </button>
-    </h2>
-    <div id="${collapseId}" class="accordion-collapse collapse" 
-         aria-labelledby="${headId}" data-bs-parent="#albumsWrap">
-      <div class="accordion-body album-body">
-        <div class="row g-3 align-items-start">
-          <div class="col-auto">
-            <img class="album-cover" src="${album.cover}" alt="cover ${
+            <h2 class="accordion-header" id="${headId}">
+              <button class="accordion-button collapsed" type="button"
+                data-bs-toggle="collapse" data-bs-target="#${collapseId}"
+                aria-expanded="false" aria-controls="${collapseId}">
+                ${album.title}
+              </button>
+            </h2>
+            <div id="${collapseId}" class="accordion-collapse collapse"
+                 aria-labelledby="${headId}" data-bs-parent="#${parentId}">
+              <div class="accordion-body album-body">
+                <div class="row g-3 align-items-start">
+                  <div class="col-auto">
+                    <img class="album-cover" src="${album.cover}" alt="cover ${
             album.title
           }">
-          </div>
-          <div class="col">
-            <div class="list-group list-group-flush">
-              ${album.tracks
-                .map(
-                  (t, ti) => `
-                <div class="list-group-item track d-flex justify-content-between align-items-center"
-                     data-band="${bandKey}" data-album-index="${idx}" data-track-index="${ti}">
-                  <span>${t.title}</span>
-                  <small>▶</small>
+                  </div>
+                  <div class="col">
+                    <div class="list-group list-group-flush">
+                      ${album.tracks
+                        .map(
+                          (t, ti) => `
+                          <div class="list-group-item track d-flex justify-content-between align-items-center"
+                               data-band="${bandKey}" data-album-index="${idx}" data-track-index="${ti}">
+                            <span>${t.title}</span>
+                            <small>▶</small>
+                          </div>
+                        `
+                        )
+                        .join("")}
+                    </div>
+                  </div>
                 </div>
-              `
-                )
-                .join("")}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
-          albumsWrap.appendChild(item);
+              </div>
+            </div>`;
+          albumsEl.appendChild(item);
         });
 
-        // навесить клики на треки
-        albumsWrap.querySelectorAll(".track").forEach((el) => {
+        // События по трекам в выбранном контейнере
+        albumsEl.querySelectorAll(".track").forEach((el) => {
           el.addEventListener("click", () => {
             const bKey = el.getAttribute("data-band");
             const aIdx = +el.getAttribute("data-album-index");
             const tIdx = +el.getAttribute("data-track-index");
             playFrom(bKey, aIdx, tIdx);
+            // На мобилке — закрыть модалку, чтобы видеть плеер
+            if (target === "modal") {
+              const m = bootstrap.Modal.getOrCreateInstance(albumsModalEl);
+              m.hide();
+            }
           });
         });
 
-        // сбросить/обновить плейер под выбранную группу
+        // Обновить плеер для группы (первый трек)
         if (band.albums?.length) {
           currentAlbumIndex = 0;
           currentTrackIndex = 0;
@@ -695,9 +744,14 @@
         const track = album.tracks[trackIndex];
 
         audio.src = track.src;
-        audio.play().catch(() => {
-          /* autoplay guard */
-        });
+        audio
+          .play()
+          .then(() => {
+            playBtn.textContent = "⏸";
+          })
+          .catch(() => {
+            /* autoplay guard */
+          });
 
         pCover.src = album.cover || band.cover;
         pArtist.textContent = band.title;
@@ -728,7 +782,7 @@
         }
       }
 
-      // Прогресс-бар и время
+      // Прогресс/время/перемотка
       audio.addEventListener("timeupdate", () => {
         const { currentTime, duration } = audio;
         pCur.textContent = mmss(currentTime);
@@ -737,11 +791,9 @@
         progressBar.style.width = pct + "%";
       });
       audio.addEventListener("ended", nextTrack);
-
       progressWrap.addEventListener("click", (e) => {
         const rect = progressWrap.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const ratio = x / rect.width;
+        const ratio = (e.clientX - rect.left) / rect.width;
         audio.currentTime = ratio * (audio.duration || 0);
       });
 
@@ -749,16 +801,65 @@
       nextBtn.addEventListener("click", nextTrack);
       playBtn.addEventListener("click", togglePlay);
 
-      // Смена группы (сайдбар)
+      // Смена группы
       document.querySelectorAll(".group-btn").forEach((btn) => {
         btn.addEventListener("click", () => {
           const key = btn.getAttribute("data-band");
-          renderBand(key);
+          if (window.innerWidth < 992) {
+            renderBand(key, "modal");
+            const m = bootstrap.Modal.getOrCreateInstance(albumsModalEl);
+            m.show();
+          } else {
+            renderBand(key, "desktop");
+          }
         });
       });
 
-      // Старт: показываем Gray Dawn
-      renderBand("graydawn");
+      function renderPlaceholder() {
+        // Desktop
+        bandTitle.textContent = "Группы";
+        linksBar.innerHTML = "";
+        albumsWrap.innerHTML = `
+    <div class="alert alert-secondary" role="alert">
+      В данном разделе, вы можете ознакомиться и послушать материалы ныне действующих коллективов. 
+      Для этого выберите интересующий вас в списке.
+    </div>
+  `;
+
+        // Modal
+        bandTitleModal.textContent = "Группы";
+        linksBarModal.innerHTML = "";
+        albumsWrapModal.innerHTML = `
+    <div class="alert alert-secondary" role="alert">
+      В данном разделе, вы можете ознакомиться и послушать материалы ныне действующих коллективов. 
+      Для этого выберите интересующий вас в списке.
+    </div>
+  `;
+
+        // Mobile placeholder (под списком групп)
+        const mobilePlaceholder = document.getElementById("mobilePlaceholder");
+        if (mobilePlaceholder) {
+          mobilePlaceholder.innerHTML = `
+      <div class="alert alert-secondary" role="alert">
+        В данном разделе, вы можете ознакомиться и послушать материалы ныне действующих коллективов. 
+        Для этого выберите интересующий вас в списке.
+      </div>
+    `;
+        }
+
+        // Сброс плеера
+        pCover.src = "/b/a/1.jpg";
+        pArtist.textContent = "";
+        pTitle.textContent = "Ничего не играет";
+        audio.src = "";
+        playBtn.textContent = "▶";
+      }
+
+      // Инициализация
+      function init() {
+        renderPlaceholder();
+      }
+      document.addEventListener("DOMContentLoaded", init);
     </script>
   </body>
 </html>
