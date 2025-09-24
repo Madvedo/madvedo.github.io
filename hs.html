@@ -236,6 +236,10 @@
               <img src="/img/345.jpg" alt="King of Fire" />
               <span>King of Fire</span>
             </button>
+            </button>
+            <button class="group-btn" data-band="mart">
+              <span>М`арт</span>
+            </button>
             <button class="group-btn" data-band="taipen">
               <span>Тай-Пэн</span>
             </button>
@@ -249,7 +253,7 @@
               <p>
                 <em
                   >Здесь будет отображаться информация о выбранном
-                  коллективе.</em
+                  коллективе. Данные взяты с официальных страничек в соцсетях.</em
                 >
               </p>
             </div>
@@ -874,10 +878,15 @@
 
         kof: {
           title: "King of Fire",
-          years: "2009–2012",
-          html: `<p><strong>Информационный след отсутствует</strong></p>`,
-          links: [{ text: "Страница VK", url: "https://vk.com/kingoffire" }],
-          gallery: ["/img/345.jpg"],
+          years: "2019–2023",
+          html: `<p><strong>► НОВЫЙ АЛЬБОМ - "2020" УЖЕ В ГРУППЕ!</strong></p> <p>!РОК, МЕТАЛ ГРУППА!
+♫KINGS of FIRE♫</p> <p>ПОЖЕРТВОВАТЬ НА ОБОРУДОВАНИЕ: https://www.donationalerts.com/r/kings_of_fire
+</p><p>ПО ВСЕМ ВОПРОСАМ НА ПОЧТУ: kingsoffire@yandex.ru</p>`,
+
+          links: [
+            { text: "Страница VK", url: "https://vk.com/kingsoffire_official" },
+          ],
+          gallery: ["/img/345.jpg", "/img/live/kf.jpg"],
         },
 
         taipen: {
@@ -886,6 +895,21 @@
           html: `
     <p>
       <strong>Тай-Пэн</strong> — группа из Ивашково, ирающая в жанре эстрадного блюз-рока. На данный момент информационнй след не обнаружен.
+    </p>
+   
+  `,
+          links: [
+            // Если есть страница ВК или сайт — добавляем так:
+            // { text: "Страница VK", url: "https://vk.com/taipen" }
+          ],
+          gallery: [],
+        },
+        mart: {
+          title: "М`арт",
+          years: "—",
+          html: `
+    <p>
+      <strong>М'арт</strong> — группа из Шаховской, играющая качественный легкий рок. На данный момент информационный след не обнаружен.
     </p>
    
   `,
