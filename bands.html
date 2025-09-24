@@ -668,40 +668,40 @@
           const item = document.createElement("div");
           item.className = "accordion-item";
           item.innerHTML = `
-            <h2 class="accordion-header" id="${headId}">
-              <button class="accordion-button collapsed" type="button"
-                data-bs-toggle="collapse" data-bs-target="#${collapseId}"
-                aria-expanded="false" aria-controls="${collapseId}">
-                ${album.title}
-              </button>
-            </h2>
-            <div id="${collapseId}" class="accordion-collapse collapse"
-                 aria-labelledby="${headId}" data-bs-parent="#${parentId}">
-              <div class="accordion-body album-body">
-                <div class="row g-3 align-items-start">
-                  <div class="col-auto">
-                    <img class="album-cover" src="${album.cover}" alt="cover ${
-            album.title
-          }">
-                  </div>
-                  <div class="col">
-                    <div class="list-group list-group-flush">
-                      ${album.tracks
-                        .map(
-                          (t, ti) => `
-                          <div class="list-group-item track d-flex justify-content-between align-items-center"
-                               data-band="${bandKey}" data-album-index="${idx}" data-track-index="${ti}">
-                            <span>${t.title}</span>
-                            <small>▶</small>
+                  <h2 class="accordion-header" id="${headId}">
+                    <button class="accordion-button collapsed" type="button"
+                      data-bs-toggle="collapse" data-bs-target="#${collapseId}"
+                      aria-expanded="false" aria-controls="${collapseId}">
+                      ${album.title}
+                    </button>
+                  </h2>
+                  <div id="${collapseId}" class="accordion-collapse collapse"
+                       aria-labelledby="${headId}" data-bs-parent="#${parentId}">
+                    <div class="accordion-body album-body">
+                      <div class="row g-3 align-items-start">
+                        <div class="col-auto">
+                          <img class="album-cover" src="${
+                            album.cover
+                          }" alt="cover ${album.title}">
+                        </div>
+                        <div class="col">
+                          <div class="list-group list-group-flush">
+                            ${album.tracks
+                              .map(
+                                (t, ti) => `
+                                <div class="list-group-item track d-flex justify-content-between align-items-center"
+                                     data-band="${bandKey}" data-album-index="${idx}" data-track-index="${ti}">
+                                  <span>${t.title}</span>
+                                  <small>▶</small>
+                                </div>
+                              `
+                              )
+                              .join("")}
                           </div>
-                        `
-                        )
-                        .join("")}
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              </div>
-            </div>`;
+                  </div>`;
           albumsEl.appendChild(item);
         });
 
@@ -712,29 +712,26 @@
             const aIdx = +el.getAttribute("data-album-index");
             const tIdx = +el.getAttribute("data-track-index");
             playFrom(bKey, aIdx, tIdx);
-            // На мобилке — закрыть модалку, чтобы видеть плеер
-            if (target === "modal") {
-              const m = bootstrap.Modal.getOrCreateInstance(albumsModalEl);
-              m.hide();
-            }
           });
         });
 
         // Обновить плеер для группы (первый трек)
-        if (band.albums?.length) {
-          currentAlbumIndex = 0;
-          currentTrackIndex = 0;
-          const firstTrack = band.albums[0].tracks[0];
-          pCover.src = band.albums[0].cover || band.cover;
-          pArtist.textContent = band.title;
-          pTitle.textContent = firstTrack
-            ? firstTrack.title
-            : "Ничего не играет";
-          audio.src = firstTrack ? firstTrack.src : "";
-          playBtn.textContent = "▶";
+        // Обновлять плеер только если он ещё пустой
+        if (!audio.src) {
+          if (band.albums?.length) {
+            currentAlbumIndex = 0;
+            currentTrackIndex = 0;
+            const firstTrack = band.albums[0].tracks[0];
+            pCover.src = band.albums[0].cover || band.cover;
+            pArtist.textContent = band.title;
+            pTitle.textContent = firstTrack
+              ? firstTrack.title
+              : "Ничего не играет";
+            audio.src = firstTrack ? firstTrack.src : "";
+            playBtn.textContent = "▶";
+          }
         }
       }
-
       function playFrom(bandKey, albumIndex, trackIndex) {
         currentBandKey = bandKey;
         currentAlbumIndex = albumIndex;
@@ -820,31 +817,31 @@
         bandTitle.textContent = "Группы";
         linksBar.innerHTML = "";
         albumsWrap.innerHTML = `
-    <div class="alert alert-secondary" role="alert">
-      В данном разделе, вы можете ознакомиться и послушать материалы ныне действующих коллективов. 
-      Для этого выберите интересующий вас в списке.
-    </div>
-  `;
+          <div class="alert alert-secondary" role="alert">
+            В данном разделе, вы можете ознакомиться и послушать материалы ныне действующих коллективов.
+            Для этого выберите интересующий вас в списке.
+          </div>
+        `;
 
         // Modal
         bandTitleModal.textContent = "Группы";
         linksBarModal.innerHTML = "";
         albumsWrapModal.innerHTML = `
-    <div class="alert alert-secondary" role="alert">
-      В данном разделе, вы можете ознакомиться и послушать материалы ныне действующих коллективов. 
-      Для этого выберите интересующий вас в списке.
-    </div>
-  `;
+          <div class="alert alert-secondary" role="alert">
+            В данном разделе, вы можете ознакомиться и послушать материалы ныне действующих коллективов.
+            Для этого выберите интересующий вас в списке.
+          </div>
+        `;
 
         // Mobile placeholder (под списком групп)
         const mobilePlaceholder = document.getElementById("mobilePlaceholder");
         if (mobilePlaceholder) {
           mobilePlaceholder.innerHTML = `
-      <div class="alert alert-secondary" role="alert">
-        В данном разделе, вы можете ознакомиться и послушать материалы ныне действующих коллективов. 
-        Для этого выберите интересующий вас в списке.
-      </div>
-    `;
+            <div class="alert alert-secondary" role="alert">
+              В данном разделе, вы можете ознакомиться и послушать материалы ныне действующих коллективов.
+              Для этого выберите интересующий вас в списке.
+            </div>
+          `;
         }
 
         // Сброс плеера
