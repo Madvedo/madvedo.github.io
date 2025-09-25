@@ -25,10 +25,19 @@
       .rounded-img {
         width: 60%;
         border-radius: 50%;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
         padding: 0.6em;
         margin-bottom: 1em;
+        transition: transform 0.4s ease, box-shadow 0.4s ease;
+        cursor: pointer;
       }
+
+      .rounded-img:hover {
+        transform: scale(1.08);
+        box-shadow: 0 0 30px rgba(0, 255, 38, 0.746),
+          0 0 60px rgba(0, 123, 255, 0.6);
+      }
+
       .center {
         margin-left: 100px;
       }
