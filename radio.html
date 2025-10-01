@@ -284,7 +284,13 @@
         audio
           .play()
           .catch(() => (titleEl.textContent = "Нажмите «Пуск», чтобы начать"));
-        titleEl.textContent = "Сейчас играет: " + currentTrack.split("/").pop();
+
+        // тут убираем расширение
+        let name = currentTrack
+          .split("/")
+          .pop()
+          .replace(/\.[^/.]+$/, "");
+        titleEl.textContent = "Сейчас играет: " + name;
       }
       btnPlay.addEventListener("click", () =>
         audio.paused ? audio.play() : audio.pause()
