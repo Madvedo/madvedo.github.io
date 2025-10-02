@@ -4,43 +4,46 @@ pipeline {
   options {
     timestamps()
     disableConcurrentBuilds()
-    skipDefaultCheckout(true) // не тянем репозиторий автоматически
+    skipDefaultCheckout(true) // ничего не чекаутим из SCM по-умолчанию
   }
 
   environment {
-    // Репозиторий
-    GIT_URL    = 'https://github.com/Madvedo/madvedo.github.io.git'
-    GIT_BRANCH = 'main'
+    // репозиторий
+    REPO_OWNER   = 'Madvedo'
+    REPO_NAME    = 'madvedo.github.io'
+    GIT_URL      = "https://github.com/${REPO_OWNER}/${REPO_NAME}.git"
+    GIT_BRANCH   = 'main'
+    RAW_BASE     = "https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}"
 
-    // Фронт
-    FRONT_HOST = '87.247.142.102'
-    FRONT_USER = 'deploy'
-    FRONT_DST  = '/var/www/html'
+    // фронт
+    FRONT_HOST   = '87.247.142.102'
+    FRONT_USER   = 'deploy'
+    FRONT_DST    = '/var/www/html'
+    SSH_KEY      = '/var/lib/jenkins/.ssh/id_ed25519'
 
-    // Бэкенд (локально на Jenkins-хосте, где nginx бэка)
-    BACK_DST   = '/var/www/html'
+    // бэк (локально на Jenkins-хосте)
+    BACK_DST     = '/var/www/html'
 
-    // Где хранить "последний задеплоенный коммит"
-    STATE_DIR  = '/var/lib/jenkins/.deploy_state'
-    STATE_FILE = '/var/lib/jenkins/.deploy_state/git_deploy_shun.sha'
+    // состояние
+    STATE_DIR    = '/var/lib/jenkins/.deploy_state'
+    STATE_FILE   = '/var/lib/jenkins/.deploy_state/git_deploy_shun.sha'
   }
 
   stages {
-
     stage('Resolve HEAD & previous SHA (no checkout)') {
       steps {
         sh '''
           set -e
           mkdir -p "${STATE_DIR}"
 
-          # Получаем текущий HEAD SHA ветки без загрузки блобов
+          # текущий HEAD SHA удалённой ветки
           HEAD_SHA=$(git ls-remote --heads "${GIT_URL}" "refs/heads/${GIT_BRANCH}" | awk '{print $1}')
           echo "HEAD_SHA=${HEAD_SHA}"
           test -n "$HEAD_SHA"
 
-          # Предыдущий задеплоенный SHA (если нет — пусто)
+          # предыдущий задеплоенный SHA (если отсутствует — пусто)
           if [ -f "${STATE_FILE}" ]; then
-            PREV_SHA=$(cat "${STATE_FILE}" | tr -d '\\n')
+            PREV_SHA=$(tr -d '\\n' < "${STATE_FILE}")
           else
             PREV_SHA=""
           fi
@@ -62,75 +65,85 @@ pipeline {
           rm -rf .meta && mkdir .meta && cd .meta
           git init -q
           git remote add origin "${GIT_URL}"
-
-          # partial fetch без блобов
-          git fetch --filter=blob:none --no-tags --depth=2 origin "${GIT_BRANCH}"
+          git fetch --filter=blob:none --no-tags --depth=2 origin "${GIT_BRANCH}" 1>/dev/null
           git checkout -q --detach FETCH_HEAD
 
-          # Если нет PREV_SHA — первый деплой: возьмём весь трек-лист
+          # если baseline не сохранён — берём предыдущий коммит удалённой ветки
           if [ -z "$PREV_SHA" ]; then
-            git ls-tree -r --name-only "$HEAD_SHA" > ../changed_all.txt
-            : > ../deleted_all.txt
-          else
-            # Получаем списки изменённых и удалённых путей (блобов не нужно)
-            git diff --name-only "$PREV_SHA" "$HEAD_SHA" > ../changed_all.txt || true
-            git diff --name-status "$PREV_SHA" "$HEAD_SHA" | awk '/^D/{print $2}' > ../deleted_all.txt || true
+            if git rev-parse -q --verify HEAD~1 >/dev/null 2>&1; then
+              PREV_SHA=$(git rev-parse HEAD~1)
+              echo "[FIRST RUN] Using remote HEAD~1 as baseline: $PREV_SHA"
+            else
+              echo "[FIRST RUN] Single-commit repo — нет diffs"
+              : > ../front_changed.txt
+              : > ../front_deleted.txt
+              : > ../media_changed.txt
+              : > ../media_deleted.txt
+              cd ..
+              exit 0
+            fi
           fi
 
+          # разница между PREV_SHA и HEAD_SHA (без блобов)
+          git diff --name-only   "$PREV_SHA" "$HEAD_SHA" > ../changed_all.txt || true
+          git diff --name-status "$PREV_SHA" "$HEAD_SHA" | awk '/^D/{print $2}' > ../deleted_all.txt || true
           cd ..
-          # Делим на фронт/медиа
-          awk '!/^\\s*$/' changed_all.txt | awk '{print $0}' > changed_all_clean.txt
-          awk '!/^\\s*$/' deleted_all.txt | awk '{print $0}' > deleted_all_clean.txt
 
-          # медиа: только audio/ или radio/
-          grep -E '^(audio/|radio/)' changed_all_clean.txt  || true > media_changed.txt
-          grep -E '^(audio/|radio/)' deleted_all_clean.txt  || true > media_deleted.txt
+          awk 'NF' changed_all.txt > changed_all_clean.txt
+          awk 'NF' deleted_all.txt > deleted_all_clean.txt
 
-          # фронт: всё, кроме audio/ и radio/
-          grep -Ev '^(audio/|radio/)' changed_all_clean.txt || true > front_changed.txt
-          grep -Ev '^(audio/|radio/)' deleted_all_clean.txt || true > front_deleted.txt
+          # ВАЖНО: редирект ДО "|| true"
+          # медиа
+          grep -E '^(audio/|radio/)' changed_all_clean.txt  > media_changed.txt  || true
+          grep -E '^(audio/|radio/)' deleted_all_clean.txt  > media_deleted.txt  || true
+
+          # фронт
+          grep -Ev '^(audio/|radio/)' changed_all_clean.txt > front_changed.txt  || true
+          grep -Ev '^(audio/|radio/)' deleted_all_clean.txt > front_deleted.txt  || true
 
           echo "== stats =="
           wc -l front_changed.txt front_deleted.txt media_changed.txt media_deleted.txt || true
+
+          echo "--- front_changed (first lines) ---"
+          head -n 30 front_changed.txt || true
         '''
       }
     }
 
-    stage('Deploy FRONT (checkout only changed files)') {
+    stage('Deploy FRONT (download changed files via raw.githubusercontent)') {
       when { expression { return fileExists('front_changed.txt') && sh(script: 'test -s front_changed.txt', returnStatus: true) == 0 } }
       steps {
         sh '''
           set -e
+          HEAD_SHA=$(cat .head_sha)
+
+          rm -rf dl_front && mkdir -p dl_front
+
+          # качаем ТОЛЬКО изменённые файлы напрямую по SHA
+          while IFS= read -r p; do
+            [ -n "$p" ] || continue
+            echo "DL: $p"
+            mkdir -p "dl_front/$(dirname "$p")"
+            curl -sfL "${RAW_BASE}/${HEAD_SHA}/${p}" -o "dl_front/${p}"
+          done < front_changed.txt
+
+          # отправляем на фронт
           mkdir -p ~/.ssh
           ssh-keyscan -H ${FRONT_HOST} >> ~/.ssh/known_hosts 2>/dev/null || true
+          RSYNC_SSH="ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no"
 
-          rm -rf src_front && mkdir src_front
-          git -C src_front init -q
-          git -C src_front remote add origin "${GIT_URL}"
-          # Частичный клон без блобов
-          git -C src_front fetch --filter=blob:none --depth=1 origin "${GIT_BRANCH}"
-          git -C src_front checkout -q --detach FETCH_HEAD
-
-          # Точечный checkout только изменённых фронтовых путей (скачает блобы ТОЛЬКО для них)
-          if [ -s front_changed.txt ]; then
-            # Убедимся, что каталоги существуют
-            awk -F/ 'BEGIN{OFS="/"}{n=split($0,a,"/"); if(n>1){d=$0; sub("/"a[n] "$","", d); print d}}' front_changed.txt | sort -u | xargs -r -I{} mkdir -p "src_front/{}"
-            git -C src_front checkout --pathspec-from-file=../front_changed.txt
-          fi
-
-          # Выкладываем изменённые файлы
-          RSYNC_SSH="ssh -i /var/lib/jenkins/.ssh/id_ed25519 -o StrictHostKeyChecking=no"
           rsync -azv \
-            --files-from=front_changed.txt \
+            --include='*/' \
+            $(awk '{print "--include=" $0}' front_changed.txt) \
+            --exclude='*' \
             -e "$RSYNC_SSH" \
-            src_front/ ${FRONT_USER}@${FRONT_HOST}:${FRONT_DST}
+            dl_front/ ${FRONT_USER}@${FRONT_HOST}:${FRONT_DST}
 
-          # Удаляем удалённые файлы на фронте
+          # удалённые пути
           if [ -s front_deleted.txt ]; then
             echo "Deleting on front:"
             cat front_deleted.txt
-            # Осторожно: удаляем только в пределах FRONT_DST
-            ssh -i /var/lib/jenkins/.ssh/id_ed25519 -o StrictHostKeyChecking=no ${FRONT_USER}@${FRONT_HOST} \
+            ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no ${FRONT_USER}@${FRONT_HOST} \
               'set -e; while IFS= read -r f; do rm -f -- "${FRONT_DST}/$f"; done' \
               <<< "$(cat front_deleted.txt)"
           fi
@@ -138,45 +151,45 @@ pipeline {
       }
     }
 
-    stage('Deploy MEDIA (checkout only changed media)') {
+    stage('Deploy MEDIA (only if changed)') {
       when { expression { return fileExists('media_changed.txt') && sh(script: 'test -s media_changed.txt', returnStatus: true) == 0 } }
       steps {
         sh '''
           set -e
-          rm -rf src_media && mkdir src_media
-          git -C src_media init -q
-          git -C src_media remote add origin "${GIT_URL}"
-          # Частичный клон без блобов
-          git -C src_media fetch --filter=blob:none --depth=1 origin "${GIT_BRANCH}"
-          git -C src_media checkout -q --detach FETCH_HEAD
+          HEAD_SHA=$(cat .head_sha)
 
-          # Точечный checkout только изменённых медиа-файлов
-          if [ -s media_changed.txt ]; then
-            awk -F/ 'BEGIN{OFS="/"}{n=split($0,a,"/"); if(n>1){d=$0; sub("/"a[n] "$","", d); print d}}' media_changed.txt | sort -u | xargs -r -I{} mkdir -p "src_media/{}"
-            git -C src_media checkout --pathspec-from-file=../media_changed.txt
-          fi
+          rm -rf dl_media && mkdir -p dl_media
 
-          # Локальный rsync на бэкенд (этот же сервер)
-          rsync -azv \
-            --files-from=media_changed.txt \
-            src_media/ "${BACK_DST}"
+          # если медиа реально менялись — качаем только их
+          while IFS= read -r p; do
+            [ -n "$p" ] || continue
+            echo "DL media: $p"
+            mkdir -p "dl_media/$(dirname "$p")"
+            curl -sfL "${RAW_BASE}/${HEAD_SHA}/${p}" -o "dl_media/${p}"
+          done < media_changed.txt
 
-          # Удаляем удалённые медиа локально
-          if [ -s media_deleted.txt ]; then
-            echo "Deleting on backend:"
-            cat media_deleted.txt
-            while IFS= read -r f; do rm -f -- "${BACK_DST}/$f"; done < media_deleted.txt
-          fi
+          # локальный rsync на бэкенд; НЕ удаляем существующее (бэк — источник истины)
+          rsync -azv --ignore-existing \
+            --include='*/' \
+            $(awk '{print "--include=" $0}' media_changed.txt) \
+            --exclude='*' \
+            dl_media/ "${BACK_DST}"
+
+          # Если хочешь удалять медиа по репозиторию — раскомментируй блок ниже (ОСТОРОЖНО!)
+          # if [ -s media_deleted.txt ]; then
+          #   echo "Deleting media on backend as per repo:"
+          #   while IFS= read -r f; do rm -f -- "${BACK_DST}/$f"; done < media_deleted.txt
+          # fi
         '''
       }
     }
 
-    stage('Update state file') {
+    stage('Save baseline') {
       steps {
         sh '''
           set -e
           cp .head_sha "${STATE_FILE}"
-          echo "Saved new state: $(cat ${STATE_FILE})"
+          echo "Saved baseline: $(cat ${STATE_FILE})"
         '''
       }
     }
@@ -184,7 +197,7 @@ pipeline {
 
   post {
     always {
-      // Чистим workspace, чтобы место не копилось
+      // полная очистка рабочего каталога каждый раз
       deleteDir()
     }
   }
