@@ -4,15 +4,13 @@ pipeline {
   options {
     timestamps()
     disableConcurrentBuilds()
-    // ansiColor('xterm') // <- убрать или включить после установки плагина
   }
 
   environment {
     FRONT_HOST   = '87.247.142.102'
-    FRONT_USER   = 'deploy'
     REPO_URL     = 'https://github.com/Madvedo/madvedo.github.io.git'
     REPO_BRANCH  = 'main'
-    SSH_CRED_ID  = 'front-deploy-ssh'   // твой Credential ID
+    SSH_CRED_ID  = 'front-deploy-ssh'   // <-- твой Credential ID
   }
 
   triggers {
@@ -34,10 +32,10 @@ pipeline {
 
     stage('Deploy to Front') {
       steps {
-        sshagent(credentials: [env.SSH_CRED_ID]) {
+        withCredentials([sshUserPrivateKey(credentialsId: env.SSH_CRED_ID, keyFileVariable: 'SSH_KEY', usernameVariable: 'SSH_USER')]) {
           sh """
             set -e
-            ssh -o StrictHostKeyChecking=no ${FRONT_USER}@${FRONT_HOST} \\
+            ssh -o StrictHostKeyChecking=no -i "$SSH_KEY" ${SSH_USER}@${FRONT_HOST} \\
               'git -C /var/www/html fetch --all --prune && \\
                git -C /var/www/html checkout ${REPO_BRANCH} && \\
                git -C /var/www/html pull --ff-only && \\
@@ -50,11 +48,7 @@ pipeline {
   }
 
   post {
-    success {
-      echo "✅ Deployed ${env.REPO_BRANCH} to ${env.FRONT_HOST}"
-    }
-    failure {
-      echo "❌ Deploy failed. Check console output."
-    }
+    success { echo "✅ Deployed ${env.REPO_BRANCH} to ${env.FRONT_HOST}" }
+    failure { echo "❌ Deploy failed. Check console output." }
   }
 }
