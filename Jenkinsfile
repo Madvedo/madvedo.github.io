@@ -4,38 +4,35 @@ pipeline {
   options {
     timestamps()
     disableConcurrentBuilds()
-    ansiColor('xterm')
+    // ansiColor('xterm') // <- убрать или включить после установки плагина
   }
 
   environment {
-    FRONT_HOST = '87.247.142.102'
-    FRONT_USER = 'deploy'
-    REPO_BRANCH = 'main'
-    // ID входных кредов Jenkins -> Credentials (SSH Username with private key)
-    SSH_CRED_ID = 'ssh_deploy_shunder'
+    FRONT_HOST   = '87.247.142.102'
+    FRONT_USER   = 'deploy'
+    REPO_URL     = 'https://github.com/Madvedo/madvedo.github.io.git'
+    REPO_BRANCH  = 'main'
+    SSH_CRED_ID  = 'front-deploy-ssh'   // твой Credential ID
   }
 
   triggers {
-    // Автозапуск по GitHub webhook:
     githubPush()
-    // Резервно можно включить polling, если вебхук временно не работает:
-    // pollSCM('H/5 * * * *')
+    // pollSCM('H/5 * * * *') // опционально как запаска
   }
 
   stages {
-    stage('Checkout (for metadata only)') {
+    stage('Checkout (metadata)') {
       steps {
-        // Чекаутим чтобы в билде были инфо о ревизии/логах (на сервер файлы НЕ копируем)
         checkout([
           $class: 'GitSCM',
           branches: [[name: "*/${env.REPO_BRANCH}"]],
-          userRemoteConfigs: [[url: 'https://github.com/Madvedo/madvedo.github.io.git']]
+          userRemoteConfigs: [[url: env.REPO_URL]]
         ])
         sh 'git log -1 --pretty=oneline'
       }
     }
 
-    stage('Deploy on Front via SSH') {
+    stage('Deploy to Front') {
       steps {
         sshagent(credentials: [env.SSH_CRED_ID]) {
           sh """
@@ -57,7 +54,7 @@ pipeline {
       echo "✅ Deployed ${env.REPO_BRANCH} to ${env.FRONT_HOST}"
     }
     failure {
-      echo "❌ Deploy failed. Check stages output."
+      echo "❌ Deploy failed. Check console output."
     }
   }
 }
