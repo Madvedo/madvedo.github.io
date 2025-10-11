@@ -360,7 +360,13 @@
     <!-- PLAYER -->
     <div class="player">
       <div class="player-inner container">
-        <img class="p-cover" id="pCover" src="/b/a/1.jpg" alt="cover" />
+        <img
+          class="p-cover"
+          id="pCover"
+          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg=="
+          alt="cover"
+        />
+
         <div class="p-meta">
           <div class="p-title" id="pTitle">Ничего не играет</div>
           <div class="p-artist" id="pArtist"></div>
@@ -846,7 +852,9 @@
         }
 
         // Сброс плеера
-        pCover.src = "/b/a/1.jpg";
+        pCover.src =
+          "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg==";
+
         pArtist.textContent = "";
         pTitle.textContent = "Ничего не играет";
         audio.src = "";
