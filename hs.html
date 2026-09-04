@@ -162,6 +162,9 @@
           height: var(--history-groups-height, auto);
           justify-content: flex-end;
         }
+        body.in-shell .history-group-column.is-measuring {
+          justify-content: flex-start;
+        }
         body.in-shell .content {
           flex: 1 1 0;
           width: auto;
@@ -1049,7 +1052,7 @@
         sidebar.style.setProperty("--history-groups-height", `${availableHeight}px`);
 
         const rightColumn = document.createElement("div");
-        rightColumn.className = "history-group-column";
+        rightColumn.className = "history-group-column is-measuring";
         rightColumn.style.visibility = "hidden";
         rightColumn.replaceChildren(...buttons);
         sidebar.replaceChildren(rightColumn);
@@ -1063,6 +1066,7 @@
           leftButtons.push(button);
           rightColumn.removeChild(button);
         }
+        rightColumn.classList.remove("is-measuring");
 
         const rightButtons = [...rightColumn.children];
         const perColumn = Math.max(1, rightButtons.length);
