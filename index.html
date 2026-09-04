@@ -40,7 +40,10 @@
         min-height: 0;
         border: 0;
         background: transparent;
+        opacity: 0;
+        transition: opacity .18s ease;
       }
+      .site-frame.is-loaded { opacity: 1; }
 
       .mini-radio {
         position: relative;
@@ -199,7 +202,7 @@
       </div>
     </nav>
 
-    <iframe class="site-frame" id="siteFrame" name="siteFrame" title="Содержание сайта" scrolling="auto"></iframe>
+    <iframe class="site-frame" id="siteFrame" name="siteFrame" title="Содержание сайта" scrolling="auto" allowtransparency="true"></iframe>
 
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
@@ -288,10 +291,11 @@
           const route = routes.has(requested) ? requested : "home";
           if (route !== requested) window.location.hash = route;
           const path = routeToPath(route);
-          if (frame.getAttribute("src") !== path) frame.setAttribute("src", path);
+          if (frame.getAttribute("src") !== path) { frame.classList.remove("is-loaded"); frame.setAttribute("src", path); }
         }
 
         window.addEventListener("hashchange", loadRoute);
+        frame.addEventListener("load", () => requestAnimationFrame(() => frame.classList.add("is-loaded")));
         function fitFrame() {
           frame.style.height = `${Math.max(220, window.innerHeight - header.offsetHeight)}px`;
         }

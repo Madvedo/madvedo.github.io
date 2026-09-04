@@ -6,7 +6,7 @@
     theme.href = "/css/site-theme.css";
     document.head.appendChild(theme);
   }
-  if (!document.querySelector(".site-background")) {
+  if (window.top === window.self && !document.querySelector(".site-background")) {
     const background = document.createElement("div");
     background.className = "site-background";
     background.setAttribute("aria-hidden", "true");

@@ -154,6 +154,10 @@
       .track small {
         color: #6b7280;
       }
+      .track { position:relative; cursor:pointer; padding-bottom:12px; }
+      .track-inline-progress { position:absolute; left:0; right:0; bottom:2px; height:2px; background:rgba(120,130,145,.28); overflow:hidden; }
+      .track-inline-progress > i { display:block; width:0; height:100%; background:var(--accent); transition:width .12s linear; }
+      .track-inline-toggle { border:0; background:transparent; color:inherit; width:28px; padding:0; font-size:13px; }
 
       /* PLAYER */
       .player {
@@ -735,7 +739,8 @@
                                 <div class="list-group-item track d-flex justify-content-between align-items-center"
                                      data-band="${bandKey}" data-album-index="${idx}" data-track-index="${ti}">
                                   <span>${t.title}</span>
-                                  <small>▶</small>
+                                  <button class="track-inline-toggle" type="button" title="Воспроизвести">▶</button>
+                                  <span class="track-inline-progress"><i></i></span>
                                 </div>
                               `
                               )
@@ -754,7 +759,11 @@
             const bKey = el.getAttribute("data-band");
             const aIdx = +el.getAttribute("data-album-index");
             const tIdx = +el.getAttribute("data-track-index");
-            playFrom(bKey, aIdx, tIdx);
+            if (bKey === currentBandKey && aIdx === currentAlbumIndex && tIdx === currentTrackIndex && audio.src) {
+              audio.paused ? audio.play() : audio.pause();
+            } else {
+              playFrom(bKey, aIdx, tIdx);
+            }
           });
         });
 
@@ -797,6 +806,18 @@
         pArtist.textContent = band.title;
         pTitle.textContent = track.title;
         playBtn.textContent = "⏸";
+        updateInlineTracks();
+      }
+
+      function updateInlineTracks() {
+        document.querySelectorAll('.track').forEach((el) => {
+          const active = el.dataset.band === currentBandKey && +el.dataset.albumIndex === currentAlbumIndex && +el.dataset.trackIndex === currentTrackIndex && !!audio.src;
+          el.classList.toggle('is-playing', active && !audio.paused);
+          const button = el.querySelector('.track-inline-toggle');
+          if (button) { button.textContent = active && !audio.paused ? '⏸' : '▶'; button.title = active && !audio.paused ? 'Пауза' : 'Воспроизвести'; }
+          const fill = el.querySelector('.track-inline-progress > i');
+          if (fill) fill.style.width = active && audio.duration ? `${audio.currentTime / audio.duration * 100}%` : '0%';
+        });
       }
 
       function nextTrack() {
@@ -829,9 +850,12 @@
         pDur.textContent = mmss(duration);
         const pct = duration ? (currentTime / duration) * 100 : 0;
         progressBar.style.width = pct + "%";
+        updateInlineTracks();
       });
       audio.addEventListener("ended", nextTrack);
       audio.addEventListener("play", () => {
+        playBtn.textContent = "⏸";
+        updateInlineTracks();
         if (window.parent !== window) {
           window.parent.postMessage(
             { type: "shunder:band-audio-play" },
@@ -839,6 +863,7 @@
           );
         }
       });
+      audio.addEventListener("pause", () => { playBtn.textContent = "▶"; updateInlineTracks(); });
       window.addEventListener("message", (event) => {
         if (
           event.origin === window.location.origin &&
