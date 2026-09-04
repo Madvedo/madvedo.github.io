@@ -1044,20 +1044,33 @@
 
         const top = Math.max(0, sidebar.getBoundingClientRect().top);
         const availableHeight = Math.max(360, window.innerHeight - top - 16);
-        const rowHeight = buttons[0].getBoundingClientRect().height || 66;
         const gap = 10;
-        const rowsPerColumn = Math.max(
-          1,
-          Math.floor((availableHeight + gap) / (rowHeight + gap))
-        );
-        const columns = [];
-        let end = buttons.length;
+        sidebar.style.setProperty("--history-groups-width", "240px");
+        sidebar.style.setProperty("--history-groups-height", `${availableHeight}px`);
 
-        while (end > 0) {
-          const start = Math.max(0, end - rowsPerColumn);
-          columns.unshift(buttons.slice(start, end));
-          end = start;
+        const rightColumn = document.createElement("div");
+        rightColumn.className = "history-group-column";
+        rightColumn.style.visibility = "hidden";
+        rightColumn.replaceChildren(...buttons);
+        sidebar.replaceChildren(rightColumn);
+
+        const leftButtons = [];
+        while (
+          rightColumn.scrollHeight > rightColumn.clientHeight &&
+          rightColumn.children.length > 1
+        ) {
+          const button = rightColumn.firstElementChild;
+          leftButtons.push(button);
+          rightColumn.removeChild(button);
         }
+
+        const rightButtons = [...rightColumn.children];
+        const perColumn = Math.max(1, rightButtons.length);
+        const columns = [];
+        for (let index = 0; index < leftButtons.length; index += perColumn) {
+          columns.push(leftButtons.slice(index, index + perColumn));
+        }
+        columns.push(rightButtons);
 
         sidebar.replaceChildren(
           ...columns.map((columnButtons) => {
