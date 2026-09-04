@@ -17,6 +17,11 @@ def commit(message,*paths):
 def media_cmd(*args):
     env=os.environ.copy(); password=pathlib.Path('/etc/shunder-media-password').read_text().strip(); env['SSHPASS']=password
     return subprocess.run(['sshpass','-e',*args],env=env,check=True)
+def measure_loudness(path):
+    run=subprocess.run(['ffmpeg','-hide_banner','-nostats','-i',path,'-af','loudnorm=I=-14:TP=-1:LRA=11:print_format=json','-f','null','-'],capture_output=True,text=True,errors='replace')
+    match=re.findall(r'\{\s*"input_i"[\s\S]*?"target_offset"[\s\S]*?\}',run.stderr)
+    if not match: return 0
+    data=json.loads(match[-1]);return round(min(-14-float(data['input_i']),-1-float(data['input_tp'])),2)
 class Api(BaseHTTPRequestHandler):
     def out(self,status=200,data=None):
         raw=json.dumps(data or {},ensure_ascii=False).encode();self.send_response(status);self.send_header('Content-Type','application/json; charset=utf-8');self.send_header('Content-Length',str(len(raw)));self.end_headers();self.wfile.write(raw)
@@ -54,9 +59,11 @@ class Api(BaseHTTPRequestHandler):
                     return self.out(data={'ok':True,'url':'/'+target.relative_to(ROOT).as_posix()})
                 if typ in ('radio','audio'):
                     with tempfile.NamedTemporaryFile(delete=False,suffix=pathlib.Path(name).suffix) as tmp: tmp.write(item.file.read()); local=tmp.name
-                    folder='radio' if typ=='radio' else 'audio';media_cmd('scp','-o','StrictHostKeyChecking=accept-new',local,f'root@194.93.0.223:/var/www/html/{folder}/{name}');os.unlink(local)
+                    folder='radio' if typ=='radio' else 'audio';gain=measure_loudness(local);media_cmd('scp','-o','StrictHostKeyChecking=accept-new',local,f'root@194.93.0.223:/var/www/html/{folder}/{name}');os.unlink(local)
+                    levels_file=ROOT/'data/loudness.json';levels=json.loads(levels_file.read_text(encoding='utf-8'));levels[f'/{folder}/{name}']=gain;levels_file.write_text(json.dumps(levels,ensure_ascii=False,indent=2),encoding='utf-8')
                     if typ=='radio':
-                        mf=ROOT/'tracks.json';arr=json.loads(mf.read_text(encoding='utf-8'));arr.append('radio/'+name);mf.write_text(json.dumps(arr,ensure_ascii=False,indent=2),encoding='utf-8');commit('Add radio track',mf)
+                        mf=ROOT/'tracks.json';arr=json.loads(mf.read_text(encoding='utf-8'));arr.append('radio/'+name);mf.write_text(json.dumps(arr,ensure_ascii=False,indent=2),encoding='utf-8');commit('Add radio track',mf,levels_file)
+                    else: commit('Analyze uploaded audio',levels_file)
                     return self.out(data={'ok':True,'url':f'/{folder}/{name}'})
                 raise ValueError('Недопустимый тип')
             self.out(404,{'error':'not found'})
