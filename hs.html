@@ -75,8 +75,9 @@
       }
       .group-btn.active {
         background: #3b4a63 !important;
-        outline: 2px solid #7ca2df;
-        box-shadow: inset 4px 0 0 #9fc3ff, 0 4px 14px rgba(63, 104, 165, 0.35);
+        outline: none;
+        transform: scale(1.025);
+        box-shadow: 0 5px 14px rgba(63, 104, 165, 0.4);
       }
       .group-btn img {
         width: 42px;
@@ -132,29 +133,24 @@
           align-items: flex-start;
         }
         body.in-shell .sidebar {
-          display: flex;
-          flex-flow: column wrap;
-          align-content: flex-start;
-          direction: ltr;
-          transform: scaleX(-1);
-          flex: 0 0 var(--history-groups-width, 250px);
-          width: var(--history-groups-width, 250px);
-          max-width: var(--history-groups-width, 250px);
-          height: var(--history-groups-height, auto);
+          display: grid;
+          grid-template-columns: repeat(2, 240px);
+          align-content: start;
+          flex: 0 0 490px;
+          width: 490px;
+          max-width: 490px;
+          height: auto;
           min-height: 0;
           max-height: none;
           gap: 10px;
-          overflow: hidden;
+          overflow: visible;
           padding: 0;
           border: 0;
         }
         body.in-shell .group-btn {
-          flex: 0 0 auto;
           width: 240px;
           min-height: 66px;
           margin: 0;
-          direction: ltr;
-          transform: scaleX(-1);
         }
         body.in-shell .content {
           flex: 1 1 0;
@@ -1022,42 +1018,6 @@
       };
 
       if (window.innerWidth >= 992) renderBand("rost");
-
-      function layoutHistoryGroups() {
-        const sidebar = document.querySelector(".sidebar");
-        const buttons = [...document.querySelectorAll(".sidebar .group-btn")];
-        if (!sidebar || buttons.length === 0) return;
-
-        if (window.innerWidth < 992 || window.top === window.self) {
-          sidebar.style.removeProperty("--history-groups-width");
-          sidebar.style.removeProperty("--history-groups-height");
-          return;
-        }
-
-        const top = Math.max(0, sidebar.getBoundingClientRect().top);
-        const availableHeight = Math.max(360, window.innerHeight - top - 16);
-        const gap = 10;
-        let columnCount = 1;
-        let columnHeight = 0;
-
-        buttons.forEach((button) => {
-          const buttonHeight = button.getBoundingClientRect().height || 66;
-          if (columnHeight > 0 && columnHeight + gap + buttonHeight > availableHeight) {
-            columnCount += 1;
-            columnHeight = 0;
-          }
-          columnHeight += (columnHeight ? gap : 0) + buttonHeight;
-        });
-
-        sidebar.style.setProperty(
-          "--history-groups-width",
-          `${columnCount * 240 + (columnCount - 1) * gap}px`
-        );
-        sidebar.style.setProperty("--history-groups-height", `${availableHeight}px`);
-      }
-
-      window.addEventListener("load", layoutHistoryGroups);
-      window.addEventListener("resize", layoutHistoryGroups);
     </script>
     <script src="/js/site-shell.js"></script>
   </body>
