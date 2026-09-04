@@ -74,7 +74,7 @@
         background: var(--blue-dark-2);
       }
       .group-btn.active {
-        background: #3b4a63;
+        background: #3b4a63 !important;
         outline: 2px solid #7ca2df;
         box-shadow: inset 4px 0 0 #9fc3ff, 0 4px 14px rgba(63, 104, 165, 0.35);
       }
@@ -133,9 +133,10 @@
         }
         body.in-shell .sidebar {
           display: flex;
-          flex-flow: column wrap-reverse;
+          flex-flow: column wrap;
           align-content: flex-start;
           direction: ltr;
+          transform: scaleX(-1);
           flex: 0 0 var(--history-groups-width, 250px);
           width: var(--history-groups-width, 250px);
           max-width: var(--history-groups-width, 250px);
@@ -153,6 +154,7 @@
           min-height: 66px;
           margin: 0;
           direction: ltr;
+          transform: scaleX(-1);
         }
         body.in-shell .content {
           flex: 1 1 0;
@@ -1018,6 +1020,8 @@
           ],
         },
       };
+
+      if (window.innerWidth >= 992) renderBand("rost");
 
       function layoutHistoryGroups() {
         const sidebar = document.querySelector(".sidebar");
