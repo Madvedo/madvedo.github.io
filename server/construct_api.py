@@ -7,6 +7,7 @@ def safe_name(name): return re.sub(r'[^0-9A-Za-zА-Яа-яЁё._() !№+-]','_',
 def commit(message,*paths):
     subprocess.run(['git','-c','safe.directory=/var/www/html','-C',str(ROOT),'add','--',*map(str,paths)],check=False)
     subprocess.run(['git','-c','safe.directory=/var/www/html','-C',str(ROOT),'commit','-m',message],check=False,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
+    subprocess.run(['git','-c','safe.directory=/var/www/html','-C',str(ROOT),'push','origin','main'],check=True,stdout=subprocess.DEVNULL)
 def media_cmd(*args):
     env=os.environ.copy(); password=pathlib.Path('/etc/shunder-media-password').read_text().strip(); env['SSHPASS']=password
     return subprocess.run(['sshpass','-e',*args],env=env,check=True)

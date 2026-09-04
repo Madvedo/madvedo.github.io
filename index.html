@@ -279,14 +279,14 @@
         const frame = document.getElementById("siteFrame");
         const header = document.querySelector("nav");
         const routes = new Set(["home", "news.html", "concerts.html", "bands.html", "hs.html", "About.html", "radio.html"]);
-        const routeToPath = (route) => route === "home" ? "/home.html" : `/${route}`;
+        const routeToPath = (route) => `${route === "home" ? "/home.html" : `/${route}`}?v=${Date.now()}`;
 
         function loadRoute() {
           const requested = decodeURIComponent(window.location.hash.slice(1) || "home");
           const route = routes.has(requested) ? requested : "home";
           if (route !== requested) window.location.hash = route;
           const path = routeToPath(route);
-          if (frame.getAttribute("src") !== path) frame.setAttribute("src", path);
+          frame.setAttribute("src", path);
         }
 
         window.addEventListener("hashchange", loadRoute);
