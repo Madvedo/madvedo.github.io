@@ -803,6 +803,15 @@
           );
         }
       });
+      window.addEventListener("message", (event) => {
+        if (
+          event.origin === window.location.origin &&
+          event.data?.type === "shunder:radio-play"
+        ) {
+          audio.pause();
+          playBtn.textContent = "▶";
+        }
+      });
       progressWrap.addEventListener("click", (e) => {
         const rect = progressWrap.getBoundingClientRect();
         const ratio = (e.clientX - rect.left) / rect.width;

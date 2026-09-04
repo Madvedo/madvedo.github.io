@@ -35,12 +35,7 @@
       { type: "shunder:page-title", title: document.title },
       window.location.origin
     );
-    window.parent.postMessage(
-      { type: "shunder:page-height", height: document.documentElement.scrollHeight },
-      window.location.origin
-    );
   };
 
   window.addEventListener("load", sendPageInfo);
-  new ResizeObserver(sendPageInfo).observe(document.body);
 })();
