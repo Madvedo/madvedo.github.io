@@ -7,7 +7,8 @@
 }
 
 .wrapper {
-  height: 100vh;
+  min-height: 100vh;
+  min-height: 100dvh;
   width: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -27,6 +28,31 @@
   max-width: 380px;
   width: 100%;
   padding: 25px;
+}
+
+@media (max-width: 480px) {
+  .wrapper {
+    padding: 16px;
+  }
+
+  .player {
+    max-width: 100%;
+    padding: 20px;
+    border-radius: 22px;
+  }
+
+  .cover {
+    margin: 18px 0;
+  }
+
+  .cover .cover__img {
+    width: min(62vw, 220px);
+    height: auto;
+  }
+
+  .buttons {
+    margin-top: 28px;
+  }
 }
 
 .title {

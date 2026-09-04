@@ -42,6 +42,17 @@
       .donate-logo:hover {
         transform: scale(1.05);
       }
+      body.in-shell .container.my-5 {
+        margin-top: 1.25rem !important;
+        margin-bottom: 1.25rem !important;
+      }
+      body.in-shell footer { margin-top: 1.5rem; padding: 1.25rem 0; }
+      @media (max-width: 575.98px) {
+        body.in-shell .container.my-5 { margin-top: 1rem !important; margin-bottom: 1rem !important; }
+        body.in-shell h1 { font-size: 1.55rem; }
+        body.in-shell h3 { margin-top: 2rem !important; font-size: 1.25rem; }
+        body.in-shell footer .d-flex { flex-direction: column; align-items: stretch; gap: 0.5rem !important; }
+      }
     </style>
   </head>
   <body>

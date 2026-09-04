@@ -254,28 +254,61 @@
 
       /* Mobile */
       @media (max-width: 991px) {
+        body.in-shell .page-wrap {
+          padding: 12px 12px calc(94px + env(safe-area-inset-bottom));
+        }
         .sidebar {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+          gap: 8px;
+          min-height: 0;
           margin-bottom: 14px;
           border-right: none;
         }
+        .group-btn {
+          gap: 8px;
+          min-height: 54px;
+          margin: 0;
+          padding: 8px;
+          font-size: 0.9rem;
+        }
+        .group-btn img {
+          width: 36px;
+          height: 36px;
+        }
+        .player {
+          padding-bottom: calc(8px + env(safe-area-inset-bottom));
+        }
         .player-inner {
-          gap: 12px;
+          gap: 8px;
+          padding: 0 12px;
         }
         .p-meta {
-          min-width: 180px;
+          min-width: 0;
         }
+        .p-artist { display: none; }
+        .p-title { font-size: 0.86rem; }
+        .p-times { margin: -4px 1px 3px; }
+        .p-progress-wrap { height: 7px; }
+        .p-controls { gap: 5px; }
         .p-btn {
-          width: 38px;
-          height: 38px;
+          width: 34px;
+          height: 34px;
+          font-size: 15px;
         }
         .p-btn.play {
-          width: 46px;
-          height: 46px;
+          width: 40px;
+          height: 40px;
+          font-size: 17px;
         }
         /* на мобилке правая колонка скрыта, используем модалку */
         .content {
           display: none;
         }
+      }
+      @media (max-width: 420px) {
+        .sidebar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .p-btn:not(.play) { display: none; }
       }
       @media (min-width: 992px) {
         /* на десктопе модалка обычно не нужна */

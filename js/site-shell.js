@@ -21,6 +21,7 @@
   }
 
   document.querySelector("nav")?.remove();
+  document.body.classList.add("in-shell");
   document.querySelectorAll("a[href]").forEach((link) => {
     const url = new URL(link.getAttribute("href"), window.location.href);
     if (url.origin !== window.location.origin) return;

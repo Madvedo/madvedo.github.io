@@ -117,6 +117,48 @@
       .group-info ul {
         margin-bottom: 1rem;
       }
+
+      body.in-shell {
+        padding-top: 0;
+      }
+      body.in-shell .page-wrap {
+        padding: 16px 0;
+      }
+      body.in-shell .sidebar {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(138px, 1fr));
+        align-content: start;
+        gap: 8px;
+        min-height: 0;
+        max-height: none;
+        overflow: visible;
+        padding: 0;
+        border: 0;
+      }
+      body.in-shell .group-btn {
+        gap: 8px;
+        min-height: 56px;
+        margin: 0;
+        padding: 8px;
+        font-size: 0.9rem;
+      }
+      body.in-shell .group-btn img {
+        width: 36px;
+        height: 36px;
+      }
+      body.in-shell .content {
+        min-height: calc(100vh - 2rem);
+      }
+      body.in-shell .gallery img {
+        height: clamp(110px, 17vw, 180px);
+      }
+      @media (max-width: 991.98px) {
+        body.in-shell .page-wrap { padding: 12px; }
+        body.in-shell .sidebar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        body.in-shell .content { min-height: 0; margin-top: 1rem; }
+        body.in-shell .content h2 { font-size: 1.45rem; }
+        body.in-shell .gallery { --bs-gutter-x: 0.6rem; --bs-gutter-y: 0.6rem; }
+      }
     </style>
   </head>
   <body>
@@ -316,11 +358,6 @@
       const linksBar = document.getElementById("linksBar");
       const gallery = document.getElementById("gallery");
 
-      // Проверка на мобильное устройство (Bootstrap breakpoint lg)
-      function isMobile() {
-        return window.matchMedia("(max-width: 991.98px)").matches;
-      }
-
       // Навешиваем клики на картинки для открытия в модалке
       function enablePhotoClick() {
         document.querySelectorAll(".gallery img").forEach((img) => {
@@ -338,53 +375,25 @@
       function renderBand(key) {
         const band = LIB[key];
 
-        if (isMobile()) {
-          // === Мобильник → модалка
-          document.getElementById("modalBandTitle").textContent = band.title;
-          document.getElementById("modalBandYears").textContent = band.years;
-          document.getElementById("modalBandDescription").innerHTML = band.html;
+        bandTitle.textContent = band.title;
+        bandYears.textContent = band.years;
+        bandDescription.innerHTML = band.html;
 
-          document.getElementById("modalLinksBar").innerHTML = band.links
-            .map(
-              (l) =>
-                `<a href="${l.url}" target="_blank" class="btn btn-sm btn-primary">${l.text}</a>`
-            )
-            .join(" ");
+        linksBar.innerHTML = band.links
+          .map(
+            (l) =>
+              `<a href="${l.url}" target="_blank" class="btn btn-sm btn-primary">${l.text}</a>`
+          )
+          .join(" ");
 
-          document.getElementById("modalGallery").innerHTML = band.gallery
-            .map(
-              (src) =>
-                `<div class="col-6"><img src="${src}" alt="${band.title}" /></div>`
-            )
-            .join("");
+        gallery.innerHTML = band.gallery
+          .map(
+            (src) =>
+              `<div class="col-6 col-md-4"><img src="${src}" alt="${band.title}" /></div>`
+          )
+          .join("");
 
-          const modalEl = document.getElementById("bandModal");
-          const modal = new bootstrap.Modal(modalEl);
-          setTimeout(() => modal.show(), 30); // задержка для надёжного вызова
-
-          enablePhotoClick(); // клики по фото в модалке
-        } else {
-          // === Десктоп → секция справа
-          bandTitle.textContent = band.title;
-          bandYears.textContent = band.years;
-          bandDescription.innerHTML = band.html;
-
-          linksBar.innerHTML = band.links
-            .map(
-              (l) =>
-                `<a href="${l.url}" target="_blank" class="btn btn-sm btn-primary">${l.text}</a>`
-            )
-            .join(" ");
-
-          gallery.innerHTML = band.gallery
-            .map(
-              (src) =>
-                `<div class="col-md-4"><img src="${src}" alt="${band.title}" /></div>`
-            )
-            .join("");
-
-          enablePhotoClick(); // клики по фото на десктопе
-        }
+        enablePhotoClick();
 
         // Подсветка выбранной кнопки
         document
