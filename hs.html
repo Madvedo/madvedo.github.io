@@ -133,16 +133,15 @@
           align-items: flex-start;
         }
         body.in-shell .sidebar {
-          display: grid;
-          grid-template-columns: repeat(2, 240px);
+          display: flex;
           align-content: start;
-          flex: 0 0 490px;
-          width: 490px;
-          max-width: 490px;
-          height: auto;
+          gap: 10px;
+          flex: 0 0 var(--history-groups-width, 240px);
+          width: var(--history-groups-width, 240px);
+          max-width: var(--history-groups-width, 240px);
+          height: var(--history-groups-height, auto);
           min-height: 0;
           max-height: none;
-          gap: 10px;
           overflow: visible;
           padding: 0;
           border: 0;
@@ -151,6 +150,17 @@
           width: 240px;
           min-height: 66px;
           margin: 0;
+        }
+        body.in-shell .history-group-column {
+          display: flex;
+          flex: 0 0 240px;
+          flex-direction: column;
+          gap: 10px;
+          width: 240px;
+        }
+        body.in-shell .history-group-column:last-child {
+          height: var(--history-groups-height, auto);
+          justify-content: flex-end;
         }
         body.in-shell .content {
           flex: 1 1 0;
@@ -1018,6 +1028,54 @@
       };
 
       if (window.innerWidth >= 992) renderBand("rost");
+
+      function layoutHistoryGroups() {
+        const sidebar = document.querySelector(".sidebar");
+        if (!sidebar) return;
+        const buttons = [...sidebar.querySelectorAll(".group-btn")];
+        if (buttons.length === 0) return;
+
+        if (window.innerWidth < 992 || window.top === window.self) {
+          sidebar.replaceChildren(...buttons);
+          sidebar.style.removeProperty("--history-groups-width");
+          sidebar.style.removeProperty("--history-groups-height");
+          return;
+        }
+
+        const top = Math.max(0, sidebar.getBoundingClientRect().top);
+        const availableHeight = Math.max(360, window.innerHeight - top - 16);
+        const rowHeight = buttons[0].getBoundingClientRect().height || 66;
+        const gap = 10;
+        const rowsPerColumn = Math.max(
+          1,
+          Math.floor((availableHeight + gap) / (rowHeight + gap))
+        );
+        const columns = [];
+        let end = buttons.length;
+
+        while (end > 0) {
+          const start = Math.max(0, end - rowsPerColumn);
+          columns.unshift(buttons.slice(start, end));
+          end = start;
+        }
+
+        sidebar.replaceChildren(
+          ...columns.map((columnButtons) => {
+            const column = document.createElement("div");
+            column.className = "history-group-column";
+            column.replaceChildren(...columnButtons);
+            return column;
+          })
+        );
+        sidebar.style.setProperty(
+          "--history-groups-width",
+          `${columns.length * 240 + (columns.length - 1) * gap}px`
+        );
+        sidebar.style.setProperty("--history-groups-height", `${availableHeight}px`);
+      }
+
+      window.addEventListener("load", layoutHistoryGroups);
+      window.addEventListener("resize", layoutHistoryGroups);
     </script>
     <script src="/js/site-shell.js"></script>
   </body>
