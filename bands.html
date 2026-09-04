@@ -154,9 +154,7 @@
       .track small {
         color: #6b7280;
       }
-      .track { position:relative; cursor:pointer; padding-bottom:12px; }
-      .track-inline-progress { position:absolute; left:0; right:0; bottom:2px; height:2px; background:rgba(120,130,145,.28); overflow:hidden; }
-      .track-inline-progress > i { display:block; width:0; height:100%; background:var(--accent); transition:width .12s linear; }
+      .track { cursor:pointer; }
       .track-inline-toggle { border:0; background:transparent; color:inherit; width:28px; padding:0; font-size:13px; }
 
       /* PLAYER */
@@ -740,7 +738,6 @@
                                      data-band="${bandKey}" data-album-index="${idx}" data-track-index="${ti}">
                                   <span>${t.title}</span>
                                   <button class="track-inline-toggle" type="button" title="Воспроизвести">▶</button>
-                                  <span class="track-inline-progress"><i></i></span>
                                 </div>
                               `
                               )
@@ -815,8 +812,6 @@
           el.classList.toggle('is-playing', active && !audio.paused);
           const button = el.querySelector('.track-inline-toggle');
           if (button) { button.textContent = active && !audio.paused ? '⏸' : '▶'; button.title = active && !audio.paused ? 'Пауза' : 'Воспроизвести'; }
-          const fill = el.querySelector('.track-inline-progress > i');
-          if (fill) fill.style.width = active && audio.duration ? `${audio.currentTime / audio.duration * 100}%` : '0%';
         });
       }
 
