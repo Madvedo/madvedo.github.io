@@ -1,4 +1,5 @@
 (() => {
+  if (new URLSearchParams(window.location.search).has("construct")) return;
   if (!document.querySelector('link[href="/css/site-theme.css"]')) {
     const theme = document.createElement("link");
     theme.rel = "stylesheet";
