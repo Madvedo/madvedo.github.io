@@ -1,24 +1,302 @@
 <!doctype html>
-<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Конструктор · Шаховское Подполье</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<style>
-body{background:#101317;color:#eef1f4}.app{display:grid;grid-template-columns:280px 1fr;min-height:100vh}.side{padding:20px;background:#181c21}.work{padding:20px}.nav-pills .nav-link{color:#cbd1d8;text-align:left}.nav-pills .nav-link.active{background:#fd7e14}.panel{background:#20252b;border:1px solid #3b424a;border-radius:14px;padding:16px}.preview{width:100%;height:68vh;border:0;border-radius:10px;background:white}.hint{color:#9da7b1;font-size:.9rem}.asset{display:flex;gap:10px;align-items:center;padding:8px;border-bottom:1px solid #343a40}.asset span{flex:1;overflow:hidden;text-overflow:ellipsis}.toastbox{position:fixed;right:20px;bottom:20px;z-index:9}@media(max-width:800px){.app{grid-template-columns:1fr}.side{position:sticky;top:0;z-index:3}.preview{height:60vh}}
-</style></head><body><div class="app"><aside class="side"><h4>Конструктор</h4><p class="hint">Изменения публикуются только после сохранения.</p><div class="nav nav-pills flex-column" id="tabs">
-<button class="nav-link active" data-page="home.html">Главная</button><button class="nav-link" data-page="news.html">Новости</button><button class="nav-link" data-page="bands.html">Группы</button><button class="nav-link" data-page="hs.html">История</button><button class="nav-link" data-page="About.html">О проекте</button><button class="nav-link" data-page="concerts.html">Фотоархив</button><button class="nav-link" data-page="radio">Радио</button></div><hr><a href="/" class="btn btn-outline-light w-100">Открыть сайт</a></aside>
-<main class="work"><div id="pageEditor" class="panel"><div class="d-flex gap-2 flex-wrap align-items-center mb-3"><b id="pageName"></b><span class="hint">Нажмите на текст в макете и редактируйте прямо там. Del удаляет выбранный блок.</span><button id="addBlock" class="btn btn-outline-light btn-sm ms-auto">Дублировать блок</button><label class="btn btn-outline-light btn-sm">Заменить картинку<input id="replaceImage" type="file" accept="image/*" hidden></label><button id="savePage" class="btn btn-warning">Сохранить изменения</button></div><iframe id="preview" class="preview"></iframe></div>
-<div id="assets" class="panel d-none"><h4 id="assetsTitle"></h4><div class="d-flex gap-2 mb-3"><input id="assetUpload" type="file" class="form-control" multiple><button id="uploadAssets" class="btn btn-warning">Добавить</button></div><div id="assetList"></div></div></main></div><div id="toast" class="toastbox alert d-none"></div>
-<script>
-const api='/construct-api'; const preview=document.querySelector('#preview'); let current='home.html', selected=null;
-function toast(message,ok=true){const el=document.querySelector('#toast');el.textContent=message;el.className=`toastbox alert alert-${ok?'success':'danger'}`;setTimeout(()=>el.classList.add('d-none'),3500)}
-async function request(path,options={}){const r=await fetch(api+path,options);const data=await r.json().catch(()=>({}));if(!r.ok)throw Error(data.error||'Ошибка сервера');return data}
-function editable(){const d=preview.contentDocument;d.designMode='on';d.addEventListener('click',e=>{selected=e.target;d.querySelectorAll('.constructor-selected').forEach(x=>x.classList.remove('constructor-selected'));selected.classList.add('constructor-selected')});const s=d.createElement('style');s.textContent='.constructor-selected{outline:3px solid #ff7a00!important;outline-offset:2px}';d.head.append(s)}
-async function openPage(file){current=file;document.querySelector('#pageEditor').classList.remove('d-none');document.querySelector('#assets').classList.add('d-none');document.querySelector('#pageName').textContent=file;preview.src='/'+file+'?construct='+Date.now();preview.onload=editable}
-async function openAssets(type){document.querySelector('#pageEditor').classList.add('d-none');document.querySelector('#assets').classList.remove('d-none');document.querySelector('#assetsTitle').textContent=type==='radio'?'Пул песен':'Фотоархив';document.querySelector('#assetUpload').accept=type==='radio'?'audio/*':'image/*';document.querySelector('#assets').dataset.type=type;const s=await request('/state');const list=type==='radio'?s.tracks:s.photos;document.querySelector('#assetList').replaceChildren(...list.map(name=>{const row=document.createElement('div');row.className='asset';const label=document.createElement('span');label.textContent=name;const del=document.createElement('button');del.className='btn btn-sm btn-outline-danger';del.textContent='Удалить';del.onclick=async()=>{if(!confirm('Удалить файл без возможности восстановления?'))return;await request('/asset',{method:'DELETE',headers:{'Content-Type':'application/json'},body:JSON.stringify({type,name})});toast('Удалено');openAssets(type)};row.append(label,del);return row}))}
-document.querySelector('#tabs').onclick=e=>{const b=e.target.closest('[data-page]');if(!b)return;document.querySelectorAll('#tabs .nav-link').forEach(x=>x.classList.remove('active'));b.classList.add('active');b.dataset.page==='radio'?openAssets('radio'):b.dataset.page==='concerts.html'?openAssets('photo'):openPage(b.dataset.page)};
-document.querySelector('#addBlock').onclick=()=>{if(!selected)return toast('Сначала выберите блок',false);const candidates=['.news-block','.band-card','.band-item','.list-group-item','.card','article'];const block=selected.closest(candidates.join(','))||selected;block.after(block.cloneNode(true));editable()};
-document.addEventListener('keydown',e=>{if(e.key==='Delete'&&selected&&confirm('Удалить выбранный элемент?')){selected.remove();selected=null}});
-document.querySelector('#replaceImage').onchange=async e=>{if(!selected)return toast('Сначала выберите картинку',false);const img=selected.closest('img')||selected.querySelector?.('img');if(!img)return toast('Выбранный элемент не содержит картинку',false);const f=e.target.files[0],fd=new FormData();fd.append('type','image');fd.append('file',f);const out=await request('/upload',{method:'POST',body:fd});img.src=out.url+'?v='+Date.now();toast('Картинка загружена; сохраните страницу')};
-document.querySelector('#savePage').onclick=async()=>{const d=preview.contentDocument;d.designMode='off';d.querySelectorAll('.constructor-selected').forEach(x=>x.classList.remove('constructor-selected'));d.querySelectorAll('style').forEach(x=>{if(x.textContent.includes('.constructor-selected'))x.remove()});await request('/page',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({file:current,html:'<!DOCTYPE html>\n'+d.documentElement.outerHTML})});toast('Изменения опубликованы');editable()};
-document.querySelector('#uploadAssets').onclick=async()=>{const type=document.querySelector('#assets').dataset.type,files=document.querySelector('#assetUpload').files;if(!files.length)return;for(const file of files){const fd=new FormData();fd.append('type',type);fd.append('file',file);await request('/upload',{method:'POST',body:fd})}toast('Файлы добавлены');openAssets(type)};openPage(current);
-</script></body></html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Конструктор</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        background: #101317;
+        color: #eee;
+      }
+      .app {
+        display: grid;
+        grid-template-columns: 240px 1fr;
+        min-height: 100vh;
+      }
+      .side {
+        padding: 18px;
+        background: #181c21;
+      }
+      .work {
+        padding: 20px;
+        max-width: 1200px;
+      }
+      .nav-link {
+        color: #ccd;
+        text-align: left;
+      }
+      .nav-link.active {
+        background: #f07818 !important;
+      }
+      .box {
+        background: #20252b;
+        border: 1px solid #404850;
+        border-radius: 12px;
+        padding: 15px;
+        margin: 10px 0;
+      }
+      .nest {
+        border-left: 2px solid #59616a;
+        margin: 10px 0 0 15px;
+        padding-left: 12px;
+      }
+      .form-control {
+        background: #15191e !important;
+        color: #fff !important;
+        border-color: #505963;
+      }
+      .label {
+        font-size: 0.75rem;
+        color: #abb4bd;
+      }
+      .line {
+        display: grid;
+        grid-template-columns: 1fr 1fr auto;
+        gap: 8px;
+      }
+      .save {
+        position: sticky;
+        bottom: 10px;
+      }
+      @media (max-width: 700px) {
+        .app {
+          grid-template-columns: 1fr;
+        }
+        .line {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <aside class="side">
+        <h4>Конструктор</h4>
+        <div class="nav nav-pills flex-column" id="nav">
+          <button class="nav-link active" data-s="home">Главная</button
+          ><button class="nav-link" data-s="news">Новости</button
+          ><button class="nav-link" data-s="bands">Группы</button
+          ><button class="nav-link" data-s="history">История</button
+          ><button class="nav-link" data-s="about">О проекте</button
+          ><button class="nav-link" data-s="photo">Фотоархив</button
+          ><button class="nav-link" data-s="radio">Радио</button>
+        </div>
+      </aside>
+      <main class="work w-100">
+        <div class="d-flex">
+          <h2 id="title"></h2>
+          <button id="add" class="btn btn-outline-warning ms-auto"></button>
+        </div>
+        <div id="content"></div>
+        <button id="save" class="btn btn-warning w-100 save">
+          Сохранить изменения
+        </button>
+      </main>
+    </div>
+    <script>
+      const A = "/construct-api",
+        C = document.querySelector("#content"),
+        title = document.querySelector("#title"),
+        add = document.querySelector("#add"),
+        save = document.querySelector("#save"),
+        nav = document.querySelector("#nav");
+      let s = "home",
+        pages,
+        bands,
+        history;
+      const E = (v) =>
+        String(v ?? "").replace(
+          /[&<>"']/g,
+          (c) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            })[c],
+        );
+      async function Q(p, o = {}) {
+        let r = await fetch(A + p, o),
+          d = await r.json();
+        if (!r.ok) throw Error(d.error);
+        return d;
+      }
+      const P = (p) => p.split(".").map((x) => (/^\d+$/.test(x) ? +x : x)),
+        R = () => (s === "bands" ? bands : s === "history" ? history : pages);
+      function set(p, v) {
+        let a = P(p),
+          o = R();
+        for (let i = 0; i < a.length - 1; i++) o = o[a[i]];
+        o[a.at(-1)] = v;
+      }
+      function del(p) {
+        let a = P(p),
+          k = a.pop(),
+          o = R();
+        a.forEach((x) => (o = o[x]));
+        Array.isArray(o) ? o.splice(k, 1) : delete o[k];
+      }
+      function F(n, v, p, t = false) {
+        return `<label class=label>${n}</label><${t ? "textarea rows=4" : "input"} class="form-control mb-2" data-p="${p}" ${t ? "" : `value="${E(v)}"`}>${t ? E(v) : ""}</${t ? "textarea" : "input"}>`;
+      }
+      function U(p, type = "image", accept = "image/*") {
+        return `<label class="btn btn-sm btn-outline-light mb-2">Загрузить файл<input hidden type=file accept="${accept}" data-u="${p}" data-type="${type}"></label>`;
+      }
+      function links(p, a = []) {
+        return `<div class=nest><b>Ссылки</b>${a.map((x, i) => `<div class=line>${F("Название", x.text, `${p}.${i}.text`)}${F("Адрес", x.url, `${p}.${i}.url`)}<button class="btn btn-sm btn-outline-danger mb-2 align-self-end" data-d="${p}.${i}">Удалить</button></div>`).join("")}<button class="btn btn-sm btn-outline-light" data-new=link data-p="${p}">Добавить ссылку</button></div>`;
+      }
+      function home() {
+        let x = pages.home;
+        C.innerHTML = `<div class=box>${F("Заголовок", x.title, "home.title")}${F("Подзаголовок", x.subtitle, "home.subtitle", 1)}${F("Логотип", x.logo, "home.logo")}${U("home.logo")}${F("Описание", x.description, "home.description", 1)}</div>`;
+      }
+      function about() {
+        C.innerHTML = `<div class=box>${F("Текст и форматирование", pages.about.html, "about.html", 1)}</div>`;
+      }
+      function news() {
+        C.innerHTML = pages.news
+          .map(
+            (x, i) =>
+              `<div class=box><button class="btn btn-sm btn-outline-danger float-end" data-d="news.${i}">Удалить</button><h5>Новость ${i + 1}</h5>${F("Ссылка", x.link, `news.${i}.link`)}${F("Картинка", x.image, `news.${i}.image`)}${U(`news.${i}.image`)}${F("Подпись", x.alt, `news.${i}.alt`)}${F("Текст", x.html, `news.${i}.html`, 1)}</div>`,
+          )
+          .join("");
+      }
+      function group(active = false) {
+        let root = active ? bands : history;
+        C.innerHTML = Object.entries(root)
+          .map(
+            ([k, b]) =>
+              `<div class=box><button class="btn btn-sm btn-outline-danger float-end" data-d="${k}">Удалить группу</button><h4>${E(b.title)}</h4>${F("Название", b.title, `${k}.title`)}${active ? F("Логотип", b.cover, `${k}.cover`) + U(`${k}.cover`) : F("Годы", b.years, `${k}.years`) + F("Описание", b.html, `${k}.html`, 1)}${links(`${k}.links`, b.links)}${active ? `<div class=nest><b>Альбомы</b>${(b.albums || []).map((a, ai) => `<div class=box><button class="btn btn-sm btn-outline-danger float-end" data-d="${k}.albums.${ai}">Удалить альбом</button>${F("Название альбома", a.title, `${k}.albums.${ai}.title`)}${F("Обложка", a.cover, `${k}.albums.${ai}.cover`)}${U(`${k}.albums.${ai}.cover`)}<div class=nest><b>Треки</b>${(a.tracks || []).map((t, ti) => `<div class=line>${F("Название", t.title, `${k}.albums.${ai}.tracks.${ti}.title`)}${F("Файл", t.src, `${k}.albums.${ai}.tracks.${ti}.src`)}<div>${U(`${k}.albums.${ai}.tracks.${ti}.src`, "audio", "audio/*")}<button class="btn btn-sm btn-outline-danger" data-d="${k}.albums.${ai}.tracks.${ti}">Удалить</button></div></div>`).join("")}<button class="btn btn-sm btn-outline-light" data-new=track data-p="${k}.albums.${ai}.tracks">Добавить трек</button></div></div>`).join("")}<button class="btn btn-sm btn-outline-warning" data-new=album data-p="${k}.albums">Добавить альбом</button></div>` : `<div class=nest><b>Фотографии</b>${(b.gallery || []).map((x, i) => `<div class=line>${F("Файл", x, `${k}.gallery.${i}`)}${U(`${k}.gallery.${i}`)}<button class="btn btn-sm btn-outline-danger mb-2" data-d="${k}.gallery.${i}">Удалить</button></div>`).join("")}<button class="btn btn-sm btn-outline-light" data-new=photo data-p="${k}.gallery">Добавить фото</button></div>`}</div>`,
+          )
+          .join("");
+      }
+      async function assets() {
+        let d = await Q("/state"),
+          a = s === "radio" ? d.tracks : d.photos;
+        C.innerHTML = `<div class=box><label class="btn btn-warning">Добавить<input id=up hidden type=file multiple accept="${s === "radio" ? "audio/*" : "image/*"}"></label>${a.map((x) => `<div class="d-flex gap-2 border-bottom py-2"><span class=flex-grow-1>${E(x)}</span><button class="btn btn-sm btn-outline-danger" data-file="${E(x)}">Удалить</button></div>`).join("")}</div>`;
+        document.querySelector("#up").onchange = async (e) => {
+          for (let f of e.target.files) {
+            let d = new FormData();
+            d.append("type", s);
+            d.append("file", f);
+            await Q("/upload", { method: "POST", body: d });
+          }
+          draw();
+        };
+      }
+      function draw() {
+        title.textContent = {
+          home: "Главная",
+          news: "Новости",
+          bands: "Группы",
+          history: "История",
+          about: "О проекте",
+          photo: "Фотоархив",
+          radio: "Радио",
+        }[s];
+        add.hidden = !["news", "bands", "history"].includes(s);
+        add.textContent = s === "news" ? "Добавить новость" : "Добавить группу";
+        save.hidden = ["photo", "radio"].includes(s);
+        if (s === "home") home();
+        if (s === "about") about();
+        if (s === "news") news();
+        if (s === "bands") group(1);
+        if (s === "history") group();
+        if (["photo", "radio"].includes(s)) assets();
+      }
+      C.oninput = (e) => {
+        if (e.target.dataset.p) set(e.target.dataset.p, e.target.value);
+      };
+      C.onchange = async (e) => {
+        if (!e.target.dataset.u) return;
+        let d = new FormData();
+        d.append("type", e.target.dataset.type);
+        d.append("file", e.target.files[0]);
+        let x = await Q("/upload", { method: "POST", body: d });
+        set(e.target.dataset.u, x.url);
+        draw();
+      };
+      C.onclick = async (e) => {
+        let b = e.target.closest("[data-d],[data-new],[data-file]");
+        if (!b) return;
+        if (b.dataset.file) {
+          if (confirm("Удалить файл?"))
+            await Q("/asset", {
+              method: "DELETE",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ type: s, name: b.dataset.file }),
+            });
+          return draw();
+        }
+        if (b.dataset.d) {
+          if (confirm("Удалить элемент?")) del(b.dataset.d);
+          return draw();
+        }
+        let a = R();
+        P(b.dataset.p).forEach((k) => (a = a[k]));
+        a.push(
+          b.dataset.new === "link"
+            ? { text: "Новая ссылка", url: "" }
+            : b.dataset.new === "album"
+              ? { title: "Новый альбом", cover: "", tracks: [] }
+              : b.dataset.new === "track"
+                ? { title: "Новый трек", src: "" }
+                : "",
+        );
+        draw();
+      };
+      add.onclick = () => {
+        if (s === "news")
+          pages.news.unshift({ link: "", image: "", alt: "Новость", html: "" });
+        else {
+          let r = s === "bands" ? bands : history,
+            k = "group_" + Date.now();
+          r[k] =
+            s === "bands"
+              ? { title: "Новая группа", cover: "", links: [], albums: [] }
+              : {
+                  title: "Новая группа",
+                  years: "",
+                  html: "",
+                  links: [],
+                  gallery: [],
+                };
+        }
+        draw();
+      };
+      save.onclick = async () => {
+        let n = s === "bands" ? "bands" : s === "history" ? "history" : "pages",
+          d = n === "bands" ? bands : n === "history" ? history : pages;
+        await Q("/content", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: n, data: d }),
+        });
+        alert("Сохранено и опубликовано");
+      };
+      nav.onclick = (e) => {
+        let b = e.target.closest("[data-s]");
+        if (!b) return;
+        s = b.dataset.s;
+        document
+          .querySelectorAll(".nav-link")
+          .forEach((x) => x.classList.toggle("active", x === b));
+        draw();
+      };
+      (async () => {
+        [pages, bands, history] = await Promise.all(
+          ["pages", "bands", "history"].map((x) => Q("/content/" + x)),
+        );
+        draw();
+      })().catch(
+        (e) =>
+          (C.innerHTML = `<div class="alert alert-danger">${E(e.message)}</div>`),
+      );
+    </script>
+  </body>
+</html>

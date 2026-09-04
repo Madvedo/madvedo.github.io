@@ -469,7 +469,7 @@
       });
 
       // === LIB с группами ===
-      const LIB = {
+      let LIB = {
         rost: {
           title: "РОСТ!",
           years: "2006–2018",
@@ -1103,7 +1103,22 @@
         sidebar.style.setProperty("--history-groups-height", `${availableHeight}px`);
       }
 
-      window.addEventListener("load", layoutHistoryGroups);
+      async function loadHistoryData() {
+        try {
+          const response = await fetch('/data/history.json', { cache: 'no-store' });
+          if (response.ok) LIB = await response.json();
+        } catch (error) { console.error('history data:', error); }
+        const sidebar = document.querySelector('.sidebar');
+        sidebar.replaceChildren(...Object.entries(LIB).map(([key, band]) => {
+          const button = document.createElement('button');
+          button.className = 'group-btn'; button.dataset.band = key;
+          button.innerHTML = `<img src="${band.cover || band.gallery?.[0] || ''}" alt=""><span>${band.title}</span>`;
+          button.addEventListener('click', () => renderBand(key));
+          return button;
+        }));
+        layoutHistoryGroups();
+      }
+      window.addEventListener("load", loadHistoryData);
       window.addEventListener("resize", layoutHistoryGroups);
     </script>
     <script src="/js/site-shell.js"></script>

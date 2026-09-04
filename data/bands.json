@@ -1,0 +1,247 @@
+{
+  "graydawn": {
+    "title": "Gray Dawn",
+    "cover": "/b/a/1.jpg",
+    "links": [
+      {
+        "text": "Страница VK",
+        "url": "https://vk.com/gray_dawn",
+        "cls": "btn-primary"
+      },
+      {
+        "text": "Promo 'Если хватит сил'",
+        "url": "https://graydawn.netlify.app",
+        "cls": "btn-secondary"
+      }
+    ],
+    "albums": [
+      {
+        "title": "2022 – Если хватит сил [EP]",
+        "cover": "/img/exc.jpg",
+        "tracks": [
+          {
+            "title": "Если хватит сил",
+            "src": "/audio/Если хватит сил.wav"
+          },
+          {
+            "title": "Дивергент",
+            "src": "/audio/Дивергент.wav"
+          },
+          {
+            "title": "Переступая",
+            "src": "/audio/Переступая.wav"
+          },
+          {
+            "title": "Падал снег",
+            "src": "/audio/Падал снег.wav"
+          }
+        ]
+      },
+      {
+        "title": "2025 – По зову солнца",
+        "cover": "img/2.jpg",
+        "tracks": [
+          {
+            "title": "Переступая",
+            "src": "/audio/01-Gray Dawn - Переступая.wav"
+          },
+          {
+            "title": "Падал снег",
+            "src": "/audio/02-Gray Dawn - Падал снег.wav"
+          },
+          {
+            "title": "Нить",
+            "src": "/audio/03-Gray Dawn - Нить.wav"
+          },
+          {
+            "title": "По зову Солнца",
+            "src": "/audio/04-Gray Dawn - По зову Солнца.wav"
+          },
+          {
+            "title": "Мода",
+            "src": "/audio/05-Gray Dawn - Мода.wav"
+          },
+          {
+            "title": "Дивергент",
+            "src": "/audio/06-Gray Dawn - Дивергент.wav"
+          },
+          {
+            "title": "Рассвет",
+            "src": "/audio/07-Gray Dawn - Рассвет.wav"
+          },
+          {
+            "title": "Если хватит сил",
+            "src": "/audio/08-Gray Dawn - Если хватит сил.wav"
+          },
+          {
+            "title": "Бездна feat. Юла, StereoМысли",
+            "src": "/audio/09-Gray Dawn - Бездна feat. Юла, StereoМысли.wav"
+          },
+          {
+            "title": "Сон Роны (live)",
+            "src": "/audio/10-Gray Dawn - Сон Роны (live).wav"
+          }
+        ]
+      }
+    ]
+  },
+  "ouz": {
+    "title": "Они Уже Зdесь",
+    "cover": "/img/ouz.jpg",
+    "links": [
+      {
+        "text": "Страница VK",
+        "url": "https://vk.com/club60370527",
+        "cls": "btn-primary"
+      },
+      {
+        "text": "VK Аудио",
+        "url": "https://vk.com/audios-60370527",
+        "cls": "btn-outline-primary"
+      }
+    ],
+    "albums": [
+      {
+        "title": "2014 – Быть или не быть [EP]",
+        "cover": "img/Front.jpg",
+        "tracks": [
+          {
+            "title": "Быть Или Не Быть",
+            "src": "/audio/Быть Или Не Быть.mp3"
+          },
+          {
+            "title": "Иуdа",
+            "src": "/audio/Иуdа.mp3"
+          },
+          {
+            "title": "Новые Силы",
+            "src": "/audio/Новые Силы.mp3"
+          },
+          {
+            "title": "Попса",
+            "src": "/audio/Попса.mp3"
+          },
+          {
+            "title": "Скука",
+            "src": "/audio/Скука.mp3"
+          },
+          {
+            "title": "Я Бы Всё Отdал",
+            "src": "/audio/Я Бы Всё Отdал.mp3"
+          }
+        ]
+      },
+      {
+        "title": "2021 – Белый шум [single]",
+        "cover": "img/Cover1.jpg",
+        "tracks": [
+          {
+            "title": "Пир Во Время Чумы",
+            "src": "/audio/Пир Во Время Чумы.wav"
+          },
+          {
+            "title": "Кризис Идей",
+            "src": "/audio/Кризис Идей.wav"
+          },
+          {
+            "title": "Белый Шум",
+            "src": "/audio/Белый Шум.wav"
+          }
+        ]
+      },
+      {
+        "title": "2023 – Ничего личного",
+        "cover": "img/nl.png",
+        "tracks": [
+          {
+            "title": "Самый Умный",
+            "src": "/audio/1. Самый Умный.wav"
+          },
+          {
+            "title": "Подрежь Мне Крылья",
+            "src": "/audio/2. Подрежь Мне Крылья.wav"
+          },
+          {
+            "title": "Руины",
+            "src": "/audio/3. Руины.wav"
+          },
+          {
+            "title": "Покажи Мне Войну По Ящику",
+            "src": "/audio/4. Покажи Мне Войну По Ящику.wav"
+          },
+          {
+            "title": "Дед",
+            "src": "/audio/5. Дед.wav"
+          },
+          {
+            "title": "Л. и О.",
+            "src": "/audio/6. Л. и О..wav"
+          },
+          {
+            "title": "Цирк Уродов",
+            "src": "/audio/7. Цирк Уродов.wav"
+          },
+          {
+            "title": "Съебнуть",
+            "src": "/audio/8. Съебнуть.wav"
+          },
+          {
+            "title": "Алиса",
+            "src": "/audio/9. Алиса.wav"
+          }
+        ]
+      }
+    ]
+  },
+  "goreot": {
+    "title": "Горе От",
+    "cover": "/img/Gore Ot (Logo black).png",
+    "links": [
+      {
+        "text": "Страница VK",
+        "url": "https://vk.com/goreot21",
+        "cls": "btn-primary"
+      },
+      {
+        "text": "Promo 'Лишь шанс'",
+        "url": "https://goreotls.netlify.app",
+        "cls": "btn-secondary"
+      },
+      {
+        "text": "Promo 'Зима была холодной'",
+        "url": "https://goreot.netlify.app",
+        "cls": "btn-secondary"
+      }
+    ],
+    "albums": [
+      {
+        "title": "2022 – Зима была холодной [Single]",
+        "cover": "/img/zbh.jpg",
+        "tracks": [
+          {
+            "title": "Зима была холодной",
+            "src": "/audio/Горе От - Зима была холодной.wav"
+          },
+          {
+            "title": "Ветер",
+            "src": "/audio/Горе От - Ветер.wav"
+          },
+          {
+            "title": "Жизнь",
+            "src": "/audio/Горе От - Жизнь.wav"
+          }
+        ]
+      },
+      {
+        "title": "2025 – Лишь шанс [EP]",
+        "cover": "/img/ls.png",
+        "tracks": [
+          {
+            "title": "Лишь шанс",
+            "src": "/audio/Горе От - Лишь шанс.wav"
+          }
+        ]
+      }
+    ]
+  }
+}

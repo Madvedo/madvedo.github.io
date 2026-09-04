@@ -453,7 +453,7 @@
     <!-- App JS -->
     <script>
       /* ДАННЫЕ */
-      const LIB = {
+      let LIB = {
         graydawn: {
           title: "Gray Dawn",
           cover: "/b/a/1.jpg",
@@ -656,6 +656,8 @@
       let currentAlbumIndex = 0;
       let currentTrackIndex = 0;
       let audioContext = null;
+      let levelGain = null;
+      let loudness = {};
 
       function enableLeveling() {
         const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -665,13 +667,14 @@
           const source = audioContext.createMediaElementSource(audio);
           const compressor = audioContext.createDynamicsCompressor();
           const makeup = audioContext.createGain();
+          levelGain = makeup;
           const limiter = audioContext.createDynamicsCompressor();
-          compressor.threshold.value = -24;
-          compressor.knee.value = 24;
-          compressor.ratio.value = 4;
+          compressor.threshold.value = -12;
+          compressor.knee.value = 12;
+          compressor.ratio.value = 2.5;
           compressor.attack.value = 0.01;
           compressor.release.value = 0.3;
-          makeup.gain.value = 1.15;
+          makeup.gain.value = 1;
           limiter.threshold.value = -3;
           limiter.knee.value = 0;
           limiter.ratio.value = 20;
@@ -816,7 +819,7 @@
         const track = album.tracks[trackIndex];
 
         audio.src = track.src;
-        enableLeveling().then(() => audio.play())
+        enableLeveling().then(() => { levelGain.gain.value = Math.pow(10, (loudness[track.src] || 0) / 20); return audio.play(); })
           .then(() => {
             playBtn.textContent = "⏸";
           })
@@ -855,7 +858,7 @@
       }
       function togglePlay() {
         if (audio.paused) {
-          enableLeveling().then(() => audio.play());
+          enableLeveling().then(() => { const track = LIB[currentBandKey]?.albums?.[currentAlbumIndex]?.tracks?.[currentTrackIndex]; if (track && levelGain) levelGain.gain.value = Math.pow(10, (loudness[track.src] || 0) / 20); return audio.play(); });
           playBtn.textContent = "⏸";
         } else {
           audio.pause();
@@ -904,8 +907,9 @@
       playBtn.addEventListener("click", togglePlay);
 
       // Смена группы
-      document.querySelectorAll(".group-btn").forEach((btn) => {
-        btn.addEventListener("click", () => {
+      function bindBandButtons() {
+        document.querySelectorAll(".group-btn").forEach((btn) => {
+          btn.addEventListener("click", () => {
           const key = btn.getAttribute("data-band");
           if (window.innerWidth < 992) {
             renderBand(key, "modal");
@@ -914,8 +918,9 @@
           } else {
             renderBand(key, "desktop");
           }
+          });
         });
-      });
+      }
 
       function renderPlaceholder() {
         // Desktop
@@ -960,7 +965,20 @@
       }
 
       // Инициализация
-      function init() {
+      async function init() {
+        try {
+          const [response, levels] = await Promise.all([fetch('/data/bands.json', { cache: 'no-store' }), fetch('/data/loudness.json', { cache: 'no-store' })]);
+          if (response.ok) LIB = await response.json();
+          if (levels.ok) loudness = await levels.json();
+        } catch (error) { console.error('bands data:', error); }
+        const sidebar = document.querySelector('.sidebar');
+        sidebar.replaceChildren(...Object.entries(LIB).map(([key, band]) => {
+          const button = document.createElement('button');
+          button.className = 'group-btn'; button.dataset.band = key;
+          button.innerHTML = `<img src="${band.cover || band.albums?.[0]?.cover || ''}" alt=""><span>${band.title}</span>`;
+          return button;
+        }));
+        bindBandButtons();
         renderPlaceholder();
       }
       document.addEventListener("DOMContentLoaded", init);

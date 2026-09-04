@@ -214,6 +214,8 @@
         let tracks = [];
         let currentIndex = -1;
         let audioContext = null;
+        let levelGain = null;
+        let loudness = {};
         function enableLeveling() {
           const AudioContext = window.AudioContext || window.webkitAudioContext;
           if (!AudioContext) return Promise.resolve();
@@ -222,13 +224,14 @@
             const source = audioContext.createMediaElementSource(audio);
             const compressor = audioContext.createDynamicsCompressor();
             const makeup = audioContext.createGain();
+            levelGain = makeup;
             const limiter = audioContext.createDynamicsCompressor();
-            compressor.threshold.value = -24;
-            compressor.knee.value = 24;
-            compressor.ratio.value = 4;
+            compressor.threshold.value = -12;
+            compressor.knee.value = 12;
+            compressor.ratio.value = 2.5;
             compressor.attack.value = 0.01;
             compressor.release.value = 0.3;
-            makeup.gain.value = 1.15;
+            makeup.gain.value = 1;
             limiter.threshold.value = -3;
             limiter.knee.value = 0;
             limiter.ratio.value = 20;
@@ -239,13 +242,14 @@
           return audioContext.state === "suspended" ? audioContext.resume() : Promise.resolve();
         }
         const trackName = (path) => path.split("/").pop().replace(/\.[^/.]+$/, "");
+        const applyTrackLevel = () => { if (levelGain && tracks[currentIndex]) levelGain.gain.value = Math.pow(10, (loudness['/' + tracks[currentIndex].replace(/^\//,'')] || 0) / 20); };
         function selectTrack(index) {
           if (!tracks[index]) return;
           currentIndex = index;
           audio.src = encodeURI(tracks[index]);
           trackLabel.textContent = trackName(tracks[index]);
           statusLabel.textContent = "загрузка";
-          enableLeveling().then(() => audio.play()).catch(() => { statusLabel.textContent = "нажмите ещё раз"; updatePlaybackState(); });
+          enableLeveling().then(() => { applyTrackLevel(); return audio.play(); }).catch(() => { statusLabel.textContent = "нажмите ещё раз"; updatePlaybackState(); });
         }
         function randomTrack() {
           if (!tracks.length) return;
@@ -263,8 +267,9 @@
 
         async function loadTracks() {
           try {
-            const response = await fetch("/tracks.json", { cache: "no-cache" });
+            const [response, levelsResponse] = await Promise.all([fetch("/tracks.json", { cache: "no-cache" }), fetch('/data/loudness.json', { cache: 'no-store' })]);
             const playlist = await response.json();
+            if (levelsResponse.ok) loudness = await levelsResponse.json();
             if (!response.ok || !Array.isArray(playlist) || playlist.length === 0) throw new Error("playlist unavailable");
             tracks = playlist;
             trackLabel.textContent = "Слушать радио";
@@ -279,7 +284,7 @@
 
         toggle.addEventListener("click", () => {
           if (currentIndex < 0) randomTrack();
-          else if (audio.paused) enableLeveling().then(() => audio.play()).catch(updatePlaybackState);
+          else if (audio.paused) enableLeveling().then(() => { applyTrackLevel(); return audio.play(); }).catch(updatePlaybackState);
           else audio.pause();
         });
         shuffleButton.addEventListener("click", randomTrack);
