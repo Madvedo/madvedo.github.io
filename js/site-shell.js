@@ -1,18 +1,5 @@
 (() => {
   if (new URLSearchParams(window.location.search).has("construct")) return;
-  if (!document.querySelector('link[href="/css/site-theme.css"]')) {
-    const theme = document.createElement("link");
-    theme.rel = "stylesheet";
-    theme.href = "/css/site-theme.css";
-    document.head.appendChild(theme);
-  }
-  if (window.top === window.self && !document.querySelector(".site-background")) {
-    const background = document.createElement("div");
-    background.className = "site-background";
-    background.setAttribute("aria-hidden", "true");
-    background.innerHTML = '<video autoplay muted loop playsinline preload="metadata"><source src="/video/bckg.webm" type="video/webm"><source src="/video/bckg.mp4" type="video/mp4"></video>';
-    document.body.prepend(background);
-  }
   const shellPath = "/index.html";
   const routes = new Set([
     "home.html",
