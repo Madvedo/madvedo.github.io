@@ -175,11 +175,11 @@
         }
         body.in-shell .sidebar {
           display: block;
-          flex: 0 0 60%;
-          width: 60%;
-          max-width: 60%;
+          flex: 0 0 440px;
+          width: 440px;
+          max-width: 440px;
           height: 100%;
-          column-width: 230px;
+          column-count: 2;
           column-gap: 10px;
           column-fill: auto;
           overflow: visible;
@@ -197,28 +197,14 @@
           height: 42px;
         }
         body.in-shell .content {
-          flex: 0 0 40%;
-          width: 40%;
-          max-width: 40%;
+          flex: 1 1 0;
+          width: auto;
+          max-width: none;
           height: 100%;
           min-height: 0;
-          column-width: 330px;
-          column-gap: 1.5rem;
-          column-fill: auto;
+          columns: auto;
           overflow: visible;
           padding-right: 1rem;
-        }
-        body.in-shell .content > :not(.band-description) {
-          break-inside: avoid-column;
-        }
-        body.in-shell .band-description { break-inside: auto; }
-        body.in-shell .gallery {
-          display: block;
-        }
-        body.in-shell .gallery > div {
-          display: inline-block;
-          width: 100%;
-          margin-bottom: 0.75rem;
         }
       }
     </style>
