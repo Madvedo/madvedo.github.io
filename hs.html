@@ -181,7 +181,8 @@
           height: 100%;
           column-width: 230px;
           column-gap: 10px;
-          overflow: hidden;
+          column-fill: auto;
+          overflow: visible;
         }
         body.in-shell .group-btn {
           break-inside: avoid;
@@ -201,9 +202,23 @@
           max-width: 40%;
           height: 100%;
           min-height: 0;
-          overflow-y: auto;
+          column-width: 330px;
+          column-gap: 1.5rem;
+          column-fill: auto;
+          overflow: visible;
           padding-right: 1rem;
-          scrollbar-width: thin;
+        }
+        body.in-shell .content > :not(.band-description) {
+          break-inside: avoid-column;
+        }
+        body.in-shell .band-description { break-inside: auto; }
+        body.in-shell .gallery {
+          display: block;
+        }
+        body.in-shell .gallery > div {
+          display: inline-block;
+          width: 100%;
+          margin-bottom: 0.75rem;
         }
       }
     </style>
