@@ -9,57 +9,35 @@
       content="a8GizajQrvh0R77QabdXoSStQ_4mdOU3YLCCRYlAsi0"
     />
     <title>Шаховское Подполье</title>
-
-    <!-- Bootstrap CSS -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
       crossorigin="anonymous"
     />
-
-    <!-- Иконки -->
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="manifest" href="/site.webmanifest" />
-
-    <!-- Стили -->
-    <link rel="stylesheet" type="text/css" href="/css/style.css" />
     <style>
-      .rounded-img {
-        width: 60%;
-        border-radius: 50%;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
-        padding: 0.6em;
-        margin-bottom: 1em;
-        transition: transform 0.4s ease, box-shadow 0.4s ease;
-        cursor: pointer;
+      :root {
+        --header-color: #212529;
+        --player-color: #171a1e;
+        --player-border: #454c54;
+        --player-text: #eef0f2;
+        --player-muted: #aeb6bf;
       }
 
-      .rounded-img:hover {
-        transform: scale(1.08);
-        box-shadow: 0 0 30px rgba(0, 255, 38, 0.746),
-          0 0 60px rgba(0, 123, 255, 0.6);
+      body {
+        margin: 0;
+        background: #fff;
       }
 
-      .center {
-        margin-left: 100px;
-      }
-      #parent {
-        position: relative;
-        height: 300px;
-      }
-      #child {
-        position: absolute;
-        bottom: 0;
-        margin-left: 5px;
-        height: 100px;
-        width: 100px;
-      }
-      a {
-        text-decoration: none;
-        color: black;
+      .site-frame {
+        display: block;
+        width: 100%;
+        min-height: calc(100vh - 64px);
+        border: 0;
       }
 
       .mini-radio {
@@ -69,15 +47,16 @@
         gap: 0.35rem;
         width: min(100%, 350px);
         margin-left: auto;
-        color: #c9ffc9;
+        color: var(--player-text);
         font-family: "Courier New", monospace;
       }
 
       .mini-radio__display,
       .mini-radio__button {
         min-width: 0;
-        border: 1px solid #426e42;
-        background: #0c170c;
+        border: 1px solid var(--player-border);
+        border-radius: 0.5rem;
+        background: var(--player-color);
         color: inherit;
       }
 
@@ -96,13 +75,13 @@
         height: 0.48rem;
         flex: 0 0 auto;
         border-radius: 50%;
-        background: #799279;
+        background: #6e7781;
         box-shadow: 0 0 5px transparent;
       }
 
       .mini-radio.is-playing .mini-radio__led {
-        background: #48ff6a;
-        box-shadow: 0 0 7px #48ff6a;
+        background: #79d279;
+        box-shadow: 0 0 7px #79d279;
       }
 
       .mini-radio__track {
@@ -115,7 +94,7 @@
 
       .mini-radio__time {
         flex: 0 0 auto;
-        color: #8aad8a;
+        color: var(--player-muted);
         font-size: 0.72rem;
       }
 
@@ -131,7 +110,7 @@
       .mini-radio__button:focus-visible,
       .mini-radio__track-button:hover,
       .mini-radio__track-button:focus-visible {
-        border-color: #79ff8d;
+        border-color: #9aa4ae;
         color: #fff;
         outline: none;
       }
@@ -143,16 +122,16 @@
         right: 0;
         width: 100%;
         overflow: hidden;
-        border: 1px solid #426e42;
-        border-radius: 0.25rem;
-        background: #0c170c;
+        border: 1px solid var(--player-border);
+        border-radius: 0.5rem;
+        background: var(--player-color);
         box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.45);
       }
 
       .mini-radio__panel-title {
         padding: 0.5rem 0.65rem;
-        border-bottom: 1px solid #2d4f2d;
-        color: #8aad8a;
+        border-bottom: 1px solid #343a40;
+        color: var(--player-muted);
         font-size: 0.72rem;
       }
 
@@ -166,16 +145,16 @@
         width: 100%;
         padding: 0.45rem 0.65rem;
         border: 0;
-        border-bottom: 1px solid #1c301c;
+        border-bottom: 1px solid #2b3035;
         background: transparent;
-        color: #c9ffc9;
+        color: var(--player-text);
         text-align: left;
         font: inherit;
         font-size: 0.76rem;
       }
 
       .mini-radio__track-button.is-active {
-        background: #1e4a26;
+        background: #343a40;
         color: #fff;
       }
 
@@ -187,14 +166,12 @@
         }
       }
     </style>
-
   </head>
   <body>
-    <!-- Навигация -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container">
-        <a class="navbar-brand p-0" href="/">
-          <img src="Logo.png" alt="ShUn1" width="40" />
+        <a class="navbar-brand p-0" href="#home">
+          <img src="/Logo.png" alt="ShUn1" width="40" />
         </a>
         <button
           class="navbar-toggler"
@@ -209,24 +186,11 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link" href="/news.html">Новости</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="concerts.html">Фотоархив</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="bands.html">Группы</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="hs.html">История</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="About.html">О проекте</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="radio.html">Радио</a>
-            </li>
+            <li class="nav-item"><a class="nav-link" href="#news.html">Новости</a></li>
+            <li class="nav-item"><a class="nav-link" href="#concerts.html">Фотоархив</a></li>
+            <li class="nav-item"><a class="nav-link" href="#bands.html">Группы</a></li>
+            <li class="nav-item"><a class="nav-link" href="#hs.html">История</a></li>
+            <li class="nav-item"><a class="nav-link" href="#About.html">О проекте</a></li>
           </ul>
         </div>
         <div class="mini-radio" id="miniRadio">
@@ -239,9 +203,7 @@
             title="Показать плейлист"
           >
             <span class="mini-radio__led" aria-hidden="true"></span>
-            <span class="mini-radio__track" id="miniRadioTrack"
-              >Загружаем плейлист…</span
-            >
+            <span class="mini-radio__track" id="miniRadioTrack">Загружаем плейлист…</span>
             <span class="mini-radio__time" id="miniRadioTime">0:00</span>
           </button>
           <button
@@ -250,9 +212,7 @@
             type="button"
             aria-label="Воспроизвести"
             title="Воспроизвести"
-          >
-            ▶
-          </button>
+          >▶</button>
           <div class="mini-radio__panel" id="miniRadioPanel" hidden>
             <div class="mini-radio__panel-title">ШАХОВСКОЕ ПОДПОЛЬЕ · РАДИО</div>
             <div class="mini-radio__tracks" id="miniRadioTracks"></div>
@@ -262,56 +222,13 @@
       </div>
     </nav>
 
-    <!-- Контент -->
-    <div class="container text-center">
-      <div class="row">
-        <div class="col-lg-6 col-md-8 mx-auto">
-          <h1 class="fw-light">ШАХОВСКОЕ ПОДПОЛЬЕ</h1>
-          <h2>Творческий мир на задворках <br />Московской области</h2>
+    <iframe class="site-frame" id="siteFrame" name="siteFrame" title="Содержание сайта"></iframe>
 
-          <a href="https://vk.com/shah_underground" target="_blank">
-            <img class="rounded-img" src="1.jpg" alt="ShUn" />
-          </a>
-
-          <div class="container my-5">
-            <a
-              href="https://vk.com/audios-20613122"
-              target="_blank"
-              class="btn btn-secondary"
-              >VK Аудио</a
-            >
-            <a
-              href="https://vk.com/video/@shah_underground"
-              target="_blank"
-              class="btn btn-secondary"
-              >VK Видео</a
-            >
-            <p class="lead my-5 text-muted">
-              История, которая пишется сейчас. <br />
-              Дата создания сообщества — 11.10.2010. <br />
-              Добро пожаловать!
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Подвал -->
-    <footer>
-      <div class="container text-center">
-        <a href="https://madvedo.ru/" target="_blank">
-          <h4>Madvedo Airbow &copy;</h4>
-        </a>
-      </div>
-    </footer>
-
-    <!-- Скрипты -->
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
       crossorigin="anonymous"
     ></script>
-
     <script>
       (() => {
         const player = document.getElementById("miniRadio");
@@ -327,35 +244,26 @@
 
         const formatTime = (seconds) => {
           if (!Number.isFinite(seconds)) return "0:00";
-          const minutes = Math.floor(seconds / 60);
-          const remainder = Math.floor(seconds % 60);
-          return `${minutes}:${String(remainder).padStart(2, "0")}`;
+          return `${Math.floor(seconds / 60)}:${String(Math.floor(seconds % 60)).padStart(2, "0")}`;
         };
-
-        const trackName = (path) =>
-          path.split("/").pop().replace(/\.[^/.]+$/, "");
+        const trackName = (path) => path.split("/").pop().replace(/\.[^/.]+$/, "");
 
         function renderTrackList() {
-          tracksList.replaceChildren(
-            ...tracks.map((track, index) => {
-              const button = document.createElement("button");
-              button.type = "button";
-              button.className = "mini-radio__track-button";
-              button.textContent = trackName(track);
-              button.dataset.index = String(index);
-              button.setAttribute("aria-label", `Воспроизвести: ${trackName(track)}`);
-              button.addEventListener("click", () => selectTrack(index, true));
-              return button;
-            })
-          );
+          tracksList.replaceChildren(...tracks.map((track, index) => {
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "mini-radio__track-button";
+            button.textContent = trackName(track);
+            button.dataset.index = String(index);
+            button.setAttribute("aria-label", `Воспроизвести: ${trackName(track)}`);
+            button.addEventListener("click", () => selectTrack(index, true));
+            return button;
+          }));
         }
 
         function markCurrentTrack() {
           tracksList.querySelectorAll("[data-index]").forEach((button) => {
-            button.classList.toggle(
-              "is-active",
-              Number(button.dataset.index) === currentIndex
-            );
+            button.classList.toggle("is-active", Number(button.dataset.index) === currentIndex);
           });
         }
 
@@ -366,17 +274,14 @@
           trackLabel.textContent = trackName(tracks[index]);
           timeLabel.textContent = "0:00";
           markCurrentTrack();
-          if (shouldPlay) audio.play().catch(() => updatePlaybackState());
+          if (shouldPlay) audio.play().catch(updatePlaybackState);
         }
 
         function updatePlaybackState() {
           const isPlaying = !audio.paused;
           player.classList.toggle("is-playing", isPlaying);
           playButton.textContent = isPlaying ? "❚❚" : "▶";
-          playButton.setAttribute(
-            "aria-label",
-            isPlaying ? "Поставить на паузу" : "Воспроизвести"
-          );
+          playButton.setAttribute("aria-label", isPlaying ? "Поставить на паузу" : "Воспроизвести");
           playButton.title = playButton.getAttribute("aria-label");
         }
 
@@ -388,15 +293,12 @@
         async function loadTracks() {
           try {
             const response = await fetch("/tracks.json", { cache: "no-cache" });
-            if (!response.ok) throw new Error("playlist request failed");
             const playlist = await response.json();
-            if (!Array.isArray(playlist) || playlist.length === 0) {
-              throw new Error("playlist is empty");
-            }
+            if (!response.ok || !Array.isArray(playlist) || playlist.length === 0) throw new Error("playlist unavailable");
             tracks = playlist;
             renderTrackList();
             selectTrack(Math.floor(Math.random() * tracks.length), false);
-          } catch (error) {
+          } catch {
             trackLabel.textContent = "Плейлист недоступен";
             playButton.disabled = true;
             toggle.disabled = true;
@@ -411,71 +313,50 @@
         });
         audio.addEventListener("play", updatePlaybackState);
         audio.addEventListener("pause", updatePlaybackState);
-        audio.addEventListener("timeupdate", () => {
-          timeLabel.textContent = formatTime(audio.currentTime);
+        audio.addEventListener("timeupdate", () => { timeLabel.textContent = formatTime(audio.currentTime); });
+        audio.addEventListener("ended", () => selectTrack((currentIndex + 1) % tracks.length, true));
+        audio.addEventListener("error", () => { trackLabel.textContent = "Не удалось загрузить трек"; updatePlaybackState(); });
+        document.addEventListener("click", (event) => { if (!player.contains(event.target)) setPanelVisibility(false); });
+        document.addEventListener("keydown", (event) => { if (event.key === "Escape") setPanelVisibility(false); });
+        window.addEventListener("message", (event) => {
+          if (event.origin === window.location.origin && event.data?.type === "shunder:band-audio-play") audio.pause();
         });
-        audio.addEventListener("ended", () => {
-          selectTrack((currentIndex + 1) % tracks.length, true);
-        });
-        audio.addEventListener("error", () => {
-          trackLabel.textContent = "Не удалось загрузить трек";
-          updatePlaybackState();
-        });
-        document.addEventListener("click", (event) => {
-          if (!player.contains(event.target)) setPanelVisibility(false);
-        });
-        document.addEventListener("keydown", (event) => {
-          if (event.key === "Escape") setPanelVisibility(false);
-        });
-
         loadTracks();
       })();
     </script>
+    <script>
+      (() => {
+        const frame = document.getElementById("siteFrame");
+        const routes = new Set(["home", "news.html", "concerts.html", "bands.html", "hs.html", "About.html", "radio.html"]);
+        const routeToPath = (route) => route === "home" ? "/home.html" : `/${route}`;
 
-    <!-- Yandex.Metrika counter -->
+        function loadRoute() {
+          const requested = decodeURIComponent(window.location.hash.slice(1) || "home");
+          const route = routes.has(requested) ? requested : "home";
+          if (route !== requested) window.location.hash = route;
+          const path = routeToPath(route);
+          if (frame.getAttribute("src") !== path) frame.setAttribute("src", path);
+        }
+
+        window.addEventListener("hashchange", loadRoute);
+        window.addEventListener("message", (event) => {
+          if (event.origin !== window.location.origin || !event.data) return;
+          if (event.data.type === "shunder:page-height") {
+            frame.style.height = `${Math.max(560, event.data.height)}px`;
+          }
+          if (event.data.type === "shunder:page-title") document.title = event.data.title;
+        });
+        loadRoute();
+      })();
+    </script>
     <script type="text/javascript">
       (function (m, e, t, r, i, k, a) {
-        m[i] =
-          m[i] ||
-          function () {
-            (m[i].a = m[i].a || []).push(arguments);
-          };
+        m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments); };
         m[i].l = 1 * new Date();
-        for (var j = 0; j < document.scripts.length; j++) {
-          if (document.scripts[j].src === r) {
-            return;
-          }
-        }
-        (k = e.createElement(t)),
-          (a = e.getElementsByTagName(t)[0]),
-          (k.async = 1),
-          (k.src = r),
-          a.parentNode.insertBefore(k, a);
-      })(
-        window,
-        document,
-        "script",
-        "https://mc.yandex.ru/metrika/tag.js?id=105346075",
-        "ym"
-      );
-
-      ym(105346075, "init", {
-        ssr: true,
-        webvisor: true,
-        clickmap: true,
-        ecommerce: "dataLayer",
-        accurateTrackBounce: true,
-        trackLinks: true,
-      });
+        for (var j = 0; j < document.scripts.length; j++) if (document.scripts[j].src === r) return;
+        k = e.createElement(t); a = e.getElementsByTagName(t)[0]; k.async = 1; k.src = r; a.parentNode.insertBefore(k, a);
+      })(window, document, "script", "https://mc.yandex.ru/metrika/tag.js?id=105346075", "ym");
+      ym(105346075, "init", { ssr: true, webvisor: true, clickmap: true, ecommerce: "dataLayer", accurateTrackBounce: true, trackLinks: true });
     </script>
-    <noscript
-      ><div>
-        <img
-          src="https://mc.yandex.ru/watch/105346075"
-          style="position: absolute; left: -9999px"
-          alt=""
-        /></div
-    ></noscript>
-    <!-- /Yandex.Metrika counter -->
   </body>
 </html>

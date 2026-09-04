@@ -795,6 +795,14 @@
         progressBar.style.width = pct + "%";
       });
       audio.addEventListener("ended", nextTrack);
+      audio.addEventListener("play", () => {
+        if (window.parent !== window) {
+          window.parent.postMessage(
+            { type: "shunder:band-audio-play" },
+            window.location.origin
+          );
+        }
+      });
       progressWrap.addEventListener("click", (e) => {
         const rect = progressWrap.getBoundingClientRect();
         const ratio = (e.clientX - rect.left) / rect.width;
@@ -867,5 +875,6 @@
       }
       document.addEventListener("DOMContentLoaded", init);
     </script>
+    <script src="/js/site-shell.js"></script>
   </body>
 </html>
