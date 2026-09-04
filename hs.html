@@ -161,34 +161,27 @@
       }
       @media (min-width: 992px) {
         body.in-shell .page-wrap {
-          height: 100dvh;
-          box-sizing: border-box;
-          overflow: hidden;
+          height: auto;
+          overflow: visible;
         }
         body.in-shell .page-wrap > .container {
           width: calc(100% - 32px);
           max-width: 1800px;
-          height: 100%;
-        }
-        body.in-shell .page-wrap > .container > .row {
-          height: 100%;
         }
         body.in-shell .sidebar {
-          display: block;
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
           flex: 0 0 440px;
           width: 440px;
           max-width: 440px;
-          height: 100%;
-          column-count: 2;
-          column-gap: 10px;
-          column-fill: auto;
+          height: auto;
+          gap: 10px;
           overflow: visible;
         }
         body.in-shell .group-btn {
-          break-inside: avoid;
           gap: 12px;
           min-height: 66px;
-          margin: 0 0 10px;
+          margin: 0;
           padding: 12px 14px;
           font-size: 1rem;
         }
@@ -200,7 +193,7 @@
           flex: 1 1 0;
           width: auto;
           max-width: none;
-          height: 100%;
+          height: auto;
           min-height: 0;
           columns: auto;
           overflow: visible;
