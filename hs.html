@@ -159,11 +159,14 @@
           width: 240px;
         }
         body.in-shell .history-group-column {
-          height: var(--history-groups-height, auto);
-          justify-content: flex-end;
+          height: auto;
+          justify-content: flex-start;
+          margin-top: var(--history-groups-offset, 0px);
         }
         body.in-shell .history-group-column.is-measuring {
+          height: var(--history-groups-height, auto);
           justify-content: flex-start;
+          margin-top: 0;
         }
         body.in-shell .content {
           flex: 1 1 0;
@@ -1042,6 +1045,7 @@
           sidebar.replaceChildren(...buttons);
           sidebar.style.removeProperty("--history-groups-width");
           sidebar.style.removeProperty("--history-groups-height");
+          sidebar.style.removeProperty("--history-groups-offset");
           return;
         }
 
@@ -1069,6 +1073,14 @@
         rightColumn.classList.remove("is-measuring");
 
         const rightButtons = [...rightColumn.children];
+        const rightContentHeight = rightButtons.reduce(
+          (height, button) => height + button.getBoundingClientRect().height,
+          Math.max(0, rightButtons.length - 1) * gap
+        );
+        sidebar.style.setProperty(
+          "--history-groups-offset",
+          `${Math.max(0, availableHeight - rightContentHeight)}px`
+        );
         const perColumn = Math.max(1, rightButtons.length);
         const columns = [];
         for (let index = 0; index < leftButtons.length; index += perColumn) {
