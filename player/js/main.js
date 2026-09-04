@@ -11,12 +11,12 @@ const player = document.querySelector(".player"),
 
 // Названия песен
 const songs = [
-  "Быть Или Не Быть",
-  "Иуdа",
-  "Новые Силы",
-  "Попса",
-  "Скука",
-  "Я Бы Всё Отdал",
+  { title: "Быть Или Не Быть", src: "/audio/Быть Или Не Быть.mp3" },
+  { title: "Иуdа", src: "/audio/Иуdа.mp3" },
+  { title: "Новые Силы", src: "/audio/Новые Силы.mp3" },
+  { title: "Попса", src: "/audio/Попса.mp3" },
+  { title: "Скука", src: "/audio/Скука.mp3" },
+  { title: "Я Бы Всё Отdал", src: "/audio/Я Бы Всё Отdал.mp3" },
 ];
 
 // Песня по умолчанию
@@ -24,9 +24,9 @@ let songIndex = 0;
 
 // Init
 function loadSong(song) {
-  title.innerHTML = song;
-  audio.src = `audio/${song}.mp3`;
-  cover.src = `img/Front.jpg`;
+  title.textContent = song.title;
+  audio.src = song.src;
+  cover.src = "img/Front.jpg";
 }
 
 loadSong(songs[songIndex]);
@@ -35,15 +35,15 @@ loadSong(songs[songIndex]);
 function playSong() {
   player.classList.add("play");
   cover.classList.add("active");
-  imgSrc.src = "/player/img/Pause.png";
-  audio.play();
+  imgSrc.src = "img/Pause.png";
+  audio.play().catch(pauseSong);
 }
 
 //Pause
 function pauseSong() {
   player.classList.remove("play");
   cover.classList.remove("active");
-  imgSrc.src = "/player/img/Play.png";
+  imgSrc.src = "img/Play.png";
   audio.pause();
 }
 playBtn.addEventListener("click", () => {
@@ -84,7 +84,7 @@ prevBtn.addEventListener("click", prevSong);
 
 function updateProgress(e) {
   const { duration, currentTime } = e.srcElement;
-  const progressPercent = (currentTime / duration) * 100;
+  const progressPercent = duration ? (currentTime / duration) * 100 : 0;
   progress.style.width = `${progressPercent}%`;
 }
 audio.addEventListener("timeupdate", updateProgress);
@@ -96,7 +96,7 @@ function setProgress(e) {
   const clickX = e.offsetX;
   const duration = audio.duration;
 
-  audio.currentTime = (clickX / width) * duration;
+  if (duration) audio.currentTime = (clickX / width) * duration;
 }
 progressContainer.addEventListener("click", setProgress);
 

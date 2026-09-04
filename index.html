@@ -63,37 +63,8 @@
       }
     </style>
 
-    <!-- Keycloak -->
-    <script src="https://artemtest.goodt.me/keycloak/js/keycloak.js"></script>
   </head>
   <body>
-    <!-- Модальное окно -->
-    <div class="modal fade" id="welcomeModal" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Добро пожаловать!</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Закрыть"
-            ></button>
-          </div>
-          <div class="modal-body">Вы вошли на портал.</div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-primary"
-              data-bs-dismiss="modal"
-            >
-              Закрыть
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <!-- Навигация -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container">
@@ -186,37 +157,6 @@
       crossorigin="anonymous"
     ></script>
 
-    <script>
-      const keycloak = Keycloak({
-        url: "https://artemtest.goodt.me/keycloak/",
-        realm: "shah-underground",
-        clientId: "shahunder",
-      });
-
-      keycloak
-        .init({ onLoad: "login-required", checkLoginIframe: false })
-        .then((authenticated) => {
-          if (authenticated) {
-            console.log("Пользователь авторизован");
-
-            const lastShownDate = localStorage.getItem("welcomeLastShown");
-            const today = new Date().toDateString();
-
-            if (!lastShownDate || lastShownDate !== today) {
-              const welcomeModal = new bootstrap.Modal(
-                document.getElementById("welcomeModal")
-              );
-              welcomeModal.show();
-              localStorage.setItem("welcomeLastShown", today);
-            }
-          } else {
-            console.warn("Не авторизован");
-          }
-        })
-        .catch((error) => {
-          console.error("Ошибка инициализации Keycloak:", error);
-        });
-    </script>
     <!-- Yandex.Metrika counter -->
     <script type="text/javascript">
       (function (m, e, t, r, i, k, a) {

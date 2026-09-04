@@ -13,7 +13,7 @@
   Git работает от пользователя `deploy`.
 
 - **Бэкенд (Media):**  
-  Сервер: `51.250.32.67`  
+  Сервер: `194.93.0.223`<br>
   Медиа-файлы в `/var/www/html/audio` и `/var/www/html/radio`.  
   Доступ к ним идёт через фронт (Nginx reverse proxy).
 
@@ -68,14 +68,14 @@ Windows PowerShell:
 
 powershell
 Копировать код
-scp -r "E:\Development\madvedo.github.io\audio\*" deploy@51.250.32.67:/var/www/html/audio/
-scp -r "E:\Development\madvedo.github.io\radio\*" deploy@51.250.32.67:/var/www/html/radio/
+scp -r "E:\Development\madvedo.github.io\audio\*" deploy@194.93.0.223:/var/www/html/audio/
+scp -r "E:\Development\madvedo.github.io\radio\*" deploy@194.93.0.223:/var/www/html/radio/
 WSL / Linux:
 
 bash
 Копировать код
-rsync -av --delete /mnt/e/Development/madvedo.github.io/audio/ deploy@51.250.32.67:/var/www/html/audio/
-rsync -av --delete /mnt/e/Development/madvedo.github.io/radio/ deploy@51.250.32.67:/var/www/html/radio/
+rsync -av --delete /mnt/e/Development/madvedo.github.io/audio/ deploy@194.93.0.223:/var/www/html/audio/
+rsync -av --delete /mnt/e/Development/madvedo.github.io/radio/ deploy@194.93.0.223:/var/www/html/radio/
 Nginx
 Фронт (87.247.142.102, shunder.ru)
 /etc/nginx/sites-available/shunder.ru.conf:
@@ -103,29 +103,21 @@ server {
     }
 
     location /audio/ {
-        proxy_pass http://51.250.32.67$request_uri;
-        proxy_set_header Host $host;
+        proxy_pass http://194.93.0.223/audio/;
+        proxy_set_header Host 194.93.0.223;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_buffering on;
-        proxy_max_temp_file_size 0;
-        client_max_body_size 0;
-        proxy_set_header Range $http_range;
-        proxy_set_header If-Range $http_if_range;
-        proxy_ignore_headers X-Accel-Buffering;
+        proxy_buffering off;
+        proxy_request_buffering off;
     }
 
     location /radio/ {
-        proxy_pass http://51.250.32.67$request_uri;
-        proxy_set_header Host $host;
+        proxy_pass http://194.93.0.223/radio/;
+        proxy_set_header Host 194.93.0.223;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_buffering on;
-        proxy_max_temp_file_size 0;
-        client_max_body_size 0;
-        proxy_set_header Range $http_range;
-        proxy_set_header If-Range $http_if_range;
-        proxy_ignore_headers X-Accel-Buffering;
+        proxy_buffering off;
+        proxy_request_buffering off;
     }
 
     location ~* \.(?:css|js|png|jpg|jpeg|svg|woff2)$ {
@@ -138,7 +130,7 @@ server {
     access_log /var/log/nginx/shunder.access.log;
     error_log  /var/log/nginx/shunder.error.log;
 }
-Бэкенд (51.250.32.67)
+Бэкенд (194.93.0.223)
 /etc/nginx/sites-available/media.conf:
 
 nginx
@@ -207,7 +199,7 @@ bash
 #!/usr/bin/env bash
 set -euo pipefail
 SRC=/mnt/e/Development/madvedo.github.io
-DEST=deploy@51.250.32.67:/var/www/html
+DEST=deploy@194.93.0.223:/var/www/html
 rsync -av --delete "$SRC/audio/" "$DEST/audio/"
 rsync -av --delete "$SRC/radio/" "$DEST/radio/"
 echo "[OK] Media synced to backend."

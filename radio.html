@@ -256,7 +256,7 @@
 
       async function loadTracks() {
         try {
-          const res = await fetch("tracks.json", { cache: "no-cache" });
+          const res = await fetch("/tracks.json", { cache: "no-cache" });
           if (!res.ok) throw new Error("Не удалось загрузить tracks.json");
           tracks = await res.json();
           if (!Array.isArray(tracks) || tracks.length === 0) {
@@ -316,15 +316,27 @@
         }
         rafId = requestAnimationFrame(loop);
       }
+
+      function stopProgressLoop() {
+        if (rafId !== null) cancelAnimationFrame(rafId);
+        rafId = null;
+      }
+
       audio.addEventListener("play", () => {
         updatePlayIcon();
-        cancelAnimationFrame(rafId);
-        loop();
+        if (rafId === null) loop();
       });
-      audio.addEventListener("pause", updatePlayIcon);
-      audio.addEventListener("ended", () => {
+      audio.addEventListener("pause", () => {
+        stopProgressLoop();
         updatePlayIcon();
+      });
+      audio.addEventListener("ended", () => {
+        stopProgressLoop();
         playNext();
+      });
+      audio.addEventListener("error", () => {
+        stopProgressLoop();
+        titleEl.textContent = "Не удалось загрузить трек";
       });
       audio.addEventListener(
         "loadedmetadata",
@@ -354,6 +366,11 @@
         scrubbing = false;
         seekFromEvent(ev);
       });
+      progressTrack.addEventListener("pointercancel", () => (scrubbing = false));
+      progressTrack.addEventListener(
+        "lostpointercapture",
+        () => (scrubbing = false)
+      );
       window.addEventListener("load", loadTracks);
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
