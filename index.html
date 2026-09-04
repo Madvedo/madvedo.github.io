@@ -61,6 +61,131 @@
         text-decoration: none;
         color: black;
       }
+
+      .mini-radio {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+        width: min(100%, 350px);
+        margin-left: auto;
+        color: #c9ffc9;
+        font-family: "Courier New", monospace;
+      }
+
+      .mini-radio__display,
+      .mini-radio__button {
+        min-width: 0;
+        border: 1px solid #426e42;
+        background: #0c170c;
+        color: inherit;
+      }
+
+      .mini-radio__display {
+        display: flex;
+        align-items: center;
+        gap: 0.45rem;
+        flex: 1;
+        padding: 0.38rem 0.55rem;
+        overflow: hidden;
+        text-align: left;
+      }
+
+      .mini-radio__led {
+        width: 0.48rem;
+        height: 0.48rem;
+        flex: 0 0 auto;
+        border-radius: 50%;
+        background: #799279;
+        box-shadow: 0 0 5px transparent;
+      }
+
+      .mini-radio.is-playing .mini-radio__led {
+        background: #48ff6a;
+        box-shadow: 0 0 7px #48ff6a;
+      }
+
+      .mini-radio__track {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        font-size: 0.75rem;
+        line-height: 1.2;
+      }
+
+      .mini-radio__time {
+        flex: 0 0 auto;
+        color: #8aad8a;
+        font-size: 0.72rem;
+      }
+
+      .mini-radio__button {
+        width: 2rem;
+        height: 2rem;
+        padding: 0;
+        font-weight: bold;
+      }
+
+      .mini-radio__display:hover,
+      .mini-radio__button:hover,
+      .mini-radio__button:focus-visible,
+      .mini-radio__track-button:hover,
+      .mini-radio__track-button:focus-visible {
+        border-color: #79ff8d;
+        color: #fff;
+        outline: none;
+      }
+
+      .mini-radio__panel {
+        position: absolute;
+        z-index: 1030;
+        top: calc(100% + 0.45rem);
+        right: 0;
+        width: 100%;
+        overflow: hidden;
+        border: 1px solid #426e42;
+        border-radius: 0.25rem;
+        background: #0c170c;
+        box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.45);
+      }
+
+      .mini-radio__panel-title {
+        padding: 0.5rem 0.65rem;
+        border-bottom: 1px solid #2d4f2d;
+        color: #8aad8a;
+        font-size: 0.72rem;
+      }
+
+      .mini-radio__tracks {
+        max-height: 18rem;
+        overflow-y: auto;
+      }
+
+      .mini-radio__track-button {
+        display: block;
+        width: 100%;
+        padding: 0.45rem 0.65rem;
+        border: 0;
+        border-bottom: 1px solid #1c301c;
+        background: transparent;
+        color: #c9ffc9;
+        text-align: left;
+        font: inherit;
+        font-size: 0.76rem;
+      }
+
+      .mini-radio__track-button.is-active {
+        background: #1e4a26;
+        color: #fff;
+      }
+
+      @media (max-width: 991.98px) {
+        .navbar .mini-radio {
+          order: 3;
+          width: 100%;
+          margin-top: 0.75rem;
+        }
+      }
     </style>
 
   </head>
@@ -103,6 +228,36 @@
               <a class="nav-link" href="radio.html">Радио</a>
             </li>
           </ul>
+        </div>
+        <div class="mini-radio" id="miniRadio">
+          <button
+            class="mini-radio__display"
+            id="miniRadioToggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="miniRadioPanel"
+            title="Показать плейлист"
+          >
+            <span class="mini-radio__led" aria-hidden="true"></span>
+            <span class="mini-radio__track" id="miniRadioTrack"
+              >Загружаем плейлист…</span
+            >
+            <span class="mini-radio__time" id="miniRadioTime">0:00</span>
+          </button>
+          <button
+            class="mini-radio__button"
+            id="miniRadioPlay"
+            type="button"
+            aria-label="Воспроизвести"
+            title="Воспроизвести"
+          >
+            ▶
+          </button>
+          <div class="mini-radio__panel" id="miniRadioPanel" hidden>
+            <div class="mini-radio__panel-title">ШАХОВСКОЕ ПОДПОЛЬЕ · РАДИО</div>
+            <div class="mini-radio__tracks" id="miniRadioTracks"></div>
+          </div>
+          <audio id="miniRadioAudio" preload="metadata"></audio>
         </div>
       </div>
     </nav>
@@ -156,6 +311,126 @@
       integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
       crossorigin="anonymous"
     ></script>
+
+    <script>
+      (() => {
+        const player = document.getElementById("miniRadio");
+        const audio = document.getElementById("miniRadioAudio");
+        const toggle = document.getElementById("miniRadioToggle");
+        const playButton = document.getElementById("miniRadioPlay");
+        const panel = document.getElementById("miniRadioPanel");
+        const trackLabel = document.getElementById("miniRadioTrack");
+        const timeLabel = document.getElementById("miniRadioTime");
+        const tracksList = document.getElementById("miniRadioTracks");
+        let tracks = [];
+        let currentIndex = -1;
+
+        const formatTime = (seconds) => {
+          if (!Number.isFinite(seconds)) return "0:00";
+          const minutes = Math.floor(seconds / 60);
+          const remainder = Math.floor(seconds % 60);
+          return `${minutes}:${String(remainder).padStart(2, "0")}`;
+        };
+
+        const trackName = (path) =>
+          path.split("/").pop().replace(/\.[^/.]+$/, "");
+
+        function renderTrackList() {
+          tracksList.replaceChildren(
+            ...tracks.map((track, index) => {
+              const button = document.createElement("button");
+              button.type = "button";
+              button.className = "mini-radio__track-button";
+              button.textContent = trackName(track);
+              button.dataset.index = String(index);
+              button.setAttribute("aria-label", `Воспроизвести: ${trackName(track)}`);
+              button.addEventListener("click", () => selectTrack(index, true));
+              return button;
+            })
+          );
+        }
+
+        function markCurrentTrack() {
+          tracksList.querySelectorAll("[data-index]").forEach((button) => {
+            button.classList.toggle(
+              "is-active",
+              Number(button.dataset.index) === currentIndex
+            );
+          });
+        }
+
+        function selectTrack(index, shouldPlay) {
+          if (!tracks[index]) return;
+          currentIndex = index;
+          audio.src = encodeURI(tracks[index]);
+          trackLabel.textContent = trackName(tracks[index]);
+          timeLabel.textContent = "0:00";
+          markCurrentTrack();
+          if (shouldPlay) audio.play().catch(() => updatePlaybackState());
+        }
+
+        function updatePlaybackState() {
+          const isPlaying = !audio.paused;
+          player.classList.toggle("is-playing", isPlaying);
+          playButton.textContent = isPlaying ? "❚❚" : "▶";
+          playButton.setAttribute(
+            "aria-label",
+            isPlaying ? "Поставить на паузу" : "Воспроизвести"
+          );
+          playButton.title = playButton.getAttribute("aria-label");
+        }
+
+        function setPanelVisibility(isVisible) {
+          panel.hidden = !isVisible;
+          toggle.setAttribute("aria-expanded", String(isVisible));
+        }
+
+        async function loadTracks() {
+          try {
+            const response = await fetch("/tracks.json", { cache: "no-cache" });
+            if (!response.ok) throw new Error("playlist request failed");
+            const playlist = await response.json();
+            if (!Array.isArray(playlist) || playlist.length === 0) {
+              throw new Error("playlist is empty");
+            }
+            tracks = playlist;
+            renderTrackList();
+            selectTrack(Math.floor(Math.random() * tracks.length), false);
+          } catch (error) {
+            trackLabel.textContent = "Плейлист недоступен";
+            playButton.disabled = true;
+            toggle.disabled = true;
+          }
+        }
+
+        toggle.addEventListener("click", () => setPanelVisibility(panel.hidden));
+        playButton.addEventListener("click", () => {
+          if (currentIndex < 0) return;
+          if (audio.paused) audio.play().catch(updatePlaybackState);
+          else audio.pause();
+        });
+        audio.addEventListener("play", updatePlaybackState);
+        audio.addEventListener("pause", updatePlaybackState);
+        audio.addEventListener("timeupdate", () => {
+          timeLabel.textContent = formatTime(audio.currentTime);
+        });
+        audio.addEventListener("ended", () => {
+          selectTrack((currentIndex + 1) % tracks.length, true);
+        });
+        audio.addEventListener("error", () => {
+          trackLabel.textContent = "Не удалось загрузить трек";
+          updatePlaybackState();
+        });
+        document.addEventListener("click", (event) => {
+          if (!player.contains(event.target)) setPanelVisibility(false);
+        });
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape") setPanelVisibility(false);
+        });
+
+        loadTracks();
+      })();
+    </script>
 
     <!-- Yandex.Metrika counter -->
     <script type="text/javascript">
