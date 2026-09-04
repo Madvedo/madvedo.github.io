@@ -19,6 +19,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="manifest" href="/site.webmanifest" />
+    <link rel="stylesheet" href="/css/site-theme.css" />
     <style>
       :root {
         --header-color: #212529;
@@ -30,7 +31,7 @@
 
       body {
         margin: 0;
-        background: #fff;
+        background: transparent;
       }
 
       .site-frame {
@@ -38,6 +39,7 @@
         width: 100%;
         min-height: 0;
         border: 0;
+        background: transparent;
       }
 
       .mini-radio {
@@ -115,48 +117,9 @@
         outline: none;
       }
 
-      .mini-radio__panel {
-        position: absolute;
-        z-index: 1030;
-        top: calc(100% + 0.45rem);
-        right: 0;
-        width: 100%;
-        overflow: hidden;
-        border: 1px solid var(--player-border);
-        border-radius: 0.5rem;
-        background: var(--player-color);
-        box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.45);
-      }
-
-      .mini-radio__panel-title {
-        padding: 0.5rem 0.65rem;
-        border-bottom: 1px solid #343a40;
-        color: var(--player-muted);
-        font-size: 0.72rem;
-      }
-
-      .mini-radio__tracks {
-        max-height: 18rem;
-        overflow-y: auto;
-      }
-
-      .mini-radio__track-button {
-        display: block;
-        width: 100%;
-        padding: 0.45rem 0.65rem;
-        border: 0;
-        border-bottom: 1px solid #2b3035;
-        background: transparent;
-        color: var(--player-text);
-        text-align: left;
-        font: inherit;
-        font-size: 0.76rem;
-      }
-
-      .mini-radio__track-button.is-active {
-        background: #343a40;
-        color: #fff;
-      }
+      .mini-radio__status { margin-left: auto; color: var(--player-muted); font-size: .68rem; }
+      .mini-radio.is-playing .mini-radio__status { color: #79d279; }
+      .mini-radio__shuffle { display:flex; flex-direction:column; align-items:center; justify-content:center; font-size:.75rem; line-height:.62rem; }
 
       @media (max-width: 991.98px) {
         .navbar .container {
@@ -187,6 +150,7 @@
     </style>
   </head>
   <body>
+    <div class="site-background" aria-hidden="true"><video autoplay muted loop playsinline preload="metadata"><source src="/video/bckg.webm" type="video/webm"><source src="/video/bckg.mp4" type="video/mp4"></video></div>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container">
         <a class="navbar-brand p-0" href="#home">
@@ -217,25 +181,19 @@
             class="mini-radio__display"
             id="miniRadioToggle"
             type="button"
-            aria-expanded="false"
-            aria-controls="miniRadioPanel"
-            title="Показать плейлист"
+            title="Слушать радио / остановить"
           >
             <span class="mini-radio__led" aria-hidden="true"></span>
-            <span class="mini-radio__track" id="miniRadioTrack">Загружаем плейлист…</span>
-            <span class="mini-radio__time" id="miniRadioTime">0:00</span>
+            <span class="mini-radio__track" id="miniRadioTrack">Слушать радио</span>
+            <span class="mini-radio__status" id="miniRadioStatus">готово</span>
           </button>
           <button
-            class="mini-radio__button"
-            id="miniRadioPlay"
+            id="miniRadioShuffle"
             type="button"
-            aria-label="Воспроизвести"
-            title="Воспроизвести"
-          >▶</button>
-          <div class="mini-radio__panel" id="miniRadioPanel" hidden>
-            <div class="mini-radio__panel-title">ШАХОВСКОЕ ПОДПОЛЬЕ · РАДИО</div>
-            <div class="mini-radio__tracks" id="miniRadioTracks"></div>
-          </div>
+            aria-label="Сменить трек"
+            title="Сменить трек"
+            class="mini-radio__button mini-radio__shuffle"
+          ><span>⇢</span><span>⇠</span></button>
           <audio id="miniRadioAudio" preload="metadata"></audio>
         </div>
       </div>
@@ -253,60 +211,32 @@
         const player = document.getElementById("miniRadio");
         const audio = document.getElementById("miniRadioAudio");
         const toggle = document.getElementById("miniRadioToggle");
-        const playButton = document.getElementById("miniRadioPlay");
-        const panel = document.getElementById("miniRadioPanel");
+        const shuffleButton = document.getElementById("miniRadioShuffle");
         const trackLabel = document.getElementById("miniRadioTrack");
-        const timeLabel = document.getElementById("miniRadioTime");
-        const tracksList = document.getElementById("miniRadioTracks");
+        const statusLabel = document.getElementById("miniRadioStatus");
         let tracks = [];
         let currentIndex = -1;
-
-        const formatTime = (seconds) => {
-          if (!Number.isFinite(seconds)) return "0:00";
-          return `${Math.floor(seconds / 60)}:${String(Math.floor(seconds % 60)).padStart(2, "0")}`;
-        };
         const trackName = (path) => path.split("/").pop().replace(/\.[^/.]+$/, "");
-
-        function renderTrackList() {
-          tracksList.replaceChildren(...tracks.map((track, index) => {
-            const button = document.createElement("button");
-            button.type = "button";
-            button.className = "mini-radio__track-button";
-            button.textContent = trackName(track);
-            button.dataset.index = String(index);
-            button.setAttribute("aria-label", `Воспроизвести: ${trackName(track)}`);
-            button.addEventListener("click", () => selectTrack(index, true));
-            return button;
-          }));
-        }
-
-        function markCurrentTrack() {
-          tracksList.querySelectorAll("[data-index]").forEach((button) => {
-            button.classList.toggle("is-active", Number(button.dataset.index) === currentIndex);
-          });
-        }
-
-        function selectTrack(index, shouldPlay) {
+        function selectTrack(index) {
           if (!tracks[index]) return;
           currentIndex = index;
           audio.src = encodeURI(tracks[index]);
           trackLabel.textContent = trackName(tracks[index]);
-          timeLabel.textContent = "0:00";
-          markCurrentTrack();
-          if (shouldPlay) audio.play().catch(updatePlaybackState);
+          statusLabel.textContent = "загрузка";
+          audio.play().catch(() => { statusLabel.textContent = "нажмите ещё раз"; updatePlaybackState(); });
+        }
+        function randomTrack() {
+          if (!tracks.length) return;
+          let next = Math.floor(Math.random() * tracks.length);
+          if (tracks.length > 1 && next === currentIndex) next = (next + 1) % tracks.length;
+          selectTrack(next);
         }
 
         function updatePlaybackState() {
           const isPlaying = !audio.paused;
           player.classList.toggle("is-playing", isPlaying);
-          playButton.textContent = isPlaying ? "❚❚" : "▶";
-          playButton.setAttribute("aria-label", isPlaying ? "Поставить на паузу" : "Воспроизвести");
-          playButton.title = playButton.getAttribute("aria-label");
-        }
-
-        function setPanelVisibility(isVisible) {
-          panel.hidden = !isVisible;
-          toggle.setAttribute("aria-expanded", String(isVisible));
+          statusLabel.textContent = isPlaying ? "играет" : (currentIndex < 0 ? "готово" : "пауза");
+          toggle.title = isPlaying ? "Остановить воспроизведение" : "Продолжить воспроизведение";
         }
 
         async function loadTracks() {
@@ -315,21 +245,21 @@
             const playlist = await response.json();
             if (!response.ok || !Array.isArray(playlist) || playlist.length === 0) throw new Error("playlist unavailable");
             tracks = playlist;
-            renderTrackList();
-            selectTrack(Math.floor(Math.random() * tracks.length), false);
+            trackLabel.textContent = "Слушать радио";
+            statusLabel.textContent = "готово";
           } catch {
             trackLabel.textContent = "Плейлист недоступен";
-            playButton.disabled = true;
+            shuffleButton.disabled = true;
             toggle.disabled = true;
           }
         }
 
-        toggle.addEventListener("click", () => setPanelVisibility(panel.hidden));
-        playButton.addEventListener("click", () => {
-          if (currentIndex < 0) return;
-          if (audio.paused) audio.play().catch(updatePlaybackState);
+        toggle.addEventListener("click", () => {
+          if (currentIndex < 0) randomTrack();
+          else if (audio.paused) audio.play().catch(updatePlaybackState);
           else audio.pause();
         });
+        shuffleButton.addEventListener("click", randomTrack);
         audio.addEventListener("play", () => {
           updatePlaybackState();
           document.getElementById("siteFrame")?.contentWindow?.postMessage(
@@ -338,11 +268,8 @@
           );
         });
         audio.addEventListener("pause", updatePlaybackState);
-        audio.addEventListener("timeupdate", () => { timeLabel.textContent = formatTime(audio.currentTime); });
-        audio.addEventListener("ended", () => selectTrack((currentIndex + 1) % tracks.length, true));
+        audio.addEventListener("ended", randomTrack);
         audio.addEventListener("error", () => { trackLabel.textContent = "Не удалось загрузить трек"; updatePlaybackState(); });
-        document.addEventListener("click", (event) => { if (!player.contains(event.target)) setPanelVisibility(false); });
-        document.addEventListener("keydown", (event) => { if (event.key === "Escape") setPanelVisibility(false); });
         window.addEventListener("message", (event) => {
           if (event.origin === window.location.origin && event.data?.type === "shunder:band-audio-play") audio.pause();
         });
