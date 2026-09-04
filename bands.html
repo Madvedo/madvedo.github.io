@@ -655,6 +655,32 @@
       let currentBandKey = null;
       let currentAlbumIndex = 0;
       let currentTrackIndex = 0;
+      let audioContext = null;
+
+      function enableLeveling() {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return Promise.resolve();
+        if (!audioContext) {
+          audioContext = new AudioContext();
+          const source = audioContext.createMediaElementSource(audio);
+          const compressor = audioContext.createDynamicsCompressor();
+          const makeup = audioContext.createGain();
+          const limiter = audioContext.createDynamicsCompressor();
+          compressor.threshold.value = -24;
+          compressor.knee.value = 24;
+          compressor.ratio.value = 4;
+          compressor.attack.value = 0.01;
+          compressor.release.value = 0.3;
+          makeup.gain.value = 1.15;
+          limiter.threshold.value = -3;
+          limiter.knee.value = 0;
+          limiter.ratio.value = 20;
+          limiter.attack.value = 0.003;
+          limiter.release.value = 0.12;
+          source.connect(compressor).connect(makeup).connect(limiter).connect(audioContext.destination);
+        }
+        return audioContext.state === "suspended" ? audioContext.resume() : Promise.resolve();
+      }
 
       function mmss(sec) {
         if (!isFinite(sec)) return "0:00";
@@ -790,8 +816,7 @@
         const track = album.tracks[trackIndex];
 
         audio.src = track.src;
-        audio
-          .play()
+        enableLeveling().then(() => audio.play())
           .then(() => {
             playBtn.textContent = "⏸";
           })
@@ -830,7 +855,7 @@
       }
       function togglePlay() {
         if (audio.paused) {
-          audio.play();
+          enableLeveling().then(() => audio.play());
           playBtn.textContent = "⏸";
         } else {
           audio.pause();

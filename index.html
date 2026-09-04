@@ -213,6 +213,31 @@
         const statusLabel = document.getElementById("miniRadioStatus");
         let tracks = [];
         let currentIndex = -1;
+        let audioContext = null;
+        function enableLeveling() {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (!AudioContext) return Promise.resolve();
+          if (!audioContext) {
+            audioContext = new AudioContext();
+            const source = audioContext.createMediaElementSource(audio);
+            const compressor = audioContext.createDynamicsCompressor();
+            const makeup = audioContext.createGain();
+            const limiter = audioContext.createDynamicsCompressor();
+            compressor.threshold.value = -24;
+            compressor.knee.value = 24;
+            compressor.ratio.value = 4;
+            compressor.attack.value = 0.01;
+            compressor.release.value = 0.3;
+            makeup.gain.value = 1.15;
+            limiter.threshold.value = -3;
+            limiter.knee.value = 0;
+            limiter.ratio.value = 20;
+            limiter.attack.value = 0.003;
+            limiter.release.value = 0.12;
+            source.connect(compressor).connect(makeup).connect(limiter).connect(audioContext.destination);
+          }
+          return audioContext.state === "suspended" ? audioContext.resume() : Promise.resolve();
+        }
         const trackName = (path) => path.split("/").pop().replace(/\.[^/.]+$/, "");
         function selectTrack(index) {
           if (!tracks[index]) return;
@@ -220,7 +245,7 @@
           audio.src = encodeURI(tracks[index]);
           trackLabel.textContent = trackName(tracks[index]);
           statusLabel.textContent = "загрузка";
-          audio.play().catch(() => { statusLabel.textContent = "нажмите ещё раз"; updatePlaybackState(); });
+          enableLeveling().then(() => audio.play()).catch(() => { statusLabel.textContent = "нажмите ещё раз"; updatePlaybackState(); });
         }
         function randomTrack() {
           if (!tracks.length) return;
@@ -254,7 +279,7 @@
 
         toggle.addEventListener("click", () => {
           if (currentIndex < 0) randomTrack();
-          else if (audio.paused) audio.play().catch(updatePlaybackState);
+          else if (audio.paused) enableLeveling().then(() => audio.play()).catch(updatePlaybackState);
           else audio.pause();
         });
         shuffleButton.addEventListener("click", randomTrack);
