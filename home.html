@@ -45,8 +45,9 @@
       body.in-shell .rounded-img { width: min(60%, 300px); }
       body.in-shell .container.my-5 { margin-top: 1.5rem !important; margin-bottom: 1.5rem !important; }
       @media (max-width: 575.98px) {
-        .latest-news-grid { --gap:7px; padding-top:22px; padding-bottom:22px; }
-        .latest-news-card { flex-basis:100%; transform:scale(.82); }
+        .latest-news-grid { --gap:7px; width:100%; padding:16px 5px; }
+        .latest-news-card { flex-basis:calc((100% - 14px) / 3); transform:scale(.84); }
+        .latest-news-card.is-active { transform:scale(1.08); }
         .latest-news-title { padding:7px 5px; font-size:.62rem; }
         body.in-shell main { padding: 10px 0; }
         h1 { font-size: 1.55rem; }

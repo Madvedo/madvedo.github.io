@@ -1112,7 +1112,7 @@
         sidebar.replaceChildren(...Object.entries(LIB).map(([key, band]) => {
           const button = document.createElement('button');
           button.className = 'group-btn'; button.dataset.band = key;
-          button.innerHTML = `<img src="${band.cover || band.gallery?.[0] || ''}" alt=""><span>${band.title}</span>`;
+          button.innerHTML = `${band.cover ? `<img src="${band.cover}" alt="${band.title}">` : ''}<span>${band.title}</span>`;
           button.addEventListener('click', () => renderBand(key));
           return button;
         }));
