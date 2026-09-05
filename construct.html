@@ -63,6 +63,9 @@
         position: sticky;
         bottom: 10px;
       }
+      .rich-toolbar { display:flex; flex-wrap:wrap; gap:5px; padding:7px; background:#15191e; border:1px solid #505963; border-bottom:0; border-radius:6px 6px 0 0; }
+      .rich-editor { min-height:140px; padding:10px; background:#fff; color:#111; border-radius:0 0 6px 6px; }
+      .published-warning { color:#ffc107; font-size:.82rem; margin:.35rem 0 .7rem; }
       @media (max-width: 700px) {
         .app {
           grid-template-columns: 1fr;
@@ -162,7 +165,7 @@
         C.innerHTML = pages.news
           .map(
             (x, i) =>
-              `<div class=box><button class="btn btn-sm btn-outline-danger float-end" data-d="news.${i}">Удалить</button><h5>Новость ${i + 1}</h5>${F("Ссылка", x.link, `news.${i}.link`)}${F("Картинка", x.image, `news.${i}.image`)}${U(`news.${i}.image`)}${F("Подпись", x.alt, `news.${i}.alt`)}${F("Текст", x.html, `news.${i}.html`, 1)}</div>`,
+              `<div class=box><button class="btn btn-sm btn-outline-danger float-end" data-d="news.${i}">Удалить</button><h5>Новость ${i + 1}</h5><div class="published-warning">⚠ Это уже опубликованная новость. Сохранение заменит её текст на сайте.</div>${F("Ссылка", x.link, `news.${i}.link`)}${F("Картинка", x.image, `news.${i}.image`)}${U(`news.${i}.image`)}${F("Подпись", x.alt, `news.${i}.alt`)}<label class=label>Текст</label><div class="rich-toolbar"><button type=button class="btn btn-sm btn-outline-light" data-cmd=bold><b>Ж</b></button><button type=button class="btn btn-sm btn-outline-light" data-cmd=italic><i>К</i></button><button type=button class="btn btn-sm btn-outline-light" data-cmd=underline><u>Ч</u></button><button type=button class="btn btn-sm btn-outline-light" data-cmd=createLink>🔗 Ссылка</button><button type=button class="btn btn-sm btn-outline-light" data-cmd=justifyLeft>≡ Влево</button><button type=button class="btn btn-sm btn-outline-light" data-cmd=justifyCenter>≡ Центр</button><button type=button class="btn btn-sm btn-outline-light" data-cmd=justifyRight>≡ Вправо</button></div><div class="rich-editor" contenteditable=true data-rich="news.${i}.html">${x.html}</div></div>`,
           )
           .join("");
       }
@@ -211,7 +214,9 @@
       }
       C.oninput = (e) => {
         if (e.target.dataset.p) set(e.target.dataset.p, e.target.value);
+        if (e.target.dataset.rich) set(e.target.dataset.rich, e.target.innerHTML);
       };
+      C.onmousedown = (e) => { if (e.target.closest("[data-cmd]")) e.preventDefault(); };
       C.onchange = async (e) => {
         if (!e.target.dataset.u) return;
         let d = new FormData();
@@ -222,6 +227,8 @@
         draw();
       };
       C.onclick = async (e) => {
+        const command = e.target.closest("[data-cmd]");
+        if (command) { e.preventDefault(); const name=command.dataset.cmd, value=name==='createLink'?prompt('Адрес ссылки:','https://'):null; if(name!=='createLink'||value) document.execCommand(name,false,value); return; }
         let b = e.target.closest("[data-d],[data-new],[data-file]");
         if (!b) return;
         if (b.dataset.file) {
@@ -270,6 +277,7 @@
         draw();
       };
       save.onclick = async () => {
+        if (s === "news" && !confirm("Вы редактируете уже опубликованные новости. Опубликовать изменения?")) return;
         let n = s === "bands" ? "bands" : s === "history" ? "history" : "pages",
           d = n === "bands" ? bands : n === "history" ? history : pages;
         await Q("/content", {
