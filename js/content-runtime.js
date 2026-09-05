@@ -15,8 +15,24 @@
       document.querySelector('.lead.my-5').innerHTML = data.home.description;
       const latest = document.querySelector('#latestNews .latest-news-grid');
       if (latest && Array.isArray(data.news)) {
-        const chosen = [data.news[1], data.news[0], data.news[2]].filter(Boolean);
-        latest.innerHTML = chosen.map((item,index) => `<a class="latest-news-card ${index===1?'is-latest':''}" href="${escape(item.link || '/index.html#news.html')}" target="_blank" rel="noopener"><img src="${escape(item.image)}" alt="${escape(item.alt)}"><span class="latest-news-title">${escape(item.alt || 'Новость')}</span></a>`).join('');
+        latest.innerHTML = data.news.map(item => `<a class="latest-news-card" href="${escape(item.link || '/index.html#news.html')}" target="_blank" rel="noopener"><img src="${escape(item.image)}" alt="${escape(item.alt)}"><span class="latest-news-title">${escape(item.alt || 'Новость')}</span></a>`).join('');
+        let frame;
+        const selectCentered = () => {
+          cancelAnimationFrame(frame);
+          frame = requestAnimationFrame(() => {
+            const center = latest.getBoundingClientRect().left + latest.clientWidth / 2;
+            let active, distance = Infinity;
+            latest.querySelectorAll('.latest-news-card').forEach(card => {
+              const rect=card.getBoundingClientRect(), current=Math.abs(rect.left + rect.width / 2 - center);
+              if(current < distance){ distance=current; active=card; }
+            });
+            latest.querySelectorAll('.latest-news-card').forEach(card => card.classList.toggle('is-active',card===active));
+          });
+        };
+        latest.addEventListener('scroll',selectCentered,{passive:true});
+        latest.addEventListener('wheel',event => { if(Math.abs(event.deltaY)>Math.abs(event.deltaX)){ event.preventDefault(); latest.scrollLeft += event.deltaY; } },{passive:false});
+        window.addEventListener('resize',selectCentered);
+        selectCentered();
       }
     }
     if (page === 'About.html' && data.about) {
