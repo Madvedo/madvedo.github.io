@@ -18,36 +18,32 @@
         const items = data.news.length >= 5 ? data.news : Array.from({length:5},(_,i)=>data.news[i % data.news.length]);
         const loop = [...items,...items,...items];
         latest.innerHTML = loop.map((item,index) => `<a class="latest-news-card" data-carousel-index="${index}" href="${escape(item.link || '/index.html#news.html')}" target="_blank" rel="noopener"><img src="${escape(item.image)}" alt="${escape(item.alt)}"><span class="latest-news-title">${escape(item.alt || 'Новость')}</span></a>`).join('');
-        let frame, timer, current=items.length;
+        let frame, dragging=false, previous=0;
         const cards = [...latest.querySelectorAll('.latest-news-card')];
         const step = () => cards[0].getBoundingClientRect().width + parseFloat(getComputedStyle(latest).gap);
-        const centerAt = (index, smooth=true) => latest.scrollTo({left:(index-2)*step(),behavior:smooth?'smooth':'auto'});
         const selectCentered = () => {
-          cancelAnimationFrame(frame);
-          frame = requestAnimationFrame(() => {
-            const center = latest.getBoundingClientRect().left + latest.clientWidth / 2;
-            let active, distance = Infinity;
-            latest.querySelectorAll('.latest-news-card').forEach(card => {
-              const rect=card.getBoundingClientRect(), current=Math.abs(rect.left + rect.width / 2 - center);
-              if(current < distance){ distance=current; active=card; }
-            });
-            latest.querySelectorAll('.latest-news-card').forEach(card => card.classList.toggle('is-active',card===active));
+          const center = latest.getBoundingClientRect().left + latest.clientWidth / 2;
+          let active, distance = Infinity;
+          cards.forEach(card => {
+            const rect=card.getBoundingClientRect(), current=Math.abs(rect.left + rect.width / 2 - center);
+            if(current < distance){ distance=current; active=card; }
           });
+          cards.forEach(card => card.classList.toggle('is-active',card===active));
         };
-        latest.addEventListener('scroll',selectCentered,{passive:true});
-        const advance = () => {
-          current += 1; centerAt(current);
-          setTimeout(() => {
-            if(current >= items.length*2){ current -= items.length; centerAt(current,false); selectCentered(); }
-          },550);
+        const positionStart = () => { latest.scrollLeft=items.length*step()-(latest.clientWidth-step())/2; };
+        const animate = time => {
+          if(!previous) previous=time;
+          const elapsed=Math.min(40,time-previous); previous=time;
+          if(!dragging) latest.scrollLeft += elapsed*.025;
+          const sequence=items.length*step();
+          if(latest.scrollLeft >= sequence*2) latest.scrollLeft -= sequence;
+          selectCentered();
+          frame=requestAnimationFrame(animate);
         };
-        const start = () => { clearInterval(timer); timer=setInterval(advance,2800); };
-        latest.addEventListener('mouseenter',()=>clearInterval(timer));
-        latest.addEventListener('mouseleave',start);
-        latest.addEventListener('focusin',()=>clearInterval(timer));
-        latest.addEventListener('focusout',start);
-        window.addEventListener('resize',()=>{ centerAt(current,false); selectCentered(); });
-        requestAnimationFrame(()=>{ centerAt(current,false); selectCentered(); start(); });
+        latest.addEventListener('pointerdown',()=>dragging=true);
+        window.addEventListener('pointerup',()=>dragging=false);
+        window.addEventListener('resize',()=>{ positionStart(); selectCentered(); });
+        requestAnimationFrame(()=>{ positionStart(); selectCentered(); frame=requestAnimationFrame(animate); });
       }
     }
     if (page === 'About.html' && data.about) {
