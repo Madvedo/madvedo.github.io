@@ -34,10 +34,11 @@
         const animate = time => {
           if(!previous) previous=time;
           const elapsed=Math.min(40,time-previous); previous=time;
-          if(!dragging) latest.scrollLeft += elapsed*.025;
+          if(!dragging) latest.scrollLeft += elapsed*.06;
           const sequence=items.length*step();
           if(latest.scrollLeft >= sequence*2) latest.scrollLeft -= sequence;
           selectCentered();
+          latest.dataset.motion = String(Math.round(latest.scrollLeft));
           frame=requestAnimationFrame(animate);
         };
         latest.addEventListener('pointerdown',()=>dragging=true);
