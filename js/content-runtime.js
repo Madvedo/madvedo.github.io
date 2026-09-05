@@ -16,8 +16,7 @@
       const latest = document.querySelector('#latestNews .latest-news-grid');
       if (latest && Array.isArray(data.news)) {
         const chosen = [data.news[1], data.news[0], data.news[2]].filter(Boolean);
-        const plainText = html => { const node=document.createElement('div'); node.innerHTML=html; return node.textContent.replace(/\s+/g,' ').trim(); };
-        latest.innerHTML = chosen.map((item,index) => `<a class="latest-news-card ${index===1?'is-latest':''}" href="${escape(item.link || '/index.html#news.html')}" target="_blank" rel="noopener"><img src="${escape(item.image)}" alt="${escape(item.alt)}"><div>${escape(plainText(item.html))}</div></a>`).join('');
+        latest.innerHTML = chosen.map((item,index) => `<a class="latest-news-card ${index===1?'is-latest':''}" href="${escape(item.link || '/index.html#news.html')}" target="_blank" rel="noopener"><img src="${escape(item.image)}" alt="${escape(item.alt)}"><span class="latest-news-title">${escape(item.alt || 'Новость')}</span></a>`).join('');
       }
     }
     if (page === 'About.html' && data.about) {
