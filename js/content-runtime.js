@@ -15,8 +15,13 @@
       document.querySelector('.lead.my-5').innerHTML = data.home.description;
       const latest = document.querySelector('#latestNews .latest-news-grid');
       if (latest && Array.isArray(data.news)) {
-        latest.innerHTML = data.news.map(item => `<a class="latest-news-card" href="${escape(item.link || '/index.html#news.html')}" target="_blank" rel="noopener"><img src="${escape(item.image)}" alt="${escape(item.alt)}"><span class="latest-news-title">${escape(item.alt || 'Новость')}</span></a>`).join('');
-        let frame;
+        const items = data.news.length >= 5 ? data.news : Array.from({length:5},(_,i)=>data.news[i % data.news.length]);
+        const loop = [...items,...items,...items];
+        latest.innerHTML = loop.map((item,index) => `<a class="latest-news-card" data-carousel-index="${index}" href="${escape(item.link || '/index.html#news.html')}" target="_blank" rel="noopener"><img src="${escape(item.image)}" alt="${escape(item.alt)}"><span class="latest-news-title">${escape(item.alt || 'Новость')}</span></a>`).join('');
+        let frame, timer, current=items.length;
+        const cards = [...latest.querySelectorAll('.latest-news-card')];
+        const step = () => cards[0].getBoundingClientRect().width + parseFloat(getComputedStyle(latest).gap);
+        const centerAt = (index, smooth=true) => latest.scrollTo({left:(index-2)*step(),behavior:smooth?'smooth':'auto'});
         const selectCentered = () => {
           cancelAnimationFrame(frame);
           frame = requestAnimationFrame(() => {
@@ -30,9 +35,19 @@
           });
         };
         latest.addEventListener('scroll',selectCentered,{passive:true});
-        latest.addEventListener('wheel',event => { if(Math.abs(event.deltaY)>Math.abs(event.deltaX)){ event.preventDefault(); latest.scrollLeft += event.deltaY; } },{passive:false});
-        window.addEventListener('resize',selectCentered);
-        selectCentered();
+        const advance = () => {
+          current += 1; centerAt(current);
+          setTimeout(() => {
+            if(current >= items.length*2){ current -= items.length; centerAt(current,false); selectCentered(); }
+          },550);
+        };
+        const start = () => { clearInterval(timer); timer=setInterval(advance,2800); };
+        latest.addEventListener('mouseenter',()=>clearInterval(timer));
+        latest.addEventListener('mouseleave',start);
+        latest.addEventListener('focusin',()=>clearInterval(timer));
+        latest.addEventListener('focusout',start);
+        window.addEventListener('resize',()=>{ centerAt(current,false); selectCentered(); });
+        requestAnimationFrame(()=>{ centerAt(current,false); selectCentered(); start(); });
       }
     }
     if (page === 'About.html' && data.about) {
