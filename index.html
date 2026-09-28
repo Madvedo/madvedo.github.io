@@ -213,6 +213,7 @@
         const statusLabel = document.getElementById("miniRadioStatus");
         let tracks = [];
         let currentIndex = -1;
+        let remaining = [];
         let audioContext = null;
         let levelGain = null;
         let loudness = {};
@@ -251,11 +252,21 @@
           statusLabel.textContent = "загрузка";
           enableLeveling().then(() => { applyTrackLevel(); return audio.play(); }).catch(() => { statusLabel.textContent = "нажмите ещё раз"; updatePlaybackState(); });
         }
+        function refillQueue() {
+          remaining = tracks.map((_, index) => index);
+          for (let i = remaining.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [remaining[i], remaining[j]] = [remaining[j], remaining[i]];
+          }
+          // На границе циклов также не повторяем только что звучавший трек.
+          if (remaining.length > 1 && remaining[remaining.length - 1] === currentIndex) {
+            [remaining[0], remaining[remaining.length - 1]] = [remaining[remaining.length - 1], remaining[0]];
+          }
+        }
         function randomTrack() {
           if (!tracks.length) return;
-          let next = Math.floor(Math.random() * tracks.length);
-          if (tracks.length > 1 && next === currentIndex) next = (next + 1) % tracks.length;
-          selectTrack(next);
+          if (!remaining.length) refillQueue();
+          selectTrack(remaining.pop());
         }
 
         function updatePlaybackState() {
