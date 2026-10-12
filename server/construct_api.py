@@ -2,7 +2,7 @@
 import cgi, json, os, pathlib, re, subprocess, tempfile
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
-ROOT=pathlib.Path('/var/www/html'); ALLOWED={'home.html','news.html','bands.html','hs.html','About.html'}
+ROOT=pathlib.Path('/var/www/html'); MEDIA_HOST='193.47.33.114'; ALLOWED={'home.html','news.html','bands.html','hs.html','About.html'}
 def safe_name(name): return re.sub(r'[^0-9A-Za-zА-Яа-яЁё._() !№+-]','_',pathlib.Path(name).name)
 def assets(value):
     if isinstance(value,dict):
@@ -45,7 +45,7 @@ class Api(BaseHTTPRequestHandler):
                 target=ROOT/'data'/f'{name}.json';old=json.loads(target.read_text(encoding='utf-8'));new=d.get('data');removed=assets(old)-assets(new)
                 for path in removed:
                     if path.startswith('/audio/'):
-                        media_cmd('ssh','-o','StrictHostKeyChecking=accept-new','root@194.93.0.223','rm','--',f'/var/www/html/audio/{safe_name(pathlib.Path(path).name)}')
+                        media_cmd('ssh','-o','StrictHostKeyChecking=accept-new',f'root@{MEDIA_HOST}','rm','--',f'/var/www/html/audio/{safe_name(pathlib.Path(path).name)}')
                     elif path.startswith('/img/uploads/'):
                         (ROOT/path.lstrip('/')).unlink(missing_ok=True)
                 target.write_text(json.dumps(new,ensure_ascii=False,indent=2),encoding='utf-8');commit('Update '+name+' content',target,ROOT/'img/uploads');return self.out(data={'ok':True})
@@ -59,7 +59,7 @@ class Api(BaseHTTPRequestHandler):
                     return self.out(data={'ok':True,'url':'/'+target.relative_to(ROOT).as_posix()})
                 if typ in ('radio','audio'):
                     with tempfile.NamedTemporaryFile(delete=False,suffix=pathlib.Path(name).suffix) as tmp: tmp.write(item.file.read()); local=tmp.name
-                    folder='radio' if typ=='radio' else 'audio';gain=measure_loudness(local);media_cmd('scp','-o','StrictHostKeyChecking=accept-new',local,f'root@194.93.0.223:/var/www/html/{folder}/{name}');os.unlink(local)
+                    folder='radio' if typ=='radio' else 'audio';gain=measure_loudness(local);media_cmd('scp','-o','StrictHostKeyChecking=accept-new',local,f'root@{MEDIA_HOST}:/var/www/html/{folder}/{name}');os.unlink(local)
                     levels_file=ROOT/'data/loudness.json';levels=json.loads(levels_file.read_text(encoding='utf-8'));levels[f'/{folder}/{name}']=gain;levels_file.write_text(json.dumps(levels,ensure_ascii=False,indent=2),encoding='utf-8')
                     if typ=='radio':
                         mf=ROOT/'tracks.json';arr=json.loads(mf.read_text(encoding='utf-8'));arr.append('radio/'+name);mf.write_text(json.dumps(arr,ensure_ascii=False,indent=2),encoding='utf-8');commit('Add radio track',mf,levels_file)
@@ -75,7 +75,7 @@ class Api(BaseHTTPRequestHandler):
                 name=safe_name(name); target=ROOT/'img/photoalbum'/name;target.unlink(missing_ok=True);mf=ROOT/'img/photoalbum/manifest.json';arr=json.loads(mf.read_text(encoding='utf-8'));arr=[x for x in arr if x!=name];mf.write_text(json.dumps(arr,ensure_ascii=False,indent=2),encoding='utf-8');commit('Delete photo',target,mf)
             elif typ=='radio':
                 if not str(name).startswith('radio/'):raise ValueError('bad name')
-                base=safe_name(pathlib.Path(name).name);media_cmd('ssh','-o','StrictHostKeyChecking=accept-new','root@194.93.0.223','rm','--',f'/var/www/html/radio/{base}');mf=ROOT/'tracks.json';arr=json.loads(mf.read_text(encoding='utf-8'));arr=[x for x in arr if x!=name];mf.write_text(json.dumps(arr,ensure_ascii=False,indent=2),encoding='utf-8');commit('Delete radio track',mf)
+                base=safe_name(pathlib.Path(name).name);media_cmd('ssh','-o','StrictHostKeyChecking=accept-new',f'root@{MEDIA_HOST}','rm','--',f'/var/www/html/radio/{base}');mf=ROOT/'tracks.json';arr=json.loads(mf.read_text(encoding='utf-8'));arr=[x for x in arr if x!=name];mf.write_text(json.dumps(arr,ensure_ascii=False,indent=2),encoding='utf-8');commit('Delete radio track',mf)
             else: raise ValueError('bad type')
             self.out(data={'ok':True})
         except Exception as e:self.out(400,{'error':str(e)})

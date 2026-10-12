@@ -8,12 +8,12 @@
 
 - **Фронт (Prod Web):**  
   Сервер: `87.247.142.102`  
-  Домен: `shunder.ru`  
+  Домен: `shunder.madvedoplay.ru`
   Сайт хранится в `/var/www/html`.  
   Git работает от пользователя `deploy`.
 
 - **Бэкенд (Media):**  
-  Сервер: `194.93.0.223`<br>
+  Сервер: `193.47.33.114`<br>
   Медиа-файлы в `/var/www/html/audio` и `/var/www/html/radio`.  
   Доступ к ним идёт через фронт (Nginx reverse proxy).
 
@@ -68,32 +68,32 @@ Windows PowerShell:
 
 powershell
 Копировать код
-scp -r "E:\Development\madvedo.github.io\audio\*" deploy@194.93.0.223:/var/www/html/audio/
-scp -r "E:\Development\madvedo.github.io\radio\*" deploy@194.93.0.223:/var/www/html/radio/
+scp -r "E:\Development\madvedo.github.io\audio\*" root@193.47.33.114:/var/www/html/audio/
+scp -r "E:\Development\madvedo.github.io\radio\*" root@193.47.33.114:/var/www/html/radio/
 WSL / Linux:
 
 bash
 Копировать код
-rsync -av --delete /mnt/e/Development/madvedo.github.io/audio/ deploy@194.93.0.223:/var/www/html/audio/
-rsync -av --delete /mnt/e/Development/madvedo.github.io/radio/ deploy@194.93.0.223:/var/www/html/radio/
+rsync -av --delete /mnt/e/Development/madvedo.github.io/audio/ root@193.47.33.114:/var/www/html/audio/
+rsync -av --delete /mnt/e/Development/madvedo.github.io/radio/ root@193.47.33.114:/var/www/html/radio/
 Nginx
-Фронт (87.247.142.102, shunder.ru)
-/etc/nginx/sites-available/shunder.ru.conf:
+Фронт (87.247.142.102, shunder.madvedoplay.ru)
+/etc/nginx/sites-enabled/shunder:
 
 nginx
 Копировать код
 server {
     listen 80;
-    server_name shunder.ru www.shunder.ru;
-    return 301 https://shunder.ru$request_uri;
+    server_name shunder.madvedoplay.ru;
+    return 301 https://shunder.madvedoplay.ru$request_uri;
 }
 
 server {
     listen 443 ssl http2;
-    server_name shunder.ru www.shunder.ru;
+    server_name shunder.madvedoplay.ru;
 
-    ssl_certificate     /etc/letsencrypt/live/shunder.ru/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/shunder.ru/privkey.pem;
+    ssl_certificate     /etc/letsencrypt/live/shunder.madvedoplay.ru/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/shunder.madvedoplay.ru/privkey.pem;
 
     root /var/www/html;
     index index.html;
@@ -103,8 +103,8 @@ server {
     }
 
     location /audio/ {
-        proxy_pass http://194.93.0.223/audio/;
-        proxy_set_header Host 194.93.0.223;
+        proxy_pass http://193.47.33.114/audio/;
+        proxy_set_header Host 193.47.33.114;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_buffering off;
@@ -112,8 +112,8 @@ server {
     }
 
     location /radio/ {
-        proxy_pass http://194.93.0.223/radio/;
-        proxy_set_header Host 194.93.0.223;
+        proxy_pass http://193.47.33.114/radio/;
+        proxy_set_header Host 193.47.33.114;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_buffering off;
@@ -130,7 +130,7 @@ server {
     access_log /var/log/nginx/shunder.access.log;
     error_log  /var/log/nginx/shunder.error.log;
 }
-Бэкенд (194.93.0.223)
+Бэкенд (193.47.33.114)
 /etc/nginx/sites-available/media.conf:
 
 nginx
@@ -173,7 +173,7 @@ bash
 Копировать код
 sudo apt update
 sudo apt install -y certbot python3-certbot-nginx
-sudo certbot --nginx -d shunder.ru -d www.shunder.ru
+sudo certbot --nginx -d shunder.madvedoplay.ru
 Скрипты
 /usr/local/bin/update_front
 bash
@@ -199,7 +199,7 @@ bash
 #!/usr/bin/env bash
 set -euo pipefail
 SRC=/mnt/e/Development/madvedo.github.io
-DEST=deploy@194.93.0.223:/var/www/html
+DEST=root@193.47.33.114:/var/www/html
 rsync -av --delete "$SRC/audio/" "$DEST/audio/"
 rsync -av --delete "$SRC/radio/" "$DEST/radio/"
 echo "[OK] Media synced to backend."
@@ -214,9 +214,9 @@ echo "[OK] Media synced to backend."
 
 bash
 Копировать код
-curl -I https://shunder.ru/
-curl -I https://shunder.ru/radio/track.mp3
-curl -H "Range: bytes=0-100" -I https://shunder.ru/audio/track.mp3
+curl -I https://shunder.madvedoplay.ru/
+curl -I https://shunder.madvedoplay.ru/radio/track.mp3
+curl -H "Range: bytes=0-100" -I https://shunder.madvedoplay.ru/audio/track.mp3
 Ожидаем 200 OK и 206 Partial Content.
 
 Проверить логи:
