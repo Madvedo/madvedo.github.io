@@ -133,6 +133,8 @@ server {
 Бэкенд (193.47.33.114)
 /etc/nginx/sites-available/media.conf:
 
+Для WAV в `/etc/nginx/mime.types` должна быть запись `audio/wav wav;`. Не задавайте `default_type application/octet-stream` для аудиофайлов: браузеру нужен аудио MIME-тип.
+
 nginx
 Копировать код
 server {
@@ -142,7 +144,6 @@ server {
     root /var/www/html;
 
     location /audio/ {
-        default_type application/octet-stream;
         expires 30d;
         add_header Cache-Control "public, max-age=2592000, immutable" always;
         add_header Accept-Ranges bytes;
@@ -154,7 +155,6 @@ server {
     }
 
     location /radio/ {
-        default_type application/octet-stream;
         expires 30d;
         add_header Cache-Control "public, max-age=2592000, immutable" always;
         add_header Accept-Ranges bytes;
