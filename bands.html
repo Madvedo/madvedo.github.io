@@ -654,7 +654,7 @@
       /* STATE */
       let currentBandKey = null;
       let currentAlbumIndex = 0;
-      let currentTrackIndex = 0;
+      let currentTrackIndex = -1;
       let audioContext = null;
       let levelGain = null;
       let loudness = {};
@@ -712,7 +712,6 @@
       }
 
       function renderBand(bandKey, target = "desktop") {
-        currentBandKey = bandKey;
         const band = LIB[bandKey];
         const { titleEl, linksEl, albumsEl, parentId, suffix } =
           getContainers(target);
@@ -785,41 +784,26 @@
             const bKey = el.getAttribute("data-band");
             const aIdx = +el.getAttribute("data-album-index");
             const tIdx = +el.getAttribute("data-track-index");
-            if (bKey === currentBandKey && aIdx === currentAlbumIndex && tIdx === currentTrackIndex && audio.src) {
-              audio.paused ? audio.play() : audio.pause();
+            if (bKey === currentBandKey && aIdx === currentAlbumIndex && tIdx === currentTrackIndex && currentTrackIndex >= 0) {
+              audio.paused ? togglePlay() : audio.pause();
             } else {
               playFrom(bKey, aIdx, tIdx);
             }
           });
         });
-
-        // Обновить плеер для группы (первый трек)
-        // Обновлять плеер только если он ещё пустой
-        if (!audio.src) {
-          if (band.albums?.length) {
-            currentAlbumIndex = 0;
-            currentTrackIndex = 0;
-            const firstTrack = band.albums[0].tracks[0];
-            pCover.src = band.albums[0].cover || band.cover;
-            pArtist.textContent = band.title;
-            pTitle.textContent = firstTrack
-              ? firstTrack.title
-              : "Ничего не играет";
-            audio.src = firstTrack ? firstTrack.src : "";
-            playBtn.textContent = "▶";
-          }
-        }
       }
       function playFrom(bandKey, albumIndex, trackIndex) {
+        const band = LIB[bandKey];
+        const album = band?.albums?.[albumIndex];
+        const track = album?.tracks?.[trackIndex];
+        if (!track) return;
+
         currentBandKey = bandKey;
         currentAlbumIndex = albumIndex;
         currentTrackIndex = trackIndex;
-        const band = LIB[bandKey];
-        const album = band.albums[albumIndex];
-        const track = album.tracks[trackIndex];
 
         audio.src = track.src;
-        enableLeveling().then(() => { levelGain.gain.value = Math.pow(10, (loudness[track.src] || 0) / 20); return audio.play(); })
+        enableLeveling().then(() => { if (levelGain) levelGain.gain.value = Math.pow(10, (loudness[track.src] || 0) / 20); return audio.play(); })
           .then(() => {
             playBtn.textContent = "⏸";
           })
@@ -844,21 +828,22 @@
       }
 
       function nextTrack() {
-        const band = LIB[currentBandKey];
-        const album = band.albums[currentAlbumIndex];
-        currentTrackIndex = (currentTrackIndex + 1) % album.tracks.length;
+        const album = LIB[currentBandKey]?.albums?.[currentAlbumIndex];
+        if (!album?.tracks?.length) return;
+        currentTrackIndex = currentTrackIndex < 0 ? 0 : (currentTrackIndex + 1) % album.tracks.length;
         playFrom(currentBandKey, currentAlbumIndex, currentTrackIndex);
       }
       function prevTrack() {
-        const band = LIB[currentBandKey];
-        const album = band.albums[currentAlbumIndex];
-        currentTrackIndex =
-          (currentTrackIndex - 1 + album.tracks.length) % album.tracks.length;
+        const album = LIB[currentBandKey]?.albums?.[currentAlbumIndex];
+        if (!album?.tracks?.length) return;
+        currentTrackIndex = currentTrackIndex < 0 ? album.tracks.length - 1 : (currentTrackIndex - 1 + album.tracks.length) % album.tracks.length;
         playFrom(currentBandKey, currentAlbumIndex, currentTrackIndex);
       }
       function togglePlay() {
+        const track = LIB[currentBandKey]?.albums?.[currentAlbumIndex]?.tracks?.[currentTrackIndex];
+        if (!track) return;
         if (audio.paused) {
-          enableLeveling().then(() => { const track = LIB[currentBandKey]?.albums?.[currentAlbumIndex]?.tracks?.[currentTrackIndex]; if (track && levelGain) levelGain.gain.value = Math.pow(10, (loudness[track.src] || 0) / 20); return audio.play(); });
+          enableLeveling().then(() => { if (levelGain) levelGain.gain.value = Math.pow(10, (loudness[track.src] || 0) / 20); return audio.play(); });
           playBtn.textContent = "⏸";
         } else {
           audio.pause();
@@ -960,7 +945,12 @@
 
         pArtist.textContent = "";
         pTitle.textContent = "Ничего не играет";
-        audio.src = "";
+        audio.pause();
+        audio.removeAttribute("src");
+        audio.load();
+        currentBandKey = null;
+        currentAlbumIndex = 0;
+        currentTrackIndex = -1;
         playBtn.textContent = "▶";
       }
 
